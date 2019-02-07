@@ -2,13 +2,13 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import { interopDefault } from './utils'
 
-const _54f14e8e = () => interopDefault(import('..\\pages\\account.vue' /* webpackChunkName: "pages_account" */))
-const _e812f5de = () => interopDefault(import('..\\pages\\employees.vue' /* webpackChunkName: "pages_employees" */))
-const _54ed24ce = () => interopDefault(import('..\\pages\\join.vue' /* webpackChunkName: "pages_join" */))
-const _43218f9d = () => interopDefault(import('..\\pages\\overview.vue' /* webpackChunkName: "pages_overview" */))
-const _555bdbb8 = () => interopDefault(import('..\\pages\\setting\\application.vue' /* webpackChunkName: "pages_setting_application" */))
-const _50669486 = () => interopDefault(import('..\\pages\\work-offer\\overview.vue' /* webpackChunkName: "pages_work-offer_overview" */))
-const _38a929de = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
+const _480946d5 = () => interopDefault(import('..\\pages\\account.vue' /* webpackChunkName: "pages_account" */))
+const _65b55c2d = () => interopDefault(import('..\\pages\\employees.vue' /* webpackChunkName: "pages_employees" */))
+const _4a934c32 = () => interopDefault(import('..\\pages\\join.vue' /* webpackChunkName: "pages_join" */))
+const _20dd6501 = () => interopDefault(import('..\\pages\\overview.vue' /* webpackChunkName: "pages_overview" */))
+const _2224f188 = () => interopDefault(import('..\\pages\\setting\\application.vue' /* webpackChunkName: "pages_setting_application" */))
+const _249f9521 = () => interopDefault(import('..\\pages\\work-offer\\overview.vue' /* webpackChunkName: "pages_work-offer_overview" */))
+const _1070220c = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
 
 Vue.use(Router)
 
@@ -72,31 +72,31 @@ export function createRouter() {
 
     routes: [{
       path: "/account",
-      component: _54f14e8e,
+      component: _480946d5,
       name: "account"
     }, {
       path: "/employees",
-      component: _e812f5de,
+      component: _65b55c2d,
       name: "employees"
     }, {
       path: "/join",
-      component: _54ed24ce,
+      component: _4a934c32,
       name: "join"
     }, {
       path: "/overview",
-      component: _43218f9d,
+      component: _20dd6501,
       name: "overview"
     }, {
       path: "/setting/application",
-      component: _555bdbb8,
+      component: _2224f188,
       name: "setting-application"
     }, {
       path: "/work-offer/overview",
-      component: _50669486,
+      component: _249f9521,
       name: "work-offer-overview"
     }, {
       path: "/",
-      component: _38a929de,
+      component: _1070220c,
       name: "index"
     }],
 

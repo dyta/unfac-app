@@ -54,7 +54,10 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["~/plugins/vue-font-awesome", "~/plugins/vue-kanban", "~/plugins/loading-overlay"],
+  plugins: ["~/plugins/vue-font-awesome", "~/plugins/vue-kanban", "~/plugins/loading-overlay", {
+    src: "~/plugins/vue-th-postal",
+    ssr: false
+  }],
 
   router: {
     middleware: 'router-auth'
