@@ -209,7 +209,7 @@ export default {
                 );
                 if (UserUpdate) {
                   this.$toast.success(
-                    `เครือข่ายงานของคุณถูกสร้างเรียบร้อยแล้ว`,
+                    `เครือข่ายงานของคุณถูกสร้างเรียบร้อยแล้ว ระบบกำลังคุณไปยังระบบจัดการ`,
                     {
                       theme: "outline",
                       position: "bottom-center",
