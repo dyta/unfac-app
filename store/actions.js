@@ -14,10 +14,10 @@ export default {
     // ค่าจาก line
     commit('setLine', req.session.auth)
     if (!req.session.user && (req.session && req.session.auth)) {
-      const exist = await $axios.$get(`${process.env.API_SERVICE}/v2/auth/${req.session.auth.uid}`)
+      const exist = await $axios.$get(`${process.env.API_SERVICE}/v2/account/_/${req.session.auth.uid}`)
       if (exist.exists) {
         // ถ้ามี user ในระบบ
-        const response = await $axios.$get(`${process.env.API_SERVICE}/v2/user/${req.session.auth.uid}`)
+        const response = await $axios.$get(`${process.env.API_SERVICE}/v2/account/${req.session.auth.uid}`)
         commit('setUser', response[0])
         req.session.user = response[0]
       }
@@ -25,20 +25,20 @@ export default {
 
     if (req.session.user && req.session && req.session.auth) {
 
-      const response = await $axios.$get(`${process.env.API_SERVICE}/v2/user/${req.session.auth.uid}`)
+      const response = await $axios.$get(`${process.env.API_SERVICE}/v2/account/${req.session.auth.uid}`)
       commit('setUser', response[0])
       req.session.user = response[0]
 
       const newObj = Object.assign({}, req.session.auth);
       const merge = Object.assign(newObj, new Object(req.session.user))
       // create to auth
-      const createUser = await $axios.$post(`${process.env.API_SERVICE}/v2/auth`, merge)
+      const createUser = await $axios.$post(`${process.env.API_SERVICE}/v2/account/auth`, merge)
       if (createUser) {
-        await $axios.$post(`${process.env.API_SERVICE}/v2/token`, req.session.auth).then(r => {
+        await $axios.$post(`${process.env.API_SERVICE}/v2/account/token`, req.session.auth).then(r => {
           if (r) auth.signInWithCustomToken(r)
         })
       }
-      const packageUser = await $axios.$get(`${process.env.API_SERVICE}/v2/user/package/${req.session.user.entId}`)
+      const packageUser = await $axios.$get(`${process.env.API_SERVICE}/v2/account/package/${req.session.user.entId}`)
 
       commit("setPackage", {
         name: convert.package(packageUser),
@@ -48,7 +48,7 @@ export default {
       dispatch("userListener");
     }
   },
-  async createUser({
+  async signInWithToken({
       commit,
       state,
       dispatch

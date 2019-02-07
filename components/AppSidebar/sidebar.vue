@@ -6,7 +6,7 @@
       </div>
 
       <div class="info text">
-        <p>{{user.empFullname}}</p>
+        <p>{{user.userFullname}}</p>
         <small>{{auth.email}}</small>
         <div>
           <small>

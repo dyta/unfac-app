@@ -159,7 +159,7 @@ export default {
             inputValue: null,
             inputPlaceholder:
               "ฉันเห็นด้วยกับข้อกำหนดและเงื่อนไขกับทาง Unfac.co",
-            confirmButtonText: "สร้างบัญชี",
+            confirmButtonText: "ยืนยันการสร้างบัญชี",
             inputValidator: result => {
               return !result && "คุณต้องเห็นด้วยกับข้อกำหนดและเงื่อนไข";
             }
@@ -169,12 +169,15 @@ export default {
               try {
                 this.isLoading = true;
                 data.phoneNumber = "+66" + data.phoneNumber.substring(1, 10);
-                const createUser = await this.$axios.$post(`/v2/create`, data);
+                const createUser = await this.$axios.$post(
+                  `/v2/account/create`,
+                  data
+                );
 
                 if (createUser) {
                   // query
                   const response = await this.$axios.$get(
-                    `/v2/user/${line.uid}`
+                    `/v2/account/${line.uid}`
                   );
 
                   this.$store.commit("setUser", response[0]);
@@ -183,20 +186,22 @@ export default {
                   const merge = Object.assign(newObj, new Object(response[0]));
 
                   const _createUser = await this.$axios.$post(
-                    `/v2/auth`,
+                    `/v2/account/auth`,
                     merge
                   );
                   if (_createUser) {
                     // auth
-                    await this.$axios.post(`/v2/token`, line).then(r => {
-                      if (r) this.$store.dispatch("createUser", r.data);
-                    });
+                    await this.$axios
+                      .$post(`/v2/account/token`, line)
+                      .then(r => {
+                        if (r) this.$store.dispatch("signInWithToken", r);
+                      });
                   }
                 }
                 _this.$toast.success(`บัญชีของคุณถูกสร้างเรียบร้อยแล้ว`, {
                   theme: "outline",
                   position: "bottom-center",
-                  duration: 5000
+                  duration: 3000
                 });
               } catch (error) {
                 this.isLoading = false;

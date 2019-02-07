@@ -13,29 +13,30 @@
           <b-card>
             <h5 class="text-center py-3 pb-4">สร้างเครือข่ายงานของคุณ</h5>
             <b-form-group
-              id="invite"
+              id="entName"
               label="ชื่อองค์กร/ร้านค้า"
-              label-for="invite"
+              label-for="entName"
               :state="stateText"
               class="px-3"
             >
               <b-form-input
-                id="invite"
+                id="entName"
                 :state="stateText"
                 v-model.trim="createForm.entName"
                 autocomplete="off"
-                placeholder="UNFAC company"
+                placeholder="Name of company"
               ></b-form-input>
             </b-form-group>
-            <b-form-group id="invite" label="ที่อยู่" label-for="invite" class="px-3">
+
+            <b-form-group id="entAddress" label="ที่อยู่" label-for="entAddress" class="px-3">
               <b-form-input
-                id="invite"
+                id="entAddress"
                 v-model.trim="createForm.entAddress"
                 autocomplete="off"
                 placeholder="120/784 หมู่ 3 อาคาร S ชั้น 11"
               ></b-form-input>
             </b-form-group>
-            <b-form-group id="invite" label="รหัสไปรษณีย์" label-for="invite" class="px-3"></b-form-group>
+            <b-form-group label="รหัสไปรษณีย์" class="px-3"></b-form-group>
             <no-ssr placeholder="กำลังโหลด...">
               <div style="margin-top: -1rem">
                 <ThailandAutoComplete
@@ -43,23 +44,30 @@
                   type="zipcode"
                   @select="select"
                   size="medium"
-                  placeholder="11000"
                 />
               </div>
             </no-ssr>
             <b-form-group
-              id="invite"
+              id="entTel"
               label="เบอร์โทร"
-              label-for="invite"
+              label-for="entTel"
               class="px-3"
               :state="stateTel"
             >
               <b-form-input
-                id="invite"
+                id="entTel"
                 :state="stateTel"
                 v-model.trim="createForm.entTel"
                 autocomplete="off"
                 placeholder="0987654321"
+              ></b-form-input>
+            </b-form-group>
+            <b-form-group id="entDomain" label="เว็บไซต์" label-for="entDomain" class="px-3">
+              <b-form-input
+                id="entDomain"
+                v-model.trim="createForm.entDomain"
+                autocomplete="off"
+                placeholder="URL"
               ></b-form-input>
             </b-form-group>
             <div class="px-3">
@@ -97,6 +105,7 @@
         </b-col>
       </b-row>
     </b-container>
+    <loading :active.sync="isLoading" :can-cancel="false" :is-full-page="true" :height="34"></loading>
   </b-container>
 </template>
 
@@ -112,10 +121,12 @@ export default {
   data() {
     return {
       keyInvite: "",
+      isLoading: false,
       createForm: {
-        entName: "",
-        entTel: "",
-        entAddress: "",
+        entName: "Unfac",
+        entDomain: "https://unfac.co",
+        entTel: "0957192597",
+        entAddress: "120/784",
         entPostal: "",
         district: "",
         amphoe: "",
@@ -157,10 +168,14 @@ export default {
       this.createForm.entPostal = address.zipcode;
     },
     onClickCreateCompany() {
+      let _this = this;
       if (this.validBtn) {
         let form = {
           entName: this.createForm.entName,
+          entDomain: this.createForm.entDomain,
           entAddress:
+            this.createForm.entAddress +
+            " " +
             this.createForm.district +
             " " +
             this.createForm.amphoe +
@@ -171,8 +186,57 @@ export default {
           entPackage: 0,
           entTel: this.createForm.entTel
         };
+        this.$swal
+          .fire({
+            title: "ข้อกำหนดและเงื่อนไข",
+            input: "checkbox",
+            inputValue: null,
+            inputPlaceholder:
+              "ฉันเห็นด้วยกับข้อกำหนดและเงื่อนไขกับทาง Unfac.co",
+            confirmButtonText: "ยืนยันการสร้าง",
+            inputValidator: result => {
+              return !result && "คุณต้องเห็นด้วยกับข้อกำหนดและเงื่อนไข";
+            }
+          })
+          .then(async result => {
+            if (result.value) {
+              this.isLoading = true;
+              const res = await _this.$axios.post(`/v2/enterprise`, form);
+              if (res.data.insertId) {
+                const UserUpdate = await _this.$axios.put(
+                  `/v2/account/enterpise/${this.$store.state.user.lineId}`,
+                  { entId: res.data.insertId }
+                );
+                if (UserUpdate) {
+                  this.$toast.success(
+                    `เครือข่ายงานของคุณถูกสร้างเรียบร้อยแล้ว`,
+                    {
+                      theme: "outline",
+                      position: "bottom-center",
+                      duration: 3000
+                    }
+                  );
+                  setTimeout(() => {
+                    _this.$router.go({ path: "/" });
+                  }, 1000);
+                } else {
+                  this.isLoading = false;
+                }
+              } else {
+                this.isLoading = false;
+                this.$toast.error(
+                  `ไม่สามารถสร้างเครือข่ายงานได้ โปรดลองใหม่อีกครั้ง`,
+                  {
+                    theme: "outline",
+                    position: "bottom-center",
+                    duration: 3000
+                  }
+                );
+              }
+            }
+          });
       } else {
-        this.$toast.error(`เกิดข้อผิดพลาด`, {
+        this.$toast.error(`โปรดกรอกข้อมูลให้ครบถ้วน`, {
           theme: "outline",
           position: "bottom-center",
           duration: 2000
