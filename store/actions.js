@@ -100,19 +100,11 @@ export default {
         commit('setSource', payload)
       }, 1000);
     }
-
-
-
   },
   async signOut({
     commit
   }) {
     try {
-      await axios.post('/user/logout')
-      commit('setUser', null)
-      commit('setAuth', null)
-      commit('setLine', null)
-
       auth.signOut().then(function (e) {
         console.log('e: ', e);
         // Sign-out successful.
@@ -120,6 +112,11 @@ export default {
         console.log('error: ', error);
         // An error happened.
       });
+      await axios.post('/user/logout')
+      commit('setUser', null)
+      commit('setAuth', null)
+      commit('setLine', null)
+
     } catch (error) {
       console.log('error: ', error);
 
