@@ -73,7 +73,7 @@ export default {
   layout: "default",
   head() {
     return {
-      title: "Work Offer"
+      title: "Employees"
     };
   },
   data() {

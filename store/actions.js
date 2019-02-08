@@ -108,9 +108,11 @@ export default {
   }) {
 
     auth.signOut().then(function (e) {
-      commit('setUser', null)
-      commit('setAuth', null)
-      commit('setLine', null)
+      setTimeout(() => {
+        commit('setUser', null)
+        commit('setAuth', null)
+        commit('setLine', null)
+      }, 1000);
     }).catch(function (error) {
       console.log('error: ', error);
       // An error happened.
