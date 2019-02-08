@@ -6,7 +6,8 @@
     <b-navbar toggleable="md" type="light" fixed="top" class="navbar-light bg-light">
       <sidebar-toggle/>
       <b-container>
-        <b-navbar-brand tag="h1" @click="handleClick" class="logo-nav mb-0">UNFAC
+        <b-navbar-brand tag="h1" @click="handleClick" class="logo-nav mb-0">
+          <fa icon="bars" class="pr-2" color="teal"/>UNFAC
           <div class="small-logo">
             <small>Management</small>
             <small>Console</small>
@@ -21,7 +22,13 @@
               @click="()=>{$router.push('/overview'), autoToggle()}"
               v-if="user.entId"
             >ภาพรวม</b-button>
-            <b-button variant="link" class="list" @click="handleClick" v-if="user.entId">แผงควบคุม</b-button>
+            <b-button
+              variant="link"
+              class="list"
+              color="teal"
+              @click="handleClick"
+              v-if="user.entId"
+            >แผงควบคุม</b-button>
             <b-button
               variant="link"
               class="list"
@@ -38,9 +45,7 @@
       </b-container>
     </b-navbar>
     <div class="content-margin-top">
-      <transition name="fade">
-        <nuxt-child/>
-      </transition>
+      <nuxt-child/>
     </div>
   </div>
 </template>

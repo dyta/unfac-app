@@ -19,12 +19,14 @@
         </b-col>
       </b-row>
     </b-jumbotron>
-    <b-container class="pt-4">
+    <b-container>
       <!-- Main table element -->
       <b-table
         show-empty
         responsive
         hover
+        small
+        striped
         :items="items"
         :fields="fields"
         :current-page="currentPage"
@@ -80,27 +82,33 @@ export default {
       fields: [
         {
           key: "workId",
-          label: "ID"
+          label: "ID",
+          sortable: true
         },
         {
           key: "customerName",
-          label: "ชื่อลูกค้า"
+          label: "ชื่อลูกค้า",
+          sortable: true
         },
         {
           key: "workStatus",
-          label: "สถานะ"
+          label: "สถานะ",
+          sortable: true
         },
         {
           key: "workStartAt",
-          label: "คิวงาน"
+          label: "คิวงาน",
+          sortable: true
         },
         {
           key: "workEndAt",
-          label: "คาดว่าจะเสร็จ"
+          label: "คาดว่าจะเสร็จ",
+          sortable: true
         },
         {
           key: "workVolume",
-          label: "จำนวน"
+          label: "จำนวน",
+          sortable: true
         },
         { key: "actions", label: "ตัวเลือกการจัดการ" }
       ],

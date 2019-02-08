@@ -172,19 +172,19 @@ a:hover,
 
 .logo-nav {
   display: none;
-  font-size: 2.2rem;
+  font-size: 1.6rem;
   cursor: pointer;
 }
 
 .small-logo {
   float: right;
   margin-left: .4rem;
-  line-height: 1.1rem;
-  padding-top: 10px;
+  line-height: 12px;
+  padding-top: 6px;
 
   small {
     display: block;
-    font-size: 14px;
+    font-size: 10px;
     color: var(--gray) !important;
   }
 }

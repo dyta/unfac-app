@@ -19,12 +19,14 @@
         </b-col>
       </b-row>
     </b-jumbotron>
-    <b-container class="pt-4">
+    <b-container>
       <!-- Main table element -->
       <b-table
         show-empty
         responsive
         hover
+        small
+        striped
         :items="items"
         :fields="fields"
         :current-page="currentPage"
@@ -80,27 +82,33 @@ export default {
       fields: [
         {
           key: "empId",
-          label: "ID"
+          label: "ID",
+          sortable: true
         },
         {
           key: "empFullname",
-          label: "ชื่อพนักงาน"
+          label: "ชื่อพนักงาน",
+          sortable: true
         },
         {
           key: "empPhoneNumber",
-          label: "เบอร์โทร"
+          label: "เบอร์โทร",
+          sortable: true
         },
         {
           key: "empStatus",
-          label: "สถานะการทำงาน"
+          label: "สถานะการทำงาน",
+          sortable: true
         },
         {
           key: "userAuth",
-          label: "ยืนยันตัวคน"
+          label: "ยืนยันตัวคน",
+          sortable: true
         },
         {
           key: "empRole",
-          label: "ตำแหน่ง"
+          label: "ตำแหน่ง",
+          sortable: true
         },
         { key: "actions", label: "ตัวเลือกการจัดการ" }
       ],
@@ -122,7 +130,6 @@ export default {
       return this.$store.state.source;
     },
     sortOptions() {
-      // Create an options list from our fields
       return this.fields
         .filter(f => f.sortable)
         .map(f => {
@@ -135,10 +142,10 @@ export default {
   },
   methods: {
     onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
+
     myRowClickHandler(record, index) {
       console.log("record: ", record);
     },
