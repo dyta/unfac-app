@@ -100,10 +100,59 @@
       <b-modal
         id="WorkInfoItem"
         @hide="resetModal"
+        size="lg"
         :title="`แก้ไขหมายเลขงาน: ${WorkInfoItem.workId}`"
         ok-only
       >
-        <pre>{{ WorkInfoItem }}</pre>
+        <b-progress :value="25" variant="success" striped :animated="true" class="mb-2"></b-progress>
+        <b-form-file
+          v-model="file"
+          :state="Boolean(file)"
+          accept="image/jpeg, image/png, image/gif"
+          placeholder="Choose a file..."
+          @change="fileBtn(file, $event)"
+        ></b-form-file>
+        <div class="mt-3">Selected file: {{file && file.name}}</div>
+        <b-form-group
+          id="workName"
+          :description="WorkInfoItem.workName"
+          label="ชื่องาน"
+          label-for="workName"
+        >
+          <b-form-input
+            id="workName"
+            v-model.trim="workValue.workName"
+            :value="WorkInfoItem.workName"
+          ></b-form-input>
+        </b-form-group>
+        <!-- line -->
+        <b-form-group id="workDescription" label="รายละเอียดงาน" label-for="workDescription">
+          <b-form-textarea
+            id="workDescription"
+            v-model="WorkInfoItem.workDescription"
+            :rows="3"
+            :max-rows="6"
+          ></b-form-textarea>
+        </b-form-group>
+        <!-- line -->
+        <b-form-group
+          id="workVolume"
+          :description="`จำนวน ${WorkInfoItem.workVolume}`"
+          label="จำนวนสั่งทำ"
+          label-for="workVolume"
+        >
+          <b-form-input id="workVolume" disabled :value="WorkInfoItem.workVolume"></b-form-input>
+        </b-form-group>
+        <!-- line -->
+        <b-form-group
+          id="workEarn"
+          :description=" `จำนวน ${WorkInfoItem.workEarn}`"
+          label="ค่าจ้าง <small>(หน่วย: บาท)</small>"
+          label-for="workEarn"
+        >
+          <b-form-input id="workEarn" v-model="workValue.workEarn" :value="WorkInfoItem.workEarn"></b-form-input>
+        </b-form-group>
+        <!-- line -->
       </b-modal>
     </b-container>
     <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".7" :height="34"></loading>
@@ -111,6 +160,7 @@
 </template>
 
 <script>
+import Firebase from "./../../configs/firebase.sdk.js";
 export default {
   layout: "default",
   head() {
@@ -120,9 +170,16 @@ export default {
   },
   data() {
     return {
+      file: null,
       items: [],
+      editInfo: {
+        name: ""
+      },
       WorkInfoItem: {
         workId: null
+      },
+      workValue: {
+        workName: ""
       },
       fields: [
         {
@@ -238,20 +295,48 @@ export default {
         });
     },
     ModalWotkInfo(item, index, button) {
-      this.WorkInfoItem = item;
+      this.WorkInfoItem = Object.assign({}, item);
+      this.workValue = Object.assign({}, item);
       this.$root.$emit("bv::show::modal", "WorkInfoItem", button);
     },
     resetModal() {
       this.WorkInfoItem = {
         workId: null
       };
+    },
+    fileBtn: function(file, e) {
+      e.preventDefault();
+      
+      const uploader = document.getElementById("uploader");
+      //get file
+      let getFile = e.target.files[0];
+      //set storage ref
+      let storageRef = Firebase.storage()
+        .ref()
+        .child(`images/${getFile.name}`);
+      //upload file
+      let task = storageRef.put(getFile);
+      task.on(
+        "state_changed",
+        function progress(snapshot) {
+          let percentage =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          uploader.value = percentage;
+        },
+        function error(err) {
+          console.log(err);
+        },
+        function complete() {
+          console.log("complete upload");
+        }
+      );
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-@media (min-width: 640px) {
+@media (min-width: 576px) {
   .btn-option {
     font-size: 1rem !important;
   }
@@ -261,5 +346,9 @@ export default {
 }
 .btn-option {
   font-size: 12px;
+}
+.form-control {
+  border: 1px solid #ced4da;
+  height: auto !important;
 }
 </style>

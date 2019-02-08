@@ -169,36 +169,40 @@ export default {
               try {
                 this.isLoading = true;
                 data.phoneNumber = "+66" + data.phoneNumber.substring(1, 10);
-                const createUser = await this.$axios.$post(
+                const createUser = await this.$axios.post(
                   `/v2/account/create`,
                   data
                 );
 
                 if (createUser) {
                   // query
-                  const response = await this.$axios.$get(
+                  const response = await this.$axios.get(
                     `/v2/account/${line.uid}`
                   );
 
-                  this.$store.commit("setUser", response[0]);
+                  this.$store.commit("setUser", response.data[0]);
                   // insert to auth
                   const newObj = Object.assign({}, line);
-                  const merge = Object.assign(newObj, new Object(response[0]));
+                  const merge = Object.assign(
+                    newObj,
+                    new Object(response.data[0])
+                  );
 
-                  const _createUser = await this.$axios.$post(
+                  const _createUser = await this.$axios.post(
                     `/v2/account/auth`,
                     merge
                   );
                   if (_createUser) {
                     // auth
-                    await this.$axios
-                      .$post(`/v2/account/token`, line)
-                      .then(r => {
-                        if (r) this.$store.dispatch("signInWithToken", r);
-                      });
+                    const token = await this.$axios.post(
+                      `/v2/account/token`,
+                      line
+                    );
+                    this.$store.dispatch("signInWithToken", token.data);
+                    commit("setLoading", false);
                   }
                 }
-                _this.$toast.success(`บัญชีของคุณถูกสร้างเรียบร้อยแล้ว`, {
+                this.$toast.success(`บัญชีของคุณถูกสร้างเรียบร้อยแล้ว`, {
                   theme: "outline",
                   position: "bottom-center",
                   duration: 3000

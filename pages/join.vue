@@ -291,7 +291,7 @@ export default {
       }
     },
     onClickSignOut() {
-      this.$store.dispatch("loaded");
+      this.$store.commit("setLoading", true);
       setTimeout(() => {
         this.$store.dispatch("signOut");
         this.$router.go({ path: "/" });

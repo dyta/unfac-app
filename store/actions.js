@@ -6,6 +6,7 @@ import convert from "./../scripts/ConvertText";
 export default {
   async nuxtServerInit({
     commit,
+    state,
     dispatch
   }, {
     req,
@@ -34,9 +35,11 @@ export default {
       // create to auth
       const createUser = await $axios.$post(`${process.env.API_SERVICE}/v2/account/auth`, merge)
       if (createUser) {
-        await $axios.$post(`${process.env.API_SERVICE}/v2/account/token`, req.session.auth).then(r => {
-          if (r) auth.signInWithCustomToken(r)
-        })
+        const token = await $axios.$post(`${process.env.API_SERVICE}/v2/account/token`, req.session.auth)
+
+        commit('setToken', token)
+        await auth.signInWithCustomToken(token)
+
       }
       const packageUser = await $axios.$get(`${process.env.API_SERVICE}/v2/account/package/${req.session.user.entId}`)
 
@@ -44,9 +47,17 @@ export default {
         name: convert.package(packageUser),
         key: packageUser
       })
-
-      dispatch("userListener");
+      await auth.onAuthStateChanged(user => {
+        if (user) {
+          commit('setLoading', false)
+          commit('setAuth', user)
+        } else {
+          commit('setLoading', false)
+        }
+      })
     }
+
+
   },
   async signInWithToken({
       commit,
@@ -55,25 +66,16 @@ export default {
     },
     payload) {
     return new Promise(async (resolve, reject) => {
-      commit("setLoading")
       auth.signInWithCustomToken(payload);
-
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          commit('setLoading', false)
+          commit('setAuth', user)
+        }
+      })
       resolve()
     })
 
-  },
-  userListener({
-    commit
-  }) {
-    auth.onAuthStateChanged(auth => {
-      if (auth) {
-        commit('setLoading')
-        commit('setAuth', auth)
-      } else {
-        commit('setLoading')
-      }
-
-    })
   },
   toggleSidebar({
     commit,
@@ -104,22 +106,16 @@ export default {
   async signOut({
     commit
   }) {
-    try {
-      auth.signOut().then(function (e) {
-        console.log('e: ', e);
-        // Sign-out successful.
-      }).catch(function (error) {
-        console.log('error: ', error);
-        // An error happened.
-      });
-      await axios.post('/user/logout')
+
+    auth.signOut().then(function (e) {
       commit('setUser', null)
       commit('setAuth', null)
       commit('setLine', null)
-
-    } catch (error) {
+    }).catch(function (error) {
       console.log('error: ', error);
+      // An error happened.
+    });
+    axios.post('/user/logout')
 
-    }
   }
 };

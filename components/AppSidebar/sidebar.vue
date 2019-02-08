@@ -159,7 +159,7 @@ export default {
   },
   methods: {
     onClickSignOut() {
-      this.$store.dispatch("loaded");
+      this.$store.commit("setLoading", true);
       setTimeout(() => {
         this.$store.dispatch("signOut");
         this.$router.go({ path: "/" });
@@ -200,7 +200,7 @@ export default {
   background-color: var(--light);
 }
 
-@media (min-width: 640px) {
+@media (min-width: 576px) {
   .sidebar {
     width: 360px;
     max-width: 90vw;

@@ -2,7 +2,8 @@
 @import "large-screen";
 
 html,
-body {
+body,
+.vue-dropzone {
   font-family: "Open Sans", "Sarabun", sans-serif !important;
   font-size: 1rem;
   word-spacing: 1px;
@@ -36,6 +37,10 @@ a:hover,
 .btn-link:visited {
   color: var(--teal);
   text-decoration: none;
+}
+
+.custom-file-input:lang(en)~.custom-file-label::after {
+  content: "ค้นหาไฟล์";
 }
 
 // pagination

@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import Firebase from "./../configs/firebase.sdk.js";
 import Sidebar from "./../components/AppSidebar/sidebar";
 import SidebarToggle from "./../components/AppSidebar/sidebarToggle";
 export default {
@@ -59,13 +60,12 @@ export default {
     Sidebar,
     SidebarToggle
   },
+  created() {
+    this.checkAuth();
+  },
   computed: {
     auth() {
-      let auth = this.$store.state.auth;
-      if (!auth) {
-        this.$store.dispatch("userListener");
-      }
-      return auth;
+      return this.$store.state.auth;
     },
     user() {
       let user = this.$store.state.user;
@@ -83,6 +83,17 @@ export default {
     }
   },
   methods: {
+    checkAuth() {
+      let self = this;
+      Firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          self.$store.commit("setLoading", false);
+        } else {
+          self.$store.dispatch("signInWithToken", self.$store.state.token);
+          self.$store.commit("setLoading", false);
+        }
+      });
+    },
     handleClick() {
       this.$store.dispatch("toggleSidebar");
     },
