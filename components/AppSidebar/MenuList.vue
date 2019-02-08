@@ -31,8 +31,3 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.small-device {
-  padding: 0;
-}
-</style>

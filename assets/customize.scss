@@ -168,6 +168,27 @@ a:hover,
   }
 }
 
+// sidebar
+
+.logo-nav {
+  display: none;
+  font-size: 2.2rem;
+  cursor: pointer;
+}
+
+.small-logo {
+  float: right;
+  margin-left: .4rem;
+  line-height: 1.1rem;
+  padding-top: 10px;
+
+  small {
+    display: block;
+    font-size: 14px;
+    color: var(--gray) !important;
+  }
+}
+
 // side bar list
 
 .menu-list {

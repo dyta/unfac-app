@@ -1,7 +1,8 @@
 <template>
   <button
-    :class="[open ? [$style.active,$style.button_d]  : '',  $style.button]"
+    :class="[open ? [$style.active,$style.button_d]  : $style.button_d,  $style.button]"
     @click="handleClick"
+    class="toggle"
   >
     <svg
       fill="#000000"
@@ -38,16 +39,15 @@ export default {
 @media (min-width: 640px) {
   .button {
     top: 0.5rem !important;
-    left: 3rem;
+    left: 10%;
   }
   .button_d {
-    left: 18em !important;
   }
 }
 
 .button {
   position: fixed;
-  bottom: 1.6rem !important ;
+  bottom: 1.6rem !important;
   right: 1rem;
   padding: 0;
   height: 50px;

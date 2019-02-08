@@ -3,32 +3,39 @@
     <loading :active.sync="isLoading" :can-cancel="false" :is-full-page="true" :height="34"></loading>
     <sidebar/>
 
-    <sidebar-toggle/>
-
     <b-navbar toggleable="md" type="light" fixed="top" class="navbar-light bg-light">
-      <!-- Right aligned nav items -->
-      <b-navbar-nav class="nav-side ml-auto">
-        <div class="scrolling-wrapper">
-          <b-button
-            variant="link"
-            class="list"
-            @click="()=>{$router.push('/overview'), autoToggle()}"
-            v-if="user.entId"
-          >ภาพรวม</b-button>
-          <b-button variant="link" class="list" @click="handleClick" v-if="user.entId">แผงควบคุม</b-button>
-          <b-button
-            variant="link"
-            class="list"
-            @click="()=>{$router.push('/account'), autoToggle()}"
-          >บัญชี</b-button>
-          <b-button
-            variant="link"
-            class="list"
-            @click="()=>{$router.push('/setting/application'), autoToggle()}"
-            v-if="user.entId"
-          >ตั้งค่าแอปพลิเคชัน</b-button>
-        </div>
-      </b-navbar-nav>
+      <sidebar-toggle/>
+      <b-container>
+        <b-navbar-brand tag="h1" @click="handleClick" class="logo-nav mb-0">UNFAC
+          <div class="small-logo">
+            <small>Management</small>
+            <small>Console</small>
+          </div>
+        </b-navbar-brand>
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="nav-side ml-auto">
+          <div class="scrolling-wrapper">
+            <b-button
+              variant="link"
+              class="list"
+              @click="()=>{$router.push('/overview'), autoToggle()}"
+              v-if="user.entId"
+            >ภาพรวม</b-button>
+            <b-button variant="link" class="list" @click="handleClick" v-if="user.entId">แผงควบคุม</b-button>
+            <b-button
+              variant="link"
+              class="list"
+              @click="()=>{$router.push('/account'), autoToggle()}"
+            >บัญชี</b-button>
+            <b-button
+              variant="link"
+              class="list"
+              @click="()=>{$router.push('/setting/application'), autoToggle()}"
+              v-if="user.entId"
+            >ตั้งค่าแอปพลิเคชัน</b-button>
+          </div>
+        </b-navbar-nav>
+      </b-container>
     </b-navbar>
     <div class="content-margin-top">
       <transition name="fade">
