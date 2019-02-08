@@ -70,6 +70,8 @@ export default {
         if (auth) {
           commit('setLoading')
           return resolve(commit('setAuth', auth))
+        } else {
+          commit('setLoading')
         }
         return resolve()
       })
