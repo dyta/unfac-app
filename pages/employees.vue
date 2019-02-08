@@ -146,7 +146,7 @@ export default {
       let _this = this;
       this.$store.dispatch("sourceLoaded", true);
       await this.$axios
-        .$get(`/console/v2/employee/---/${this.$store.state.user.entId}`)
+        .$get(`/v2/employee/${this.$store.state.user.entId}`)
         .then(function(res) {
           if (res.length > 0) {
             _this.items = res;
