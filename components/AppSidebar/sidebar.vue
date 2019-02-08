@@ -158,10 +158,10 @@ export default {
     }
   },
   methods: {
-    onClickSignOut() {
+    async onClickSignOut() {
       this.$store.commit("setLoading", true);
+      await this.$store.dispatch("signOut");
       setTimeout(() => {
-        this.$store.dispatch("signOut");
         this.$router.go({ path: "/" });
       }, 1000);
     }
