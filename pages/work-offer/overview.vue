@@ -37,18 +37,52 @@
         @row-clicked="myRowClickHandler"
         @filtered="onFiltered"
       >
+        <template slot="workStartAt" slot-scope="row">
+          {{date(row.value).format}}
+          <br>
+          <b-badge variant="light">
+            <small>{{date(row.value).fromnow}}</small>
+          </b-badge>
+        </template>
+
+        <template slot="workEndAt" slot-scope="row">
+          {{date(row.value).format}}
+          <br>
+          <b-badge :variant="date(row.value).color">
+            <small v-if="date(row.value).intime">{{date(row.value).fromnow}}</small>
+            <small v-else>ล่าช้า</small>
+          </b-badge>
+        </template>
+        <template slot="workStatus" slot-scope="row">{{status(row.value)}}</template>
         <template slot="actions" slot-scope="row">
           <b-button
             size="sm"
-            variant="outline"
+            variant="link"
             @click.stop="row.toggleDetails"
-          >{{ row.detailsShowing ? 'ซ่อน' : 'แสดง' }}รายละเอียด</b-button>
+          >{{ row.detailsShowing ? 'ซ่อน' : 'แสดง' }}ตัวเลือก</b-button>
         </template>
         <template slot="row-details" slot-scope="row">
-          <b-card>
-            <ul>
-              <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value}}</li>
-            </ul>
+          <b-card
+            :title="`หมายเลขงานที่: <b>${row.item.workId}</b>`"
+            :sub-title="`สร้างเมื่อ: ${date(row.item.workCreateAt).full}`"
+          >
+            <b-media tag="li">
+              <b-img slot="aside" rounded :src="row.item.workImages" width="86" height="86"/>
+              <b-button-group v-if="row.item.workStatus > 1">
+                <b-button
+                  class="btn-option"
+                  variant="outline-dark"
+                  @click.stop="ModalWotkInfo(row.item, row.index, $event.target)"
+                >แก้ไขรายละเอียด</b-button>
+                <b-button class="btn-option" variant="outline-dark">กำหนดสถานะ</b-button>
+                <b-button class="btn-option" variant="outline-dark">กำหนดคิวงาน</b-button>
+                <b-button
+                  v-if="row.item.workStatus === 3"
+                  class="btn-option"
+                  variant="outline-success"
+                >รายการขออนุมัติ</b-button>
+              </b-button-group>
+            </b-media>
           </b-card>
         </template>
       </b-table>
@@ -63,6 +97,14 @@
           />
         </b-col>
       </b-row>
+      <b-modal
+        id="WorkInfoItem"
+        @hide="resetModal"
+        :title="`แก้ไขหมายเลขงาน: ${WorkInfoItem.workId}`"
+        ok-only
+      >
+        <pre>{{ WorkInfoItem }}</pre>
+      </b-modal>
     </b-container>
     <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".7" :height="34"></loading>
   </div>
@@ -79,6 +121,9 @@ export default {
   data() {
     return {
       items: [],
+      WorkInfoItem: {
+        workId: null
+      },
       fields: [
         {
           key: "workId",
@@ -97,7 +142,7 @@ export default {
         },
         {
           key: "workStartAt",
-          label: "คิวงาน",
+          label: "คิวงานเริ่ม",
           sortable: true
         },
         {
@@ -147,6 +192,35 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
+    date(d) {
+      let date = {
+        format: this.$moment(d).format("ddd Do MMM"),
+        full: this.$moment(d).format("ddd Do MMM, HH:mm:ss"),
+        fromnow: this.$moment(d).fromNow(),
+        intime: this.$moment(d) >= this.$moment(),
+        color: this.$moment(d) >= this.$moment() ? "primary" : "danger"
+      };
+      return date;
+    },
+    status(key) {
+      switch (key) {
+        case 1:
+          return "เสร็จสิ้น";
+          break;
+        case 2:
+          return "ปิดรับ";
+          break;
+        case 3:
+          return "เปิดรับ";
+          break;
+        case 4:
+          return "ด่วน";
+          break;
+        default:
+          return "ยกเลิก";
+          break;
+      }
+    },
     myRowClickHandler(record, index) {
       console.log("record: ", record);
     },
@@ -162,13 +236,30 @@ export default {
           }
           _this.$store.dispatch("sourceLoaded", false);
         });
+    },
+    ModalWotkInfo(item, index, button) {
+      this.WorkInfoItem = item;
+      this.$root.$emit("bv::show::modal", "WorkInfoItem", button);
+    },
+    resetModal() {
+      this.WorkInfoItem = {
+        workId: null
+      };
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+@media (min-width: 640px) {
+  .btn-option {
+    font-size: 1rem !important;
+  }
+}
 .display-3 {
   font-size: 2rem !important;
+}
+.btn-option {
+  font-size: 12px;
 }
 </style>

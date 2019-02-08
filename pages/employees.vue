@@ -137,7 +137,7 @@ export default {
         });
     },
     textHeader() {
-      return `จำนวนพนักงานในเครือข่ายทั้งหมด ${this.items.length} บัญชี`;
+      return `จำนวนพนักงานทั้งหมด ${this.items.length} คน`;
     }
   },
   methods: {
