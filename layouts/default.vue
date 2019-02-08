@@ -12,23 +12,28 @@
           <b-button
             variant="link"
             class="list"
-            @click="()=>$router.push('/overview')"
+            @click="()=>{$router.push('/overview'), autoToggle()}"
             v-if="user.entId"
-          >Dashboard</b-button>
-          <b-button variant="link" class="list" @click="handleClick" v-if="user.entId">Management</b-button>
-          <b-button variant="link" class="list" @click="()=>$router.push('/account')">Account</b-button>
+          >ภาพรวม</b-button>
+          <b-button variant="link" class="list" @click="handleClick" v-if="user.entId">แผงควบคุม</b-button>
           <b-button
             variant="link"
             class="list"
-            @click="()=>$router.push('/setting/application')"
+            @click="()=>{$router.push('/account'), autoToggle()}"
+          >บัญชี</b-button>
+          <b-button
+            variant="link"
+            class="list"
+            @click="()=>{$router.push('/setting/application'), autoToggle()}"
             v-if="user.entId"
-          >Application</b-button>
-          <b-button variant="link" class="list signout" @click="onClickSignOut">Sign out</b-button>
+          >ตั้งค่าแอปพลิเคชัน</b-button>
         </div>
       </b-navbar-nav>
     </b-navbar>
     <div class="content-margin-top">
-      <nuxt-child/>
+      <transition name="fade">
+        <nuxt-child/>
+      </transition>
     </div>
   </div>
 </template>
@@ -37,6 +42,7 @@
 import Sidebar from "./../components/AppSidebar/sidebar";
 import SidebarToggle from "./../components/AppSidebar/sidebarToggle";
 export default {
+  transition: "bounce",
   components: {
     Sidebar,
     SidebarToggle
@@ -44,6 +50,9 @@ export default {
   computed: {
     auth() {
       let auth = this.$store.state.auth;
+      if (!auth) {
+        this.$store.dispatch("userListener");
+      }
       return auth;
     },
     user() {
@@ -65,12 +74,10 @@ export default {
     handleClick() {
       this.$store.dispatch("toggleSidebar");
     },
-    onClickSignOut() {
-      this.$store.dispatch("loaded");
-      setTimeout(() => {
-        this.$store.dispatch("signOut");
-        this.$router.go({ path: "/" });
-      }, 1000);
+    autoToggle() {
+      if (this.open) {
+        this.$store.dispatch("toggleSidebar");
+      }
     }
   }
 };

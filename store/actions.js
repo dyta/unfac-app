@@ -65,16 +65,14 @@ export default {
   userListener({
     commit
   }) {
-    return new Promise((resolve, reject) => {
-      auth.onAuthStateChanged(auth => {
-        if (auth) {
-          commit('setLoading')
-          return resolve(commit('setAuth', auth))
-        } else {
-          commit('setLoading')
-        }
-        return resolve()
-      })
+    auth.onAuthStateChanged(auth => {
+      if (auth) {
+        commit('setLoading')
+        commit('setAuth', auth)
+      } else {
+        commit('setLoading')
+      }
+
     })
   },
   toggleSidebar({

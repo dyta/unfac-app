@@ -67,6 +67,21 @@ a:hover,
   font-size: 1rem;
 }
 
+.small-device {
+  padding: 0;
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition: all .2s ease-out;
+}
+
+.page-enter,
+.page-leave-active {
+  opacity: 0;
+  transform-origin: 50% 50%;
+}
+
 .breadcrumb-item+.breadcrumb-item::before {
   content: ":";
 }
@@ -160,6 +175,10 @@ a:hover,
   cursor: pointer;
   filter: grayscale(0.2);
   transition: all ease-in-out 0.2s;
+}
+
+.title-menu-list {
+  background-color: var(--highlight);
 }
 
 .menu-list:hover {
