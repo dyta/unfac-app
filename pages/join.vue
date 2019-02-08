@@ -188,7 +188,7 @@ export default {
               isCode.data[0].entName
             } เรียบร้อยแล้ว โปรดรอการตอบรับ`,
             {
-              theme: "outline",
+              theme: "bubble",
               position: "bottom-center",
               duration: 4000
             }
@@ -196,7 +196,7 @@ export default {
           this.isLoading = false;
         } else {
           this.$toast.info(`โปรดรอการตอบรับจาก ${isCodeInvite.data.entName}`, {
-            theme: "outline",
+            theme: "bubble",
             position: "bottom-center",
             duration: 4000
           });
@@ -206,7 +206,7 @@ export default {
         this.$toast.error(
           `รหัสเข้าร่วม (<small><i>${this.keyInvite}</i></small>) ไม่ถูกต้อง`,
           {
-            theme: "outline",
+            theme: "bubble",
             position: "bottom-center",
             duration: 2000
           }
@@ -258,7 +258,7 @@ export default {
                   this.$toast.success(
                     `เครือข่ายงานของคุณถูกสร้างเรียบร้อยแล้ว ระบบกำลังคุณไปยังระบบจัดการ`,
                     {
-                      theme: "outline",
+                      theme: "bubble",
                       position: "bottom-center",
                       duration: 3000
                     }
@@ -274,7 +274,7 @@ export default {
                 this.$toast.error(
                   `ไม่สามารถสร้างเครือข่ายงานได้ โปรดลองใหม่อีกครั้ง`,
                   {
-                    theme: "outline",
+                    theme: "bubble",
                     position: "bottom-center",
                     duration: 3000
                   }
@@ -284,7 +284,7 @@ export default {
           });
       } else {
         this.$toast.error(`โปรดกรอกข้อมูลให้ครบถ้วน`, {
-          theme: "outline",
+          theme: "bubble",
           position: "bottom-center",
           duration: 2000
         });

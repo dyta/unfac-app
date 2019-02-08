@@ -80,7 +80,6 @@ module.exports = {
         cancelButtonText: 'ยกเลิก'
       }
     ]
-
   ],
   /*
    ** Axios module configuration

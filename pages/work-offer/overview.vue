@@ -5,7 +5,7 @@
         <b-col md="6">
           <b-form-group label class="mb-0">
             <b-input-group>
-              <b-form-input v-model="filter" placeholder="ค้นหาคำที่เกี่ยวข้อง"/>
+              <b-form-input v-model="filter" placeholder="ค้นหาด้วยชื่อลูกค้า หรือรหัสงาน"/>
               <b-input-group-append>
                 <b-btn :disabled="!filter" @click="filter = ''" style="z-index: 0">ล้างคำค้นหา</b-btn>
               </b-input-group-append>
@@ -25,7 +25,6 @@
         show-empty
         responsive
         hover
-        small
         striped
         :items="items"
         :fields="fields"
@@ -34,13 +33,12 @@
         :filter="filter"
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
-        @row-clicked="myRowClickHandler"
         @filtered="onFiltered"
       >
         <template slot="workStartAt" slot-scope="row">
           {{date(row.value).format}}
           <br>
-          <b-badge variant="light">
+          <b-badge>
             <small>{{date(row.value).fromnow}}</small>
           </b-badge>
         </template>
@@ -75,7 +73,11 @@
                   @click.stop="ModalWotkInfo(row.item, row.index, $event.target)"
                 >แก้ไขรายละเอียด</b-button>
                 <b-button class="btn-option" variant="outline-dark">กำหนดสถานะ</b-button>
-                <b-button class="btn-option" variant="outline-dark">กำหนดคิวงาน</b-button>
+                <b-button
+                  class="btn-option"
+                  @click.stop="ModalWotkImage(row.item, row.index, $event.target)"
+                  variant="outline-dark"
+                >เปลี่ยนรูปปก</b-button>
                 <b-button
                   v-if="row.item.workStatus === 3"
                   class="btn-option"
@@ -101,18 +103,14 @@
         id="WorkInfoItem"
         @hide="resetModal"
         size="lg"
+        hide-footer
+        centered
+        header-bg-variant="dark"
+        header-text-variant="light"
+        header-border-variant="dark"
         :title="`แก้ไขหมายเลขงาน: ${WorkInfoItem.workId}`"
         ok-only
       >
-        <b-progress :value="25" variant="success" striped :animated="true" class="mb-2"></b-progress>
-        <b-form-file
-          v-model="file"
-          :state="Boolean(file)"
-          accept="image/jpeg, image/png, image/gif"
-          placeholder="Choose a file..."
-          @change="fileBtn(file, $event)"
-        ></b-form-file>
-        <div class="mt-3">Selected file: {{file && file.name}}</div>
         <b-form-group
           id="workName"
           :description="WorkInfoItem.workName"
@@ -121,6 +119,7 @@
         >
           <b-form-input
             id="workName"
+            :disabled="uploading"
             v-model.trim="workValue.workName"
             :value="WorkInfoItem.workName"
           ></b-form-input>
@@ -129,6 +128,7 @@
         <b-form-group id="workDescription" label="รายละเอียดงาน" label-for="workDescription">
           <b-form-textarea
             id="workDescription"
+            :disabled="uploading"
             v-model="WorkInfoItem.workDescription"
             :rows="3"
             :max-rows="6"
@@ -150,9 +150,49 @@
           label="ค่าจ้าง <small>(หน่วย: บาท)</small>"
           label-for="workEarn"
         >
-          <b-form-input id="workEarn" v-model="workValue.workEarn" :value="WorkInfoItem.workEarn"></b-form-input>
+          <b-form-input
+            id="workEarn"
+            :disabled="uploading"
+            v-model="workValue.workEarn"
+            :value="WorkInfoItem.workEarn"
+          ></b-form-input>
         </b-form-group>
-        <!-- line -->
+      </b-modal>
+      <b-modal
+        id="WorkInfoItemImage"
+        @hide="resetModal"
+        :title="`เปลี่ยนรูปภาพหน้าปกงาน: ${WorkInfoItem.workId}`"
+        ok-only
+        header-bg-variant="dark"
+        header-text-variant="light"
+        header-border-variant="dark"
+        :no-close-on-esc="uploading"
+        :no-close-on-backdrop="uploading"
+        :no-enforce-focus="uploading"
+        :cancel-disabled="uploading"
+        :hide-header-close="uploading"
+        hide-footer
+        lazy
+        busy
+        centered
+      >
+        <b-progress
+          v-if="uploading"
+          :value="uploader"
+          variant="success"
+          striped
+          :animated="true"
+          class="mb-3"
+          height="4px"
+        ></b-progress>
+        <b-form-file
+          v-model="file"
+          accept="image/jpeg, image/png, image/gif"
+          placeholder="เลือกรูปภาพหน้าปกงาน"
+          @change="autoAupload(file, $event)"
+          class="mb-3"
+          :disabled="uploading"
+        ></b-form-file>
       </b-modal>
     </b-container>
     <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".7" :height="34"></loading>
@@ -161,8 +201,10 @@
 
 <script>
 import Firebase from "./../../configs/firebase.sdk.js";
+
 export default {
   layout: "default",
+
   head() {
     return {
       title: "Work Offer"
@@ -184,7 +226,7 @@ export default {
       fields: [
         {
           key: "workId",
-          label: "ID",
+          label: "รหัสงาน",
           sortable: true
         },
         {
@@ -221,7 +263,10 @@ export default {
       sortBy: null,
       sortDesc: false,
       sortDirection: "asc",
-      filter: null
+      filter: null,
+      uploader: 0,
+      uploading: false,
+      ModalIndex: null
     };
   },
   created() {
@@ -230,6 +275,9 @@ export default {
   computed: {
     asyncSource() {
       return this.$store.state.source;
+    },
+    user() {
+      return this.$store.state.user;
     },
     sortOptions() {
       // Create an options list from our fields
@@ -278,9 +326,6 @@ export default {
           break;
       }
     },
-    myRowClickHandler(record, index) {
-      console.log("record: ", record);
-    },
     async fetch() {
       let _this = this;
       this.$store.dispatch("sourceLoaded", true);
@@ -295,41 +340,98 @@ export default {
         });
     },
     ModalWotkInfo(item, index, button) {
+      this.ModalIndex = index;
       this.WorkInfoItem = Object.assign({}, item);
       this.workValue = Object.assign({}, item);
       this.$root.$emit("bv::show::modal", "WorkInfoItem", button);
+    },
+    ModalWotkImage(item, index, button) {
+      this.ModalIndex = index;
+      this.WorkInfoItem = Object.assign({}, item);
+      this.workValue = Object.assign({}, item);
+      this.$root.$emit("bv::show::modal", "WorkInfoItemImage", button);
     },
     resetModal() {
       this.WorkInfoItem = {
         workId: null
       };
     },
-    fileBtn: function(file, e) {
-      e.preventDefault();
-      
-      const uploader = document.getElementById("uploader");
-      //get file
-      let getFile = e.target.files[0];
-      //set storage ref
-      let storageRef = Firebase.storage()
-        .ref()
-        .child(`images/${getFile.name}`);
-      //upload file
-      let task = storageRef.put(getFile);
-      task.on(
-        "state_changed",
-        function progress(snapshot) {
-          let percentage =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          uploader.value = percentage;
-        },
-        function error(err) {
-          console.log(err);
-        },
-        function complete() {
-          console.log("complete upload");
-        }
-      );
+    autoAupload: function(file, e) {
+      let self = this;
+      this.$swal
+        .fire({
+          title: "เปลี่ยนรูปภาพหน้าปกงาน",
+          text: "เมื่อยืนยันไม่สามารถกู้คืนรูปภาพเดิมได้",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "ยืนยัน"
+        })
+        .then(async result => {
+          if (result.value) {
+            //get file
+            let getFile = e.target.files[0];
+            //set storage ref
+            let storageRef = Firebase.storage()
+              .ref()
+              .child(
+                `${self.user.lineId}/works/${new Date().getTime() * 180}_${
+                  getFile.name
+                }`
+              );
+            //upload file
+            let task = storageRef.put(getFile);
+            task.on(
+              "state_changed",
+              function progress(snapshot) {
+                self.uploading = true;
+                let percentage =
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                self.uploader = percentage;
+              },
+              function error(err) {
+                self.$toast.error(err, {
+                  position: "bottom-center",
+                  theme: "bubble",
+                  duration: 2000
+                });
+                self.uploading = false;
+                self.file = null;
+              },
+              async function complete() {
+                let imgURL = await task.snapshot.ref.getDownloadURL();
+
+                let UpdateDB = await self.$axios.put(
+                  `/v2/work/image/${self.workValue.workId}`,
+                  {
+                    workImages: imgURL
+                  }
+                );
+                if (UpdateDB.data) {
+                  self.$toast.success("อัพโหลดรูปภาพเรียบร้อยแล้ว", {
+                    theme: "bubble",
+                    position: "bottom-center",
+                    duration: 2000
+                  });
+                  self.items[self.ModalIndex].workImages = imgURL;
+                  self.WorkInfoItem.workImages = imgURL;
+                  self.workValue.workImages = imgURL;
+
+                  self.$root.$emit("bv::hide::modal", "WorkInfoItemImage");
+                  // self.fetch();
+                } else {
+                  self.$toast.error("เกิดข้อผิดพลาด โปรดลองใหม่อีกครั้ง", {
+                    theme: "bubble",
+                    position: "bottom-center",
+                    duration: 2000
+                  });
+                }
+
+                self.uploading = false;
+                self.file = null;
+              }
+            );
+          }
+        });
     }
   }
 };

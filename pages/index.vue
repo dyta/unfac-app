@@ -203,7 +203,7 @@ export default {
                   }
                 }
                 this.$toast.success(`บัญชีของคุณถูกสร้างเรียบร้อยแล้ว`, {
-                  theme: "outline",
+                  theme: "bubble",
                   position: "bottom-center",
                   duration: 3000
                 });
@@ -214,7 +214,7 @@ export default {
           });
       } else {
         this.$toast.error(`รูปแบบข้อมูลไม่ถูกต้อง`, {
-          theme: "outline",
+          theme: "bubble",
           position: "bottom-center",
           duration: 2000
         });
