@@ -78,7 +78,7 @@ module.exports = {
     [
       "vue-sweetalert2/nuxt",
       {
-        confirmButtonColor: "#20c997",
+        confirmButtonColor: "#70b5ff",
         cancelButtonColor: "#dc3545",
         cancelButtonText: 'ยกเลิก'
       }

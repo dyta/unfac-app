@@ -98,7 +98,8 @@ export default {
         },
         {
           name: "เสนองาน",
-          icon: "hands-helping",
+          icon: "bell",
+          color: "green",
           path: "#"
         },
         {
@@ -110,7 +111,7 @@ export default {
         {
           name: "รับสินค้า",
           icon: "hand-holding-heart",
-          color: "green",
+          color: "brown",
           path: "#"
         }
 

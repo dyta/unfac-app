@@ -7,6 +7,7 @@ const _65b55c2d = () => interopDefault(import('..\\pages\\employees.vue' /* webp
 const _4a934c32 = () => interopDefault(import('..\\pages\\join.vue' /* webpackChunkName: "pages_join" */))
 const _20dd6501 = () => interopDefault(import('..\\pages\\overview.vue' /* webpackChunkName: "pages_overview" */))
 const _2224f188 = () => interopDefault(import('..\\pages\\setting\\application.vue' /* webpackChunkName: "pages_setting_application" */))
+const _997441ae = () => interopDefault(import('..\\pages\\work-offer\\add.vue' /* webpackChunkName: "pages_work-offer_add" */))
 const _249f9521 = () => interopDefault(import('..\\pages\\work-offer\\overview.vue' /* webpackChunkName: "pages_work-offer_overview" */))
 const _1070220c = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
 
@@ -90,6 +91,10 @@ export function createRouter() {
       path: "/setting/application",
       component: _2224f188,
       name: "setting-application"
+    }, {
+      path: "/work-offer/add",
+      component: _997441ae,
+      name: "work-offer-add"
     }, {
       path: "/work-offer/overview",
       component: _249f9521,

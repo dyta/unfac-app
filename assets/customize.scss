@@ -2,8 +2,7 @@
 @import "large-screen";
 
 html,
-body,
-.vue-dropzone {
+body {
   font-family: "Open Sans", "Sarabun", sans-serif !important;
   font-size: 1rem;
   word-spacing: 1px;
@@ -40,7 +39,7 @@ a:hover,
 }
 
 .custom-file-input:lang(en)~.custom-file-label::after {
-  content: "เปลี่ยนรูปภาพ";
+  content: "เลือกรูปภาพ";
 }
 
 
@@ -89,12 +88,20 @@ a:hover,
   transform-origin: 50% 50%;
 }
 
+.jumbotron-special {
+  padding: 4em 2em 2em 2em;
+}
+
 .breadcrumb {
   font-size: 14px;
 
   li a {
     color: var(--gray)
   }
+}
+
+.breadcrumb {
+  background-color: transparent;
 }
 
 .breadcrumb-item+.breadcrumb-item::before {
@@ -104,6 +111,10 @@ a:hover,
 
 .nav {
   width: 100%;
+}
+
+.bg-light {
+  background-color: var(--bg-3-color) !important;
 }
 
 .bg-image {

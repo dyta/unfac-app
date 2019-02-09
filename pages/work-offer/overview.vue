@@ -1,11 +1,11 @@
 <template>
   <div>
-    <b-jumbotron fluid header="งานทั้งหมด" :lead="textHeader" class="jumbotron-special">
+    <b-jumbotron fluid header="งานทั้งหมด" :lead="textHeader">
       <b-row>
         <b-col md="6">
-          <b-form-group label class="mb-0">
+          <b-form-group class="mb-0" label="ค้นหา">
             <b-input-group>
-              <b-form-input v-model="filter" placeholder="ค้นหาด้วยชื่อลูกค้า หรือรหัสงาน"/>
+              <b-form-input v-model="filter" placeholder="ชื่อลูกค้า หรือรหัสงาน"/>
               <b-input-group-append>
                 <b-btn :disabled="!filter" @click="filter = ''" style="z-index: 0">ล้างคำค้นหา</b-btn>
               </b-input-group-append>
@@ -13,9 +13,31 @@
           </b-form-group>
         </b-col>
         <b-col md="6">
-          <b-form-group horizontal label="จำนวนรายการ" class="mb-0">
-            <b-form-select :options="pageOptions" v-model="perPage"/>
-          </b-form-group>
+          <b-row>
+            <b-col sm="4">
+              <b-form-group label="จำนวนรายการ" class="mb-0">
+                <b-form-select :options="pageOptions" v-model="perPage"/>
+              </b-form-group>
+            </b-col>
+            <b-col sm="4">
+              <b-form-group label="ดึงข้อมูลใหม่">
+                <b-button block @click="()=> this.fetch()">
+                  <fa icon="redo-alt"/>
+                </b-button>
+              </b-form-group>
+            </b-col>
+            <b-col sm="4">
+              <b-form-group label="เพิ่มงาน">
+                <b-button
+                  block
+                  variant="primary"
+                  @click="()=> this.$router.push('/work-offer/add')"
+                >
+                  <fa icon="plus"/>
+                </b-button>
+              </b-form-group>
+            </b-col>
+          </b-row>
         </b-col>
       </b-row>
     </b-jumbotron>
@@ -35,6 +57,16 @@
         :sort-desc.sync="sortDesc"
         @filtered="onFiltered"
       >
+        <template slot="workId" slot-scope="row">
+          {{row.value}}
+          <b-btn
+            v-if="date(row.item.workCreateAt).newItem"
+            v-b-tooltip.hover.top="`งานใหม่! เมื่อ ${date(row.item.workCreateAt).fromnow}`"
+            variant="link"
+          >
+            <fa icon="fire" color="orange"></fa>
+          </b-btn>
+        </template>
         <template slot="workStartAt" slot-scope="row">
           <small v-if="row.item.workStatus > 1">
             {{date(row.value).format}}
@@ -77,6 +109,9 @@
           <span v-else-if="row.value === 4">
             <fa icon="circle" size="sm" color="red"/>
           </span>
+          <span v-else-if="row.value === 5">
+            <fa icon="circle" size="sm" color="orange"/>
+          </span>
           <span v-else-if="row.value === 0">
             <fa icon="circle" size="sm" color="white"/>
           </span>
@@ -88,7 +123,7 @@
         <template slot="actions" slot-scope="row">
           <b-button
             size="sm"
-            variant="link"
+            variant="outline-primary"
             @click.stop="row.toggleDetails"
           >{{ row.detailsShowing ? 'ซ่อน' : 'แสดง' }}ตัวเลือก</b-button>
         </template>
@@ -113,7 +148,11 @@
                     variant="dark"
                     @click.stop="ModalWorkStatus(row.item, row.index, $event.target)"
                   >กำหนดสถานะ</b-button>
-                  <b-button class="btn-option mt-2" variant="danger">ลบงาน</b-button>
+                  <b-button
+                    class="btn-option mt-2"
+                    variant="danger"
+                    @click="removeWork(row.item.workId)"
+                  >ลบงาน</b-button>
                 </div>
                 <div v-else>
                   <b-button
@@ -242,7 +281,7 @@
           label="กำหนดช่วงเวลาของงาน"
           label-for="DatePicker"
         >
-          <no-ssr placeholder="loading...">
+          <no-ssr placeholder="กำลังโหลดปฏิทิน...">
             <VueCtkDateTimePicker
               label="(เริ่มต้นงาน-วันที่คาดว่าจะเสร็จ)"
               no-header
@@ -328,7 +367,7 @@
         busy
         centered
       >
-        <b-form-group label="เปลี่ยนสถานะของงาน">
+        <b-form-group :label="`สถานะปัจจุบัน: <u>${status(WorkInfoItem.workStatus)}</u>`">
           <b-form-radio-group
             id="radiosWorkStatus"
             v-model="workValue.workStatus"
@@ -336,14 +375,15 @@
             class="py-3"
           >
             <span v-if="WorkInfoItem.workStatus > 2">
-              <b-form-radio :value="4" class="pt-2">เร่งด่วน</b-form-radio>
-              <b-form-radio :value="3">เปิดรับ(ปกติ)</b-form-radio>
-              <b-form-radio v-if="WorkInfoItem.workPickVolume === 0" :value="2">ปิดรับ</b-form-radio>
+              <b-form-radio :value="4" class="pt-2">Urgently</b-form-radio>
+              <b-form-radio :value="3">Published</b-form-radio>
+              <b-form-radio v-if="WorkInfoItem.workPickVolume === 0" :value="2">Unpublished</b-form-radio>
+              <b-form-radio v-else :value="5">Paused</b-form-radio>
             </span>
             <span v-else-if="WorkInfoItem.workStatus === 2">
-              <b-form-radio :value="2">ปิดรับ</b-form-radio>
-              <b-form-radio :value="3">เปิดรับ(ปกติ)</b-form-radio>
-              <b-form-radio :value="4">เร่งด่วน</b-form-radio>
+              <b-form-radio :value="2">Unpublished</b-form-radio>
+              <b-form-radio :value="3">Published</b-form-radio>
+              <b-form-radio :value="4">Urgently</b-form-radio>
               <b-form-radio :value="0">
                 <small class="text-danger">Delete Protection</small>
               </b-form-radio>
@@ -548,26 +588,30 @@ export default {
         full: this.$moment(d).format("ddd Do MMM, HH:mm:ss"),
         fromnow: this.$moment(d).fromNow(),
         intime: this.$moment(d) >= this.$moment(),
-        color: this.$moment(d) >= this.$moment() ? "" : "danger"
+        color: this.$moment(d) >= this.$moment() ? "" : "danger",
+        newItem: this.$moment(d) >= this.$moment().subtract(30, "minutes")
       };
       return date;
     },
     status(key) {
       switch (key) {
         case 1:
-          return "เสร็จสิ้น";
+          return "Completed";
           break;
         case 2:
-          return "ปิดรับ";
+          return "Unpublished";
           break;
         case 3:
-          return "เปิดรับ";
+          return "Published";
           break;
         case 4:
-          return "ด่วน";
+          return "Urgently";
+          break;
+        case 5:
+          return "Paused";
           break;
         default:
-          return "รอลบ";
+          return "Canceled";
           break;
       }
     },
@@ -743,7 +787,6 @@ export default {
                   self.workValue.workImages = imgURL;
 
                   self.$root.$emit("bv::hide::modal", "WorkInfoItemImage");
-                  // self.fetch();
                 } else {
                   self.$toast.error("เกิดข้อผิดพลาด โปรดลองใหม่อีกครั้ง", {
                     theme: "bubble",
@@ -756,6 +799,38 @@ export default {
                 self.file = null;
               }
             );
+          }
+        });
+    },
+    async removeWork(workId) {
+      let self = this;
+      this.$swal
+        .fire({
+          title: `ลบงาน #${workId}?`,
+          text: "เมื่อยืนยันไม่สามารถกู้คืนข้อมูลของงานนี้ได้",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "ยืนยัน"
+        })
+        .then(async result => {
+          if (result.value) {
+            const removed = await self.$axios.delete(
+              `/v2/work/${workId}/${self.$store.state.user.entId}`
+            );
+            if (removed.data) {
+              self.$toast.info(`งาน #${workId} ถูกลบออกจะระบบเรียบร้อยแล้ว`, {
+                theme: "bubble",
+                position: "bottom-right",
+                duration: 2000
+              });
+              self.fetch();
+            } else {
+              self.$toast.error("เกิดข้อผิดพลาด โปรดลองใหม่อีกครั้ง", {
+                theme: "bubble",
+                position: "bottom-right",
+                duration: 2000
+              });
+            }
           }
         });
     }
