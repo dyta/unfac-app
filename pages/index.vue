@@ -202,7 +202,7 @@ export default {
                     commit("setLoading", false);
                   }
                 }
-                this.$toast.success(`บัญชีของคุณถูกสร้างเรียบร้อยแล้ว`, {
+                this.$toast.info(`บัญชีของคุณถูกสร้างเรียบร้อยแล้ว`, {
                   theme: "bubble",
                   position: "bottom-center",
                   duration: 3000

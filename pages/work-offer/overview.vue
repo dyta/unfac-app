@@ -36,20 +36,36 @@
         @filtered="onFiltered"
       >
         <template slot="workStartAt" slot-scope="row">
-          {{date(row.value).format}}
-          <br>
-          <b-badge>
-            <small>{{date(row.value).fromnow}}</small>
-          </b-badge>
+          <small v-if="row.item.workStatus > 1">
+            {{date(row.value).format}}
+            <br>
+            <b-badge>{{date(row.value).fromnow}}</b-badge>
+          </small>
+          <p v-else-if="row.item.workStatus === 0">
+            <b-badge variant="light">Deleted Protection</b-badge>
+          </p>
+          <p v-else>
+            <b-badge variant="success">Completed</b-badge>
+          </p>
+        </template>
+        <template slot="workPickVolume" slot-scope="row">
+          <p v-if="row.item.workStatus > 1">{{row.value}}</p>
+          <p v-else>-</p>
         </template>
 
         <template slot="workEndAt" slot-scope="row">
-          {{date(row.value).format}}
-          <br>
-          <b-badge :variant="date(row.value).color">
-            <small v-if="date(row.value).intime">{{date(row.value).fromnow}}</small>
-            <small v-else>ล่าช้า</small>
-          </b-badge>
+          <small v-if="row.item.workStatus > 1">
+            {{date(row.value).format}}
+            <br>
+            <b-badge :variant="date(row.value).color">
+              <span v-if="date(row.value).intime">{{date(row.value).fromnow}}</span>
+              <span v-else>ล่าช้า</span>
+            </b-badge>
+          </small>
+          <p v-else-if="row.item.workStatus === 0">-</p>
+          <p v-else>
+            <b-badge variant="success">Completed</b-badge>
+          </p>
         </template>
         <template slot="workStatus" slot-scope="row">
           <span v-if="row.value === 1">
@@ -78,32 +94,49 @@
         </template>
         <template slot="row-details" slot-scope="row">
           <b-card
+            border-variant="dark"
+            class="mt-3 mb-4"
             :title="`หมายเลขงานที่: <b>${row.item.workId}</b>`"
             :sub-title="`สร้างเมื่อ: ${date(row.item.workCreateAt).full}`"
           >
             <b-media tag="li">
               <b-img slot="aside" rounded :src="row.item.workImages" width="86" height="86"/>
-              <b-button-group v-if="row.item.workStatus > 1">
-                <b-button
-                  class="btn-option"
-                  variant="outline-dark"
-                  @click.stop="ModalWotkInfo(row.item, row.index, $event.target)"
-                >แก้ไขรายละเอียด</b-button>
-                <b-button
-                  class="btn-option"
-                  variant="outline-dark"
-                  @click.stop="ModalWorkStatus(row.item, row.index, $event.target)"
-                >กำหนดสถานะ</b-button>
-                <b-button
-                  class="btn-option"
-                  @click.stop="ModalWotkImage(row.item, row.index, $event.target)"
-                  variant="outline-dark"
-                >เปลี่ยนรูปปก</b-button>
-                <b-button
-                  v-if="row.item.workStatus === 3"
-                  class="btn-option"
-                  variant="outline-success"
-                >รายการขออนุมัติ</b-button>
+              <b-button-group v-if="row.item.workStatus !== 1">
+                <div v-if="row.item.workStatus === 0">
+                  <b-button
+                    class="btn-option mt-2"
+                    variant="dark"
+                    @click.stop="ModalWotkInfo(row.item, row.index, $event.target)"
+                  >แก้ไขรายละเอียด</b-button>
+                  <b-button
+                    class="btn-option mt-2"
+                    variant="dark"
+                    @click.stop="ModalWorkStatus(row.item, row.index, $event.target)"
+                  >กำหนดสถานะ</b-button>
+                  <b-button class="btn-option mt-2" variant="danger">ลบงาน</b-button>
+                </div>
+                <div v-else>
+                  <b-button
+                    class="btn-option mt-2"
+                    variant="dark"
+                    @click.stop="ModalWotkInfo(row.item, row.index, $event.target)"
+                  >แก้ไขรายละเอียด</b-button>
+                  <b-button
+                    class="btn-option mt-2"
+                    variant="dark"
+                    @click.stop="ModalWorkStatus(row.item, row.index, $event.target)"
+                  >กำหนดสถานะ</b-button>
+                  <b-button
+                    class="btn-option mt-2"
+                    @click.stop="ModalWotkImage(row.item, row.index, $event.target)"
+                    variant="dark"
+                  >เปลี่ยนรูปที่ใช้แสดง</b-button>
+                  <b-button
+                    v-if="row.item.workStatus > 2 && row.item.workPickVolume !==0"
+                    class="btn-option mt-2"
+                    variant="primary"
+                  >รายการขออนุมัติ</b-button>
+                </div>
               </b-button-group>
               <div v-else>
                 <b-card
@@ -114,7 +147,7 @@
                 >
                   <h5>เสร็จสิ้นแล้ว</h5>
                   <p class="card-text">อัพเดทล่าสุด: {{date(row.item.workUpdateAt).full}}</p>
-                  <b-button class="btn-option" variant="outline-success">ดูรายละเอียด</b-button>
+                  <b-button class="btn-option" variant="success">ดูรายละเอียด</b-button>
                 </b-card>
               </div>
             </b-media>
@@ -166,7 +199,6 @@
         >
           <b-form-input
             id="workName"
-            :disabled="uploading"
             v-model.trim="workValue.workName"
             :value="WorkInfoItem.workName"
           ></b-form-input>
@@ -175,7 +207,6 @@
         <b-form-group id="workDescription" label="รายละเอียดงาน" label-for="workDescription">
           <b-form-textarea
             id="workDescription"
-            :disabled="uploading"
             v-model="workValue.workDescription"
             :value="WorkInfoItem.workDescription"
             :rows="3"
@@ -200,7 +231,7 @@
         >
           <b-form-input
             id="workEarn"
-            :disabled="uploading"
+            :disabled="WorkInfoItem.workStatus > 2"
             v-model.trim="workValue.workEarn"
             :value="WorkInfoItem.workEarn"
           ></b-form-input>
@@ -223,6 +254,7 @@
               only-date
               no-value-to-custom-elem
               range
+              :disabled="WorkInfoItem.workStatus > 2"
               v-model="startDate"
             />
           </no-ssr>
@@ -238,7 +270,7 @@
           <b-col class="pl-1">
             <b-button
               block
-              variant="success"
+              variant="primary"
               @click="UpdateInformation()"
               :disabled="ValidateWorkName && ValidateDescription && ValidateStartat && ValidateEarn"
             >อัพเดทข้อมูล</b-button>
@@ -267,7 +299,7 @@
         <b-progress
           v-if="uploading"
           :value="uploader"
-          variant="success"
+          variant="primary"
           striped
           :animated="true"
           class="mb-3"
@@ -286,7 +318,7 @@
       <b-modal
         id="ModalWorkStatus"
         @hide="resetModal"
-        :title="`เปลี่ยนรูปภาพงาน: ${WorkInfoItem.workId}`"
+        :title="`หมายเลขงาน: ${WorkInfoItem.workId}`"
         ok-only
         header-bg-variant="dark"
         header-text-variant="light"
@@ -296,7 +328,32 @@
         busy
         centered
       >
-        <h2>44444</h2>
+        <b-form-group label="เปลี่ยนสถานะของงาน">
+          <b-form-radio-group
+            id="radiosWorkStatus"
+            v-model="workValue.workStatus"
+            name="workStatus"
+            class="py-3"
+          >
+            <span v-if="WorkInfoItem.workStatus > 2">
+              <b-form-radio :value="4">เร่งด่วน</b-form-radio>
+              <b-form-radio :value="3">เปิดรับ(ปกติ)</b-form-radio>
+              <b-form-radio v-if="WorkInfoItem.workPickVolume === 0" :value="2">ปิดรับ</b-form-radio>
+            </span>
+            <span v-else-if="WorkInfoItem.workStatus === 2">
+              <b-form-radio :value="2">ปิดรับ</b-form-radio>
+              <b-form-radio :value="3">เปิดรับ(ปกติ)</b-form-radio>
+              <b-form-radio :value="4">เร่งด่วน</b-form-radio>
+              <b-form-radio :value="0" variant="danger">Delete Protection</b-form-radio>
+            </span>
+            <span v-else-if="WorkInfoItem.workStatus === 0">
+              <b-form-radio :value="2">
+                <small>Prevent this item from being accidentally deleted.</small>
+              </b-form-radio>
+            </span>
+          </b-form-radio-group>
+        </b-form-group>
+        <b-button block variant="primary" :disabled="statusValidate" @click="updateStatus">ยืนยัน</b-button>
       </b-modal>
     </b-container>
     <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".7" :height="34"></loading>
@@ -311,12 +368,13 @@ export default {
 
   head() {
     return {
-      title: "Work Offer"
+      title: "งานทั้งหมด"
     };
   },
   data() {
     return {
       file: null,
+      selected: null,
       items: [],
       editInfo: {
         name: ""
@@ -402,6 +460,9 @@ export default {
     },
     textHeader() {
       return `จำนวนงานในขณะนี้มีทั้งหมด ${this.items.length} รายการ`;
+    },
+    statusValidate() {
+      return this.workValue.workStatus === this.WorkInfoItem.workStatus;
     },
     ValidateWorkName() {
       if (this.ModalIndex !== null) {
@@ -494,7 +555,7 @@ export default {
           return "ด่วน";
           break;
         default:
-          return "ยกเลิก";
+          return "รอลบ";
           break;
       }
     },
@@ -542,7 +603,23 @@ export default {
         workId: null
       };
     },
-
+    async updateStatus() {
+      let update = await this.$axios.put(
+        `/v2/work/status/${this.workValue.workId}`,
+        {
+          workStatus: this.workValue.workStatus
+        }
+      );
+      if (update.data) {
+        this.$toast.info("อัพเดทสถานะเรียบร้อยแล้ว", {
+          theme: "bubble",
+          position: "bottom-right",
+          duration: 2000
+        });
+        this.$root.$emit("bv::hide::modal", "ModalWorkStatus");
+        this.fetch();
+      }
+    },
     async UpdateInformation() {
       let data = {
         workName: this.workValue.workName,
@@ -575,7 +652,7 @@ export default {
           data
         );
         setTimeout(() => {
-          this.$toast.success("อัพเดทข้อมูลเรียบร้อยแล้ว", {
+          this.$toast.info("อัพเดทข้อมูลเรียบร้อยแล้ว", {
             theme: "bubble",
             position: "bottom-right",
             duration: 2000
@@ -627,7 +704,7 @@ export default {
               },
               function error(err) {
                 self.$toast.error(err, {
-                  position: "bottom-center",
+                  position: "bottom-right",
                   theme: "bubble",
                   duration: 2000
                 });
@@ -644,9 +721,9 @@ export default {
                   }
                 );
                 if (UpdateDB.data) {
-                  self.$toast.success("อัพโหลดรูปภาพเรียบร้อยแล้ว", {
+                  self.$toast.info("อัพโหลดรูปภาพเรียบร้อยแล้ว", {
                     theme: "bubble",
-                    position: "bottom-center",
+                    position: "bottom-right",
                     duration: 2000
                   });
                   self.items[self.ModalIndex].workImages = imgURL;
@@ -658,7 +735,7 @@ export default {
                 } else {
                   self.$toast.error("เกิดข้อผิดพลาด โปรดลองใหม่อีกครั้ง", {
                     theme: "bubble",
-                    position: "bottom-center",
+                    position: "bottom-right",
                     duration: 2000
                   });
                 }

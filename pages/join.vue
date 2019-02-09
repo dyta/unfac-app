@@ -183,7 +183,7 @@ export default {
             entName: isCode.data[0].entName,
             code: this.keyInvite
           });
-          this.$toast.success(
+          this.$toast.info(
             `ส่งคำขอเข้าร่วม ${
               isCode.data[0].entName
             } เรียบร้อยแล้ว โปรดรอการตอบรับ`,
@@ -255,7 +255,7 @@ export default {
                   { entId: res.data.insertId }
                 );
                 if (UserUpdate) {
-                  this.$toast.success(
+                  this.$toast.info(
                     `เครือข่ายงานของคุณถูกสร้างเรียบร้อยแล้ว ระบบกำลังคุณไปยังระบบจัดการ`,
                     {
                       theme: "bubble",
