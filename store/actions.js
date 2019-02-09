@@ -106,7 +106,7 @@ export default {
   async signOut({
     commit
   }) {
-
+    axios.post('/user/logout')
     auth.signOut().then(function (e) {
       setTimeout(() => {
         commit('setUser', null)
@@ -117,7 +117,7 @@ export default {
       console.log('error: ', error);
       // An error happened.
     });
-    axios.post('/user/logout')
+
 
   }
 };
