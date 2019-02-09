@@ -3,8 +3,13 @@
     <b-row class="pl-4 pt-2 mr-0 title-menu-list">
       <h6 class="sidebar-header ml-2">{{header}}</h6>
     </b-row>
-    <b-row class="mr-3 ml-2">
-      <b-col v-for="(item, index) in list" :key="index" cols="4" class="pt-3 pb-2">
+    <b-row class="mx-4">
+      <b-col
+        v-for="(item, index) in list"
+        :key="index+item.name"
+        cols="4"
+        class="small-device pt-3 pb-2"
+      >
         <div class="menu-list" @click="()=> router(item.path)">
           <div>
             <b-img v-if="item.img" :src="item.img" height="34"/>
@@ -31,9 +36,3 @@ export default {
 };
 </script>
 
-
-<style lang="scss" scoped>
-.title-menu-list {
-  background-color: var(--highlight);
-}
-</style>

@@ -1,6 +1,6 @@
 @import "color";
 
-@media (min-width: 640px) {
+@media (min-width: 568px) {
 
   .container-height-single,
   .container-height {
@@ -23,6 +23,9 @@
     }
   }
 
+  .toggle {
+    display: none !important;
+  }
 
   .nav-side {
     width: unset !important;
@@ -30,5 +33,17 @@
 
   .scrolling-wrapper {
     overflow: hidden !important;
+  }
+
+  // sidebar
+  .logo-nav {
+    display: inline-block !important;
+  }
+
+  .jumbotron-special {
+    background: url("./images/blue_waves.png") var(--bg-1-color);
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover
   }
 }

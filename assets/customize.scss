@@ -34,9 +34,15 @@ a:hover,
 .btn-link:hover,
 .btn-link:focus,
 .btn-link:visited {
-  color: var(--teal);
+  color: var(--blue);
   text-decoration: none;
 }
+
+.custom-file-input:lang(en)~.custom-file-label::after {
+  content: "เลือกรูปภาพ";
+}
+
+
 
 // pagination
 .pagination-lg .page-link {
@@ -45,8 +51,8 @@ a:hover,
 }
 
 .page-item.active .page-link {
-  background-color: var(--teal) !important;
-  border-color: var(--teal) !important;
+  background-color: var(--blue) !important;
+  border-color: var(--blue) !important;
 }
 
 .container-height {
@@ -67,12 +73,48 @@ a:hover,
   font-size: 1rem;
 }
 
+.small-device {
+  padding: 0;
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition: all .2s ease-out;
+}
+
+.page-enter,
+.page-leave-active {
+  opacity: 0;
+  transform-origin: 50% 50%;
+}
+
+.jumbotron-special {
+  padding: 4em 2em 2em 2em;
+}
+
+.breadcrumb {
+  font-size: 14px;
+
+  li a {
+    color: var(--gray)
+  }
+}
+
+.breadcrumb {
+  background-color: transparent;
+}
+
 .breadcrumb-item+.breadcrumb-item::before {
   content: ":";
 }
 
+
 .nav {
   width: 100%;
+}
+
+.bg-light {
+  background-color: var(--bg-3-color) !important;
 }
 
 .bg-image {
@@ -94,6 +136,11 @@ a:hover,
   z-index: 9999 !important;
 }
 
+.vld-overlay {
+  position: fixed !important;
+}
+
+
 // Login
 
 .login {
@@ -102,9 +149,9 @@ a:hover,
   .btn-line {
     width: 100%;
     border-radius: 50px;
-    background-color: var(--teal);
+    background-color: var(--blue);
     margin-bottom: 1rem;
-    border-color: var(--teal);
+    border-color: var(--blue);
   }
 
   .outline,
@@ -153,6 +200,27 @@ a:hover,
   }
 }
 
+// sidebar
+
+.logo-nav {
+  display: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+.small-logo {
+  float: right;
+  margin-left: .4rem;
+  line-height: 12px;
+  padding-top: 6px;
+
+  small {
+    display: block;
+    font-size: 10px;
+    color: var(--gray) !important;
+  }
+}
+
 // side bar list
 
 .menu-list {
@@ -160,6 +228,10 @@ a:hover,
   cursor: pointer;
   filter: grayscale(0.2);
   transition: all ease-in-out 0.2s;
+}
+
+.title-menu-list {
+  background-color: var(--highlight);
 }
 
 .menu-list:hover {
@@ -177,4 +249,10 @@ a:hover,
 
 .col-form-label {
   padding-top: 12px;
+}
+
+
+// Text
+.text-delay {
+  color: var(--danger)
 }

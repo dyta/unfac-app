@@ -24,7 +24,6 @@
                 :state="stateText"
                 v-model.trim="createForm.entName"
                 autocomplete="off"
-                placeholder="Name of company"
               ></b-form-input>
             </b-form-group>
 
@@ -95,6 +94,7 @@
               <b-button
                 :variant="!stateKInvite ? 'secondary' : 'success'"
                 :disabled="!stateKInvite"
+                @click="OnClickJoinWithCode"
                 block
               >ขอเข้าร่วม</b-button>
             </div>
@@ -167,6 +167,53 @@ export default {
       this.createForm.province = address.province;
       this.createForm.entPostal = address.zipcode;
     },
+    async OnClickJoinWithCode() {
+      this.isLoading = true;
+      const isCode = await this.$axios.get(
+        `/v2/enterprise/isCode/${this.keyInvite}`
+      );
+      if (isCode.data[0]) {
+        const isCodeInvite = await this.$axios.get(
+          `/v2/invite/${this.$store.state.user.userId}/${this.keyInvite}`
+        );
+        if (isCodeInvite.data.exists === 0 || !isCodeInvite.data.entName) {
+          const RequestInvite = await this.$axios.post(`/v2/invite`, {
+            entId: isCode.data[0].entId,
+            userId: this.$store.state.user.userId,
+            entName: isCode.data[0].entName,
+            code: this.keyInvite
+          });
+          this.$toast.info(
+            `ส่งคำขอเข้าร่วม ${
+              isCode.data[0].entName
+            } เรียบร้อยแล้ว โปรดรอการตอบรับ`,
+            {
+              theme: "bubble",
+              position: "bottom-center",
+              duration: 4000
+            }
+          );
+          this.isLoading = false;
+        } else {
+          this.$toast.info(`โปรดรอการตอบรับจาก ${isCodeInvite.data.entName}`, {
+            theme: "bubble",
+            position: "bottom-center",
+            duration: 4000
+          });
+          this.isLoading = false;
+        }
+      } else {
+        this.$toast.error(
+          `รหัสเข้าร่วม (<small><i>${this.keyInvite}</i></small>) ไม่ถูกต้อง`,
+          {
+            theme: "bubble",
+            position: "bottom-center",
+            duration: 2000
+          }
+        );
+        this.isLoading = false;
+      }
+    },
     onClickCreateCompany() {
       let _this = this;
       if (this.validBtn) {
@@ -208,10 +255,10 @@ export default {
                   { entId: res.data.insertId }
                 );
                 if (UserUpdate) {
-                  this.$toast.success(
-                    `เครือข่ายงานของคุณถูกสร้างเรียบร้อยแล้ว`,
+                  this.$toast.info(
+                    `เครือข่ายงานของคุณถูกสร้างเรียบร้อยแล้ว ระบบกำลังคุณไปยังระบบจัดการ`,
                     {
-                      theme: "outline",
+                      theme: "bubble",
                       position: "bottom-center",
                       duration: 3000
                     }
@@ -227,7 +274,7 @@ export default {
                 this.$toast.error(
                   `ไม่สามารถสร้างเครือข่ายงานได้ โปรดลองใหม่อีกครั้ง`,
                   {
-                    theme: "outline",
+                    theme: "bubble",
                     position: "bottom-center",
                     duration: 3000
                   }
@@ -237,14 +284,14 @@ export default {
           });
       } else {
         this.$toast.error(`โปรดกรอกข้อมูลให้ครบถ้วน`, {
-          theme: "outline",
+          theme: "bubble",
           position: "bottom-center",
           duration: 2000
         });
       }
     },
     onClickSignOut() {
-      this.$store.dispatch("loaded");
+      this.$store.commit("setLoading", true);
       setTimeout(() => {
         this.$store.dispatch("signOut");
         this.$router.go({ path: "/" });

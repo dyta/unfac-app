@@ -8,11 +8,14 @@ export default {
   setLine(state, payload) {
     state.line = payload
   },
+  setToken(state, payload) {
+    state.token = payload
+  },
   setPackage(state, payload) {
     state.package = payload
   },
-  setLoading(state) {
-    state.loading = !state.loading
+  setLoading(state, payload) {
+    state.loading = payload
   },
   setSource(state, payload) {
     state.source = payload

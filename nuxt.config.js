@@ -39,9 +39,7 @@ module.exports = {
   /*
    ** Customize the progress-bar color
    */
-  loading: {
-    color: "#20c997"
-  },
+  loading: false,
 
   /*
    ** Global CSS
@@ -56,6 +54,9 @@ module.exports = {
    */
   plugins: ["~/plugins/vue-font-awesome", "~/plugins/vue-kanban", "~/plugins/loading-overlay", {
     src: "~/plugins/vue-th-postal",
+    ssr: false
+  }, {
+    src: '~/plugins/vue-date-picker',
     ssr: false
   }],
 
@@ -77,12 +78,11 @@ module.exports = {
     [
       "vue-sweetalert2/nuxt",
       {
-        confirmButtonColor: "#20c997",
+        confirmButtonColor: "#70b5ff",
         cancelButtonColor: "#dc3545",
         cancelButtonText: 'ยกเลิก'
       }
     ]
-
   ],
   /*
    ** Axios module configuration

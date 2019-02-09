@@ -1,7 +1,8 @@
 <template>
   <button
-    :class="[open ? [$style.active,$style.button_d, $style.button]  : '', $style.fixed]"
+    :class="[open ? [$style.active,$style.button_d]  : $style.button_d,  $style.button]"
     @click="handleClick"
+    class="toggle"
   >
     <svg
       fill="#000000"
@@ -35,18 +36,18 @@ export default {
 </script>
 
 <style module>
-@media (min-width: 1060px) {
+@media (min-width: 854px) {
   .button {
-    top: 0.5rem;
-    left: 2rem;
+    top: 0.5rem !important;
+    left: 10%;
   }
   .button_d {
-    left: 18em !important;
   }
 }
+
 .button {
   position: fixed;
-  top: 1.6rem !important;
+  bottom: 1.6rem !important;
   right: 1rem;
   padding: 0;
   height: 50px;
@@ -68,11 +69,6 @@ export default {
   -webkit-transition: opacity 0.25s ease-in-out;
 }
 
-.fixed {
-  position: fixed;
-  top: 0;
-  opacity: 0;
-}
 .button_d {
   /* left: 17.2rem; */
   transition: 300ms ease-in-out;
@@ -81,14 +77,14 @@ export default {
 .button svg {
   height: 100%;
   width: 100%;
-  fill: var(--teal);
+  fill: var(--blue);
   transition: fill 300ms ease-in-out;
 }
 
 .button:focus,
 .button:hover {
   outline: none;
-  border-color: var(--teal);
+  border-color: var(--blue);
 }
 
 .active {

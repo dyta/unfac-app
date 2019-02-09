@@ -3,48 +3,83 @@
     <loading :active.sync="isLoading" :can-cancel="false" :is-full-page="true" :height="34"></loading>
     <sidebar/>
 
-    <sidebar-toggle/>
-
     <b-navbar toggleable="md" type="light" fixed="top" class="navbar-light bg-light">
-      <!-- Right aligned nav items -->
-      <b-navbar-nav class="nav-side ml-auto">
-        <div class="scrolling-wrapper">
-          <b-button
-            variant="link"
-            class="list"
-            @click="()=>$router.push('/overview')"
-            v-if="user.entId"
-          >Dashboard</b-button>
-          <b-button variant="link" class="list" @click="handleClick" v-if="user.entId">Management</b-button>
-          <b-button variant="link" class="list" @click="()=>$router.push('/account')">Account</b-button>
-          <b-button
-            variant="link"
-            class="list"
-            @click="()=>$router.push('/setting/application')"
-            v-if="user.entId"
-          >Application</b-button>
-          <b-button variant="link" class="list signout" @click="onClickSignOut">Sign out</b-button>
-        </div>
-      </b-navbar-nav>
+      <sidebar-toggle/>
+      <b-container>
+        <b-navbar-brand tag="h1" @click="handleClick" class="logo-nav mb-0">UNFAC
+          <div class="small-logo">
+            <small>Management</small>
+            <small>Console</small>
+          </div>
+        </b-navbar-brand>
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="nav-side ml-auto">
+          <div class="scrolling-wrapper">
+            <b-button
+              variant="link"
+              class="list"
+              @click="()=>{$router.push('/overview'), autoToggle()}"
+              v-if="user.entId"
+            >หน้าแรก</b-button>
+            <b-button
+              variant="link"
+              class="list"
+              color="blue"
+              @click="handleClick"
+              v-if="user.entId"
+            >แผงควบคุม</b-button>
+            <b-button
+              variant="link"
+              class="list"
+              @click="()=>{$router.push('/account'), autoToggle()}"
+            >บัญชีของฉัน</b-button>
+            <b-button
+              variant="link"
+              class="list"
+              @click="()=>{$router.push('/setting/application'), autoToggle()}"
+              v-if="user.entId"
+            >ตั้งค่าแอปพลิเคชัน</b-button>
+          </div>
+        </b-navbar-nav>
+      </b-container>
     </b-navbar>
     <div class="content-margin-top">
+      <!-- <b-breadcrumb :items="items" class="container mb-0 bg-transparent"/> -->
       <nuxt-child/>
     </div>
   </div>
 </template>
 
 <script>
+import Firebase from "./../configs/firebase.sdk.js";
 import Sidebar from "./../components/AppSidebar/sidebar";
 import SidebarToggle from "./../components/AppSidebar/sidebarToggle";
 export default {
+  transition: "bounce",
   components: {
     Sidebar,
     SidebarToggle
   },
+  data() {
+    return {
+      items: [
+        {
+          text: "เปลี่ยนแผนบริการ",
+          to: { name: "overview" }
+        },
+        {
+          text: "ยังไม่เชื่อมต่อ",
+          active: true
+        }
+      ]
+    };
+  },
+  created() {
+    this.checkAuth();
+  },
   computed: {
     auth() {
-      let auth = this.$store.state.auth;
-      return auth;
+      return this.$store.state.auth;
     },
     user() {
       let user = this.$store.state.user;
@@ -62,15 +97,24 @@ export default {
     }
   },
   methods: {
+    checkAuth() {
+      let self = this;
+      Firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          self.$store.commit("setLoading", false);
+        } else {
+          self.$store.dispatch("signInWithToken", self.$store.state.token);
+          self.$store.commit("setLoading", false);
+        }
+      });
+    },
     handleClick() {
       this.$store.dispatch("toggleSidebar");
     },
-    onClickSignOut() {
-      this.$store.dispatch("loaded");
-      setTimeout(() => {
-        this.$store.dispatch("signOut");
-        this.$router.go({ path: "/" });
-      }, 1000);
+    autoToggle() {
+      if (this.open) {
+        this.$store.dispatch("toggleSidebar");
+      }
     }
   }
 };
