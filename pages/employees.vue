@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-jumbotron fluid header="พนักงาน" :lead="textHeader">
+    <b-jumbotron fluid header="พนักงาน" :lead="textHeader" class="jumbotron-special mb-0">
       <b-row>
         <b-col md="6">
           <b-form-group label class="mb-0">

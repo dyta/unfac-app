@@ -20,6 +20,7 @@ import nuxt_plugin_vuefontawesome_a278f57c from 'nuxt_plugin_vuefontawesome_a278
 import nuxt_plugin_vuekanban_2826a558 from 'nuxt_plugin_vuekanban_2826a558' // Source: ..\\plugins\\vue-kanban (mode: 'all')
 import nuxt_plugin_loadingoverlay_331ed689 from 'nuxt_plugin_loadingoverlay_331ed689' // Source: ..\\plugins\\loading-overlay (mode: 'all')
 import nuxt_plugin_vuethpostal_f9b2c1f2 from 'nuxt_plugin_vuethpostal_f9b2c1f2' // Source: ..\\plugins\\vue-th-postal (mode: 'client')
+import nuxt_plugin_vuedatepicker_56e7af90 from 'nuxt_plugin_vuedatepicker_56e7af90' // Source: ..\\plugins\\vue-date-picker (mode: 'client')
 
 // Component: <NoSsr>
 Vue.component(NoSsr.name, NoSsr)
@@ -169,6 +170,7 @@ async function createApp(ssrContext) {
     if (typeof nuxt_plugin_vuesweetalert2_34aa8c76 === 'function') await nuxt_plugin_vuesweetalert2_34aa8c76(app.context, inject)
     if (typeof nuxt_plugin_toast_fc96b346 === 'function') await nuxt_plugin_toast_fc96b346(app.context, inject)
     if (typeof nuxt_plugin_vuethpostal_f9b2c1f2 === 'function') await nuxt_plugin_vuethpostal_f9b2c1f2(app.context, inject)
+    if (typeof nuxt_plugin_vuedatepicker_56e7af90 === 'function') await nuxt_plugin_vuedatepicker_56e7af90(app.context, inject)
   }
 
   // If server-side, wait for async component to be resolved first

@@ -77,14 +77,14 @@ export default {
 .button svg {
   height: 100%;
   width: 100%;
-  fill: var(--teal);
+  fill: var(--blue);
   transition: fill 300ms ease-in-out;
 }
 
 .button:focus,
 .button:hover {
   outline: none;
-  border-color: var(--teal);
+  border-color: var(--blue);
 }
 
 .active {

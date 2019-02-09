@@ -6,8 +6,7 @@
     <b-navbar toggleable="md" type="light" fixed="top" class="navbar-light bg-light">
       <sidebar-toggle/>
       <b-container>
-        <b-navbar-brand tag="h1" @click="handleClick" class="logo-nav mb-0">
-          <fa icon="bars" class="pr-2" color="teal"/>UNFAC
+        <b-navbar-brand tag="h1" @click="handleClick" class="logo-nav mb-0">UNFAC
           <div class="small-logo">
             <small>Management</small>
             <small>Console</small>
@@ -21,11 +20,11 @@
               class="list"
               @click="()=>{$router.push('/overview'), autoToggle()}"
               v-if="user.entId"
-            >ภาพรวม</b-button>
+            >หน้าแรก</b-button>
             <b-button
               variant="link"
               class="list"
-              color="teal"
+              color="blue"
               @click="handleClick"
               v-if="user.entId"
             >แผงควบคุม</b-button>
@@ -33,7 +32,7 @@
               variant="link"
               class="list"
               @click="()=>{$router.push('/account'), autoToggle()}"
-            >บัญชี</b-button>
+            >บัญชีของฉัน</b-button>
             <b-button
               variant="link"
               class="list"
@@ -45,6 +44,7 @@
       </b-container>
     </b-navbar>
     <div class="content-margin-top">
+      <!-- <b-breadcrumb :items="items" class="container mb-0 bg-transparent"/> -->
       <nuxt-child/>
     </div>
   </div>
@@ -59,6 +59,20 @@ export default {
   components: {
     Sidebar,
     SidebarToggle
+  },
+  data() {
+    return {
+      items: [
+        {
+          text: "เปลี่ยนแผนบริการ",
+          to: { name: "overview" }
+        },
+        {
+          text: "ยังไม่เชื่อมต่อ",
+          active: true
+        }
+      ]
+    };
   },
   created() {
     this.checkAuth();

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-jumbotron fluid header="งานทั้งหมด" :lead="textHeader">
+    <b-jumbotron fluid header="งานทั้งหมด" :lead="textHeader" class="jumbotron-special">
       <b-row>
         <b-col md="6">
           <b-form-group label class="mb-0">
@@ -51,7 +51,24 @@
             <small v-else>ล่าช้า</small>
           </b-badge>
         </template>
-        <template slot="workStatus" slot-scope="row">{{status(row.value)}}</template>
+        <template slot="workStatus" slot-scope="row">
+          <span v-if="row.value === 1">
+            <fa icon="check" size="sm" color="green"/>
+          </span>
+          <span v-else-if="row.value === 2">
+            <fa icon="circle" size="sm" color="gray"/>
+          </span>
+          <span v-else-if="row.value === 4">
+            <fa icon="circle" size="sm" color="red"/>
+          </span>
+          <span v-else-if="row.value === 0">
+            <fa icon="circle" size="sm" color="white"/>
+          </span>
+          <span v-else>
+            <fa icon="circle" size="sm" color="blue"/>
+          </span>
+          <small>{{status(row.value)}}</small>
+        </template>
         <template slot="actions" slot-scope="row">
           <b-button
             size="sm"
@@ -72,7 +89,11 @@
                   variant="outline-dark"
                   @click.stop="ModalWotkInfo(row.item, row.index, $event.target)"
                 >แก้ไขรายละเอียด</b-button>
-                <b-button class="btn-option" variant="outline-dark">กำหนดสถานะ</b-button>
+                <b-button
+                  class="btn-option"
+                  variant="outline-dark"
+                  @click.stop="ModalWorkStatus(row.item, row.index, $event.target)"
+                >กำหนดสถานะ</b-button>
                 <b-button
                   class="btn-option"
                   @click.stop="ModalWotkImage(row.item, row.index, $event.target)"
@@ -84,6 +105,18 @@
                   variant="outline-success"
                 >รายการขออนุมัติ</b-button>
               </b-button-group>
+              <div v-else>
+                <b-card
+                  header-bg-variant="success"
+                  header-text-variant="white"
+                  border-variant="success"
+                  class="text-center"
+                >
+                  <h5>เสร็จสิ้นแล้ว</h5>
+                  <p class="card-text">อัพเดทล่าสุด: {{date(row.item.workUpdateAt).full}}</p>
+                  <b-button class="btn-option" variant="outline-success">ดูรายละเอียด</b-button>
+                </b-card>
+              </div>
             </b-media>
           </b-card>
         </template>
@@ -108,12 +141,26 @@
         header-bg-variant="dark"
         header-text-variant="light"
         header-border-variant="dark"
-        :title="`แก้ไขหมายเลขงาน: ${WorkInfoItem.workId}`"
+        :title="`หมายเลขงาน: ${WorkInfoItem.workId}`"
         ok-only
       >
         <b-form-group
+          id="customerName"
+          label="ผู้สั่งทำ"
+          :description="`<small>วันที่ทำรายการ: ${date(WorkInfoItem.workCreateAt).full} โดย: ${WorkInfoItem.issuedBy}</small>`"
+          label-for="customerName"
+        >
+          <b-input-group>
+            <b-form-input id="customerName" disabled :value="WorkInfoItem.customerName"></b-form-input>
+            <b-input-group-append>
+              <b-btn variant="outline-success">ดูข้อมูลลูกค้า</b-btn>
+            </b-input-group-append>
+          </b-input-group>
+        </b-form-group>
+        <!-- line -->
+        <b-form-group
           id="workName"
-          :description="WorkInfoItem.workName"
+          :description="`<small>${WorkInfoItem.workName}</small>`"
           label="ชื่องาน"
           label-for="workName"
         >
@@ -129,7 +176,8 @@
           <b-form-textarea
             id="workDescription"
             :disabled="uploading"
-            v-model="WorkInfoItem.workDescription"
+            v-model="workValue.workDescription"
+            :value="WorkInfoItem.workDescription"
             :rows="3"
             :max-rows="6"
           ></b-form-textarea>
@@ -137,7 +185,7 @@
         <!-- line -->
         <b-form-group
           id="workVolume"
-          :description="`จำนวน ${WorkInfoItem.workVolume}`"
+          :description="`<small>จำนวนเดิม: ${WorkInfoItem.workVolume} รายการ</small>`"
           label="จำนวนสั่งทำ"
           label-for="workVolume"
         >
@@ -146,22 +194,62 @@
         <!-- line -->
         <b-form-group
           id="workEarn"
-          :description=" `จำนวน ${WorkInfoItem.workEarn}`"
+          :description="`<small>จำนวนเดิม: ${WorkInfoItem.workEarn} บาท</small>`"
           label="ค่าจ้าง <small>(หน่วย: บาท)</small>"
           label-for="workEarn"
         >
           <b-form-input
             id="workEarn"
             :disabled="uploading"
-            v-model="workValue.workEarn"
+            v-model.trim="workValue.workEarn"
             :value="WorkInfoItem.workEarn"
           ></b-form-input>
         </b-form-group>
+        <b-form-group
+          id="DatePicker"
+          :description="`<small>เดิมเริ่มต้น: ${date(WorkInfoItem.workStartAt).format} สิ้นสุด: ${date(WorkInfoItem.workEndAt).format}</small>`"
+          label="กำหนดช่วงเวลาของงาน"
+          label-for="DatePicker"
+        >
+          <no-ssr placeholder="loading...">
+            <VueCtkDateTimePicker
+              label="(เริ่มต้นงาน-วันที่คาดว่าจะเสร็จ)"
+              no-header
+              id="DatePicker"
+              auto-close
+              locale="th"
+              no-shortcuts
+              format="YYYY-MM-DD"
+              only-date
+              no-value-to-custom-elem
+              range
+              v-model="startDate"
+            />
+          </no-ssr>
+        </b-form-group>
+        <b-row>
+          <b-col class="pr-1">
+            <b-button
+              block
+              @click="resetInfoamtion()"
+              :disabled="ValidateWorkName && ValidateDescription && ValidateStartat && ValidateEarn"
+            >รีเซ็ท</b-button>
+          </b-col>
+          <b-col class="pl-1">
+            <b-button
+              block
+              variant="success"
+              @click="UpdateInformation()"
+              :disabled="ValidateWorkName && ValidateDescription && ValidateStartat && ValidateEarn"
+            >อัพเดทข้อมูล</b-button>
+          </b-col>
+        </b-row>
       </b-modal>
+
       <b-modal
         id="WorkInfoItemImage"
         @hide="resetModal"
-        :title="`เปลี่ยนรูปภาพหน้าปกงาน: ${WorkInfoItem.workId}`"
+        :title="`เปลี่ยนรูปภาพงาน: ${WorkInfoItem.workId}`"
         ok-only
         header-bg-variant="dark"
         header-text-variant="light"
@@ -188,11 +276,27 @@
         <b-form-file
           v-model="file"
           accept="image/jpeg, image/png, image/gif"
-          placeholder="เลือกรูปภาพหน้าปกงาน"
-          @change="autoAupload(file, $event)"
+          placeholder="เลือกรูปภาพงาน"
+          @change="autoUpload(file, $event)"
           class="mb-3"
           :disabled="uploading"
         ></b-form-file>
+      </b-modal>
+
+      <b-modal
+        id="ModalWorkStatus"
+        @hide="resetModal"
+        :title="`เปลี่ยนรูปภาพงาน: ${WorkInfoItem.workId}`"
+        ok-only
+        header-bg-variant="dark"
+        header-text-variant="light"
+        header-border-variant="dark"
+        hide-footer
+        lazy
+        busy
+        centered
+      >
+        <h2>44444</h2>
       </b-modal>
     </b-container>
     <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".7" :height="34"></loading>
@@ -254,19 +358,28 @@ export default {
           label: "จำนวน",
           sortable: true
         },
+        {
+          key: "workPickVolume",
+          label: "คำขออนุมัติ",
+          sortable: true
+        },
         { key: "actions", label: "ตัวเลือกการจัดการ" }
       ],
       currentPage: 1,
       perPage: 10,
       totalRows: 0,
       pageOptions: [10, 20, 50],
-      sortBy: null,
-      sortDesc: false,
+      sortBy: "workStatus",
+      sortDesc: true,
       sortDirection: "asc",
       filter: null,
       uploader: 0,
       uploading: false,
-      ModalIndex: null
+      ModalIndex: null,
+      startDate: {
+        start: null,
+        end: null
+      }
     };
   },
   created() {
@@ -289,6 +402,65 @@ export default {
     },
     textHeader() {
       return `จำนวนงานในขณะนี้มีทั้งหมด ${this.items.length} รายการ`;
+    },
+    ValidateWorkName() {
+      if (this.ModalIndex !== null) {
+        if (this.workValue.workName !== this.WorkInfoItem.workName) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    },
+    ValidateDescription() {
+      if (this.ModalIndex !== null) {
+        if (
+          this.workValue.workDescription !== this.WorkInfoItem.workDescription
+        ) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    },
+    ValidateStartat() {
+      if (this.ModalIndex !== null && this.startDate.start !== null) {
+        if (
+          new Date(
+            this.$moment(this.startDate.start).format("MM-DD-YYYY")
+          ).getTime() !== new Date(this.WorkInfoItem.workStartAt).getTime()
+        ) {
+          return false;
+        } else {
+          if (
+            this.startDate.end !== null &&
+            new Date(
+              this.$moment(this.startDate.end).format("MM-DD-YYYY")
+            ).getTime() !== new Date(this.WorkInfoItem.workEndAt).getTime()
+          ) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      } else {
+        return true;
+      }
+    },
+    ValidateEarn() {
+      if (this.ModalIndex !== null) {
+        if (this.workValue.workEarn !== this.WorkInfoItem.workEarn) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return true;
+      }
     }
   },
   methods: {
@@ -303,7 +475,7 @@ export default {
         full: this.$moment(d).format("ddd Do MMM, HH:mm:ss"),
         fromnow: this.$moment(d).fromNow(),
         intime: this.$moment(d) >= this.$moment(),
-        color: this.$moment(d) >= this.$moment() ? "primary" : "danger"
+        color: this.$moment(d) >= this.$moment() ? "" : "danger"
       };
       return date;
     },
@@ -326,6 +498,13 @@ export default {
           break;
       }
     },
+    resetInfoamtion() {
+      this.workValue = Object.assign({}, this.WorkInfoItem);
+      this.startDate = {
+        start: null,
+        end: null
+      };
+    },
     async fetch() {
       let _this = this;
       this.$store.dispatch("sourceLoaded", true);
@@ -338,6 +517,12 @@ export default {
           }
           _this.$store.dispatch("sourceLoaded", false);
         });
+    },
+    ModalWorkStatus(item, index, button) {
+      this.ModalIndex = index;
+      this.WorkInfoItem = Object.assign({}, item);
+      this.workValue = Object.assign({}, item);
+      this.$root.$emit("bv::show::modal", "ModalWorkStatus", button);
     },
     ModalWotkInfo(item, index, button) {
       this.ModalIndex = index;
@@ -352,15 +537,67 @@ export default {
       this.$root.$emit("bv::show::modal", "WorkInfoItemImage", button);
     },
     resetModal() {
+      this.ModalIndex = null;
       this.WorkInfoItem = {
         workId: null
       };
     },
-    autoAupload: function(file, e) {
+
+    async UpdateInformation() {
+      let data = {
+        workName: this.workValue.workName,
+        workDescription: this.workValue.workDescription,
+        workStartAt:
+          this.ValidateStartat ||
+          new Date(this.startDate.start).getTime() < new Date().getTime()
+            ? this.workValue.workStartAt
+            : new Date(this.startDate.start).getTime(),
+        workEndAt:
+          this.ValidateStartat ||
+          new Date(this.startDate.start).getTime() < new Date().getTime()
+            ? this.workValue.workEndAt
+            : this.ValidateStartat &&
+              new Date(this.startDate.end).getTime() < new Date().getTime()
+            ? this.workValue.workEndAt
+            : new Date(this.startDate.end).getTime(),
+        workEarn: this.workValue.workEarn
+      };
+      this.$store.commit("setLoading", true);
+      let update = await this.$axios.put(
+        `/v2/work/info/${this.workValue.workId}`,
+        data
+      );
+
+      if (update.data) {
+        this.WorkInfoItem = Object.assign(this.WorkInfoItem, data);
+        this.items[this.ModalIndex] = Object.assign(
+          this.items[this.ModalIndex],
+          data
+        );
+        setTimeout(() => {
+          this.$toast.success("อัพเดทข้อมูลเรียบร้อยแล้ว", {
+            theme: "bubble",
+            position: "bottom-right",
+            duration: 2000
+          });
+          this.resetInfoamtion();
+        }, 1000);
+      } else {
+        this.$toast.error("เกิดข้อผิดพลาด โปรดลองใหม่อีกครั้ง", {
+          theme: "bubble",
+          position: "bottom-right",
+          duration: 2000
+        });
+      }
+      setTimeout(() => {
+        this.$store.commit("setLoading", false);
+      }, 1000);
+    },
+    autoUpload: function(file, e) {
       let self = this;
       this.$swal
         .fire({
-          title: "เปลี่ยนรูปภาพหน้าปกงาน",
+          title: "เปลี่ยนรูปภาพงาน",
           text: "เมื่อยืนยันไม่สามารถกู้คืนรูปภาพเดิมได้",
           type: "warning",
           showCancelButton: true,

@@ -55,6 +55,9 @@ module.exports = {
   plugins: ["~/plugins/vue-font-awesome", "~/plugins/vue-kanban", "~/plugins/loading-overlay", {
     src: "~/plugins/vue-th-postal",
     ssr: false
+  }, {
+    src: '~/plugins/vue-date-picker',
+    ssr: false
   }],
 
   router: {

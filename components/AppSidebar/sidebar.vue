@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.sidebar" v-if="auth">
+  <div :class="[$style.sidebar]" v-if="auth">
     <b-card class="text-left profile">
       <div class="info">
         <b-img rounded="circle" :src="auth.photoURL" width="60"/>
@@ -27,7 +27,7 @@
         <b-col cols="4" class="small-device pt-3 pb-2">
           <div class="menu-list" @click="onClickSignOut">
             <div>
-              <fa icon="power-off" size="2x" color="red"/>
+              <fa icon="power-off" size="2x" color="grey"/>
             </div>
             <div class="mt-2">
               <small>ออกจากระบบ</small>
@@ -78,8 +78,8 @@ export default {
         },
         {
           name: "คำขอเข้าร่วม",
-          icon: "sign-in-alt",
-          color: "teal",
+          icon: "comment-medical",
+          color: "orange",
           path: "#"
         }
       ],
@@ -112,20 +112,20 @@ export default {
           icon: "hand-holding-heart",
           color: "green",
           path: "#"
-        },
-
-        {
-          name: "วัตถุดิบ",
-          img:
-            "https://firebasestorage.googleapis.com/v0/b/auntie-and-me.appspot.com/o/images%2Ficons%2Fdiamond.png?alt=media&token=6ef0e104-5262-41ff-93cb-f674f57ae2eb",
-          path: "#"
-        },
-        {
-          name: "รูปแบบปฏิทิน",
-          img:
-            "https://firebasestorage.googleapis.com/v0/b/auntie-and-me.appspot.com/o/images%2Ficons%2Fcalendar.png?alt=media&token=8f135a27-7ddb-4b0b-8b34-b5742493d7fd",
-          path: "#"
         }
+
+        // {
+        //   name: "วัตถุดิบ",
+        //   img:
+        //     "https://firebasestorage.googleapis.com/v0/b/auntie-and-me.appspot.com/o/images%2Ficons%2Fdiamond.png?alt=media&token=6ef0e104-5262-41ff-93cb-f674f57ae2eb",
+        //   path: "#"
+        // },
+        // {
+        //   name: "รูปแบบปฏิทิน",
+        //   img:
+        //     "https://firebasestorage.googleapis.com/v0/b/auntie-and-me.appspot.com/o/images%2Ficons%2Fcalendar.png?alt=media&token=8f135a27-7ddb-4b0b-8b34-b5742493d7fd",
+        //   path: "#"
+        // }
       ]
     };
   },
@@ -143,6 +143,9 @@ export default {
     },
     user() {
       return this.$store.state.user;
+    },
+    isLoaded() {
+      return this.$store.state.loading;
     },
     currentPackage() {
       return this.$store.state.package;

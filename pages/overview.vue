@@ -16,7 +16,6 @@ export default {
       title: "Dashboard"
     };
   },
-  created() {},
   methods: {}
 };
 </script>

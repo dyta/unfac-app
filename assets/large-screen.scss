@@ -40,4 +40,10 @@
     display: inline-block !important;
   }
 
+  .jumbotron-special {
+    background: url("./images/blue_waves.png") var(--bg-1-color);
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover
+  }
 }
