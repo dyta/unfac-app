@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style module>
-@media (min-width: 576px) {
+@media (min-width: 854px) {
   .button {
     top: 0.5rem !important;
     left: 10%;

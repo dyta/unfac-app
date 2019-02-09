@@ -336,7 +336,7 @@
             class="py-3"
           >
             <span v-if="WorkInfoItem.workStatus > 2">
-              <b-form-radio :value="4">เร่งด่วน</b-form-radio>
+              <b-form-radio :value="4" class="pt-2">เร่งด่วน</b-form-radio>
               <b-form-radio :value="3">เปิดรับ(ปกติ)</b-form-radio>
               <b-form-radio v-if="WorkInfoItem.workPickVolume === 0" :value="2">ปิดรับ</b-form-radio>
             </span>
@@ -344,7 +344,9 @@
               <b-form-radio :value="2">ปิดรับ</b-form-radio>
               <b-form-radio :value="3">เปิดรับ(ปกติ)</b-form-radio>
               <b-form-radio :value="4">เร่งด่วน</b-form-radio>
-              <b-form-radio :value="0" variant="danger">Delete Protection</b-form-radio>
+              <b-form-radio :value="0">
+                <small class="text-danger">Delete Protection</small>
+              </b-form-radio>
             </span>
             <span v-else-if="WorkInfoItem.workStatus === 0">
               <b-form-radio :value="2">
@@ -353,7 +355,12 @@
             </span>
           </b-form-radio-group>
         </b-form-group>
-        <b-button block variant="primary" :disabled="statusValidate" @click="updateStatus">ยืนยัน</b-button>
+        <b-button
+          block
+          variant="primary"
+          :disabled="statusValidate || statusDateValidate"
+          @click="updateStatus"
+        >ยืนยัน</b-button>
       </b-modal>
     </b-container>
     <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".7" :height="34"></loading>
@@ -463,6 +470,11 @@ export default {
     },
     statusValidate() {
       return this.workValue.workStatus === this.WorkInfoItem.workStatus;
+    },
+    statusDateValidate() {
+      return (
+        this.workValue.workStartAt === null || this.workValue.workEndAt === null
+      );
     },
     ValidateWorkName() {
       if (this.ModalIndex !== null) {
@@ -752,7 +764,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@media (min-width: 576px) {
+@media (min-width: 854px) {
   .btn-option {
     font-size: 1rem !important;
   }

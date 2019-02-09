@@ -204,7 +204,7 @@ export default {
   background-color: var(--light);
 }
 
-@media (min-width: 576px) {
+@media (min-width: 854px) {
   .sidebar {
     width: 360px;
     max-width: 90vw;
