@@ -150,16 +150,16 @@ export default {
       console.log("record: ", record);
     },
     async fetch() {
-      let _this = this;
+      let self = this;
       this.$store.dispatch("sourceLoaded", true);
       await this.$axios
         .$get(`/v2/employee/${this.$store.state.user.entId}`)
         .then(function(res) {
           if (res.length > 0) {
-            _this.items = res;
-            _this.totalRows = res.length;
+            self.items = res;
+            self.totalRows = res.length;
           }
-          _this.$store.dispatch("sourceLoaded", false);
+          self.$store.dispatch("sourceLoaded", false);
         });
     }
   }

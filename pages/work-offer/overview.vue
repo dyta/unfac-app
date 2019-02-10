@@ -15,7 +15,7 @@
         <b-col md="6">
           <b-row>
             <b-col sm="4">
-              <b-form-group label="จำนวนรายการ" class="mb-0">
+              <b-form-group label="Per page" class="mb-0">
                 <b-form-select :options="pageOptions" v-model="perPage"/>
               </b-form-group>
             </b-col>
@@ -189,6 +189,7 @@
                       v-if="row.item.workStatus > 2 && row.item.workPickVolume !==0"
                       class="btn-option mt-2"
                       variant="primary"
+                      @click="()=> $router.push(`/work-offer/request/approve?wid=${row.item.workId}&eid=${$store.state.user.entId}`)"
                     >รายการขออนุมัติ</b-button>
                   </div>
                 </b-button-group>
@@ -645,16 +646,16 @@ export default {
       };
     },
     async fetch() {
-      let _this = this;
+      let self = this;
       this.$store.dispatch("sourceLoaded", true);
       await this.$axios
         .$get(`/v2/work/${this.$store.state.user.entId}`)
         .then(function(res) {
           if (res.length > 0) {
-            _this.items = res;
-            _this.totalRows = res.length;
+            self.items = res;
+            self.totalRows = res.length;
           }
-          _this.$store.dispatch("sourceLoaded", false);
+          self.$store.dispatch("sourceLoaded", false);
         });
     },
     ModalWorkStatus(item, index, button) {

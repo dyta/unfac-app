@@ -215,7 +215,7 @@ export default {
       }
     },
     onClickCreateCompany() {
-      let _this = this;
+      let self = this;
       if (this.validBtn) {
         let form = {
           entName: this.createForm.entName,
@@ -248,9 +248,9 @@ export default {
           .then(async result => {
             if (result.value) {
               this.isLoading = true;
-              const res = await _this.$axios.post(`/v2/enterprise`, form);
+              const res = await self.$axios.post(`/v2/enterprise`, form);
               if (res.data.insertId) {
-                const UserUpdate = await _this.$axios.put(
+                const UserUpdate = await self.$axios.put(
                   `/v2/account/enterpise/${this.$store.state.user.lineId}`,
                   { entId: res.data.insertId }
                 );
@@ -264,7 +264,7 @@ export default {
                     }
                   );
                   setTimeout(() => {
-                    _this.$router.go({ path: "/" });
+                    self.$router.go({ path: "/" });
                   }, 1000);
                 } else {
                   this.isLoading = false;

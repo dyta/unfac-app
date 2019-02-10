@@ -148,7 +148,7 @@ export default {
       }, 1000);
     },
     async onClickVerify() {
-      let _this = this;
+      let self = this;
       if (this.stateFullname && this.stateEmail && this.statePhone) {
         let data = { ...this.line, ...this.input };
         let line = this.$store.state.line;

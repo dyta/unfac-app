@@ -32,7 +32,7 @@ module.exports = {
       href: '/favicon.ico'
     }, {
       rel: "stylesheet",
-      href: "//fonts.googleapis.com/css?family=Open+Sans|Sarabun&amp;subset=thai"
+      href: "//fonts.googleapis.com/css?family=Mitr|Open+Sans|Sarabun&subset=thai"
     }]
   },
 
