@@ -2,7 +2,7 @@
   <b-container class="container-height-single bg-image">
     <b-jumbotron
       fluid
-      header="สร้างหรือเข้าร่วมเครือข่ายงาน"
+      header="สร้างหรือเข้าร่วมโครงการ"
       lead="Workforce management system for non-routine on Line Application."
       style="background-color: transparent; color: white"
       class="pb-0"
@@ -11,7 +11,7 @@
       <b-row align-content="center">
         <b-col md="6" class="mt-3">
           <b-card>
-            <h5 class="text-center py-3 pb-4">สร้างเครือข่ายงานของคุณ</h5>
+            <h5 class="text-center py-3 pb-4">สร้างโครงการของคุณ</h5>
             <b-form-group
               id="entName"
               label="ชื่อองค์กร/ร้านค้า"
@@ -256,7 +256,7 @@ export default {
                 );
                 if (UserUpdate) {
                   this.$toast.info(
-                    `เครือข่ายงานของคุณถูกสร้างเรียบร้อยแล้ว ระบบกำลังคุณไปยังระบบจัดการ`,
+                    `โครงการของคุณถูกสร้างเรียบร้อยแล้ว ระบบกำลังคุณไปยังระบบจัดการ`,
                     {
                       theme: "bubble",
                       position: "bottom-center",
@@ -272,7 +272,7 @@ export default {
               } else {
                 this.isLoading = false;
                 this.$toast.error(
-                  `ไม่สามารถสร้างเครือข่ายงานได้ โปรดลองใหม่อีกครั้ง`,
+                  `ไม่สามารถสร้างโครงการได้ โปรดลองใหม่อีกครั้ง`,
                   {
                     theme: "bubble",
                     position: "bottom-center",

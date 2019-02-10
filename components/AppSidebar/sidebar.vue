@@ -94,7 +94,7 @@ export default {
           name: "อนุมัติคำขอ",
           icon: "check",
           color: "teal",
-          path: "#"
+          path: "/work-offer/request"
         },
         {
           name: "เสนองาน",

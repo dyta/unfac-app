@@ -132,62 +132,74 @@
             border-variant="dark"
             class="mt-3 mb-4"
             :title="`หมายเลขงานที่: <b>${row.item.workId}</b>`"
-            :sub-title="`สร้างเมื่อ: ${date(row.item.workCreateAt).full}`"
+            :sub-title="`สร้างเมื่อ: ${date(row.item.workCreateAt).format} ${row.item.workCreateAt.substring(11)}`"
           >
             <b-media tag="li">
-              <b-img slot="aside" rounded :src="row.item.workImages" width="86" height="86"/>
-              <b-button-group v-if="row.item.workStatus !== 1">
-                <div v-if="row.item.workStatus === 0">
-                  <b-button
-                    class="btn-option mt-2"
-                    variant="dark"
-                    @click.stop="ModalWotkInfo(row.item, row.index, $event.target)"
-                  >แก้ไขรายละเอียด</b-button>
-                  <b-button
-                    class="btn-option mt-2"
-                    variant="dark"
-                    @click.stop="ModalWorkStatus(row.item, row.index, $event.target)"
-                  >กำหนดสถานะ</b-button>
-                  <b-button
-                    class="btn-option mt-2"
-                    variant="danger"
-                    @click="removeWork(row.item.workId)"
-                  >ลบงาน</b-button>
-                </div>
-                <div v-else>
-                  <b-button
-                    class="btn-option mt-2"
-                    variant="dark"
-                    @click.stop="ModalWotkInfo(row.item, row.index, $event.target)"
-                  >แก้ไขรายละเอียด</b-button>
-                  <b-button
-                    class="btn-option mt-2"
-                    variant="dark"
-                    @click.stop="ModalWorkStatus(row.item, row.index, $event.target)"
-                  >กำหนดสถานะ</b-button>
-                  <b-button
-                    class="btn-option mt-2"
-                    @click.stop="ModalWotkImage(row.item, row.index, $event.target)"
-                    variant="dark"
-                  >เปลี่ยนรูปที่ใช้แสดง</b-button>
-                  <b-button
-                    v-if="row.item.workStatus > 2 && row.item.workPickVolume !==0"
-                    class="btn-option mt-2"
-                    variant="primary"
-                  >รายการขออนุมัติ</b-button>
-                </div>
-              </b-button-group>
+              <b-img
+                class="border-right mr-1"
+                slot="aside"
+                rounded
+                :src="row.item.workImages"
+                width="140"
+                height="140"
+              />
+
+              <div v-if="row.item.workStatus !== 1">
+                <h5 class="m-0">{{status(row.item.workStatus)}}</h5>
+                <small v-if="row.item.workUpdateAt">
+                  อัพเดทล่าสุด: {{date(row.item.workUpdateAt).format}} {{(row.item.workUpdateAt).substring(11)}}
+                  <br>
+                </small>
+
+                <b-button-group>
+                  <div v-if="row.item.workStatus === 0">
+                    <b-button
+                      class="btn-option mt-2"
+                      variant="outline-dark"
+                      @click.stop="ModalWotkInfo(row.item, row.index, $event.target)"
+                    >แก้ไขรายละเอียด</b-button>
+                    <b-button
+                      class="btn-option mt-2"
+                      variant="outline-dark"
+                      @click.stop="ModalWorkStatus(row.item, row.index, $event.target)"
+                    >กำหนดสถานะ</b-button>
+                    <b-button
+                      class="btn-option mt-2"
+                      variant="danger"
+                      @click="removeWork(row.item.workId)"
+                    >ลบงาน</b-button>
+                  </div>
+                  <div v-else>
+                    <b-button
+                      class="btn-option mt-2"
+                      variant="outline-dark"
+                      @click.stop="ModalWotkInfo(row.item, row.index, $event.target)"
+                    >แก้ไขรายละเอียด</b-button>
+                    <b-button
+                      class="btn-option mt-2"
+                      variant="outline-dark"
+                      @click.stop="ModalWorkStatus(row.item, row.index, $event.target)"
+                    >กำหนดสถานะ</b-button>
+                    <b-button
+                      class="btn-option mt-2"
+                      @click.stop="ModalWotkImage(row.item, row.index, $event.target)"
+                      variant="outline-dark"
+                    >เปลี่ยนรูปที่ใช้แสดง</b-button>
+                    <b-button
+                      v-if="row.item.workStatus > 2 && row.item.workPickVolume !==0"
+                      class="btn-option mt-2"
+                      variant="primary"
+                    >รายการขออนุมัติ</b-button>
+                  </div>
+                </b-button-group>
+              </div>
               <div v-else>
-                <b-card
-                  header-bg-variant="success"
-                  header-text-variant="white"
-                  border-variant="success"
-                  class="text-center"
-                >
-                  <h5>เสร็จสิ้นแล้ว</h5>
-                  <p class="card-text">อัพเดทล่าสุด: {{date(row.item.workUpdateAt).full}}</p>
+                <h5>Completed</h5>
+                <p class="card-text m-0">งานถูกผลิตเรียบร้อยแล้ว</p>
+                <small>อัพเดทล่าสุด: {{date(row.item.workUpdateAt).format}}</small>
+                <div>
                   <b-button class="btn-option" variant="success">ดูรายละเอียด</b-button>
-                </b-card>
+                </div>
               </div>
             </b-media>
           </b-card>
@@ -219,7 +231,7 @@
         <b-form-group
           id="customerName"
           label="ผู้สั่งทำ"
-          :description="`<small>วันที่ทำรายการ: ${date(WorkInfoItem.workCreateAt).full} โดย: ${WorkInfoItem.issuedBy}</small>`"
+          :description="`<small>วันที่ทำรายการ: ${date(WorkInfoItem.workCreateAt).format} ${WorkInfoItem.workCreateAt ? (WorkInfoItem.workCreateAt).substring(11) : null} โดย: ${WorkInfoItem.issuedBy}</small>`"
           label-for="customerName"
         >
           <b-input-group>

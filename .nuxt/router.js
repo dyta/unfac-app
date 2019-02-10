@@ -9,6 +9,7 @@ const _20dd6501 = () => interopDefault(import('..\\pages\\overview.vue' /* webpa
 const _2224f188 = () => interopDefault(import('..\\pages\\setting\\application.vue' /* webpackChunkName: "pages_setting_application" */))
 const _997441ae = () => interopDefault(import('..\\pages\\work-offer\\add.vue' /* webpackChunkName: "pages_work-offer_add" */))
 const _249f9521 = () => interopDefault(import('..\\pages\\work-offer\\overview.vue' /* webpackChunkName: "pages_work-offer_overview" */))
+const _7a1cfa17 = () => interopDefault(import('..\\pages\\work-offer\\request.vue' /* webpackChunkName: "pages_work-offer_request" */))
 const _1070220c = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
 
 Vue.use(Router)
@@ -99,6 +100,10 @@ export function createRouter() {
       path: "/work-offer/overview",
       component: _249f9521,
       name: "work-offer-overview"
+    }, {
+      path: "/work-offer/request",
+      component: _7a1cfa17,
+      name: "work-offer-request"
     }, {
       path: "/",
       component: _1070220c,
