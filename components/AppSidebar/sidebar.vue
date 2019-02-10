@@ -74,13 +74,13 @@ export default {
           name: "พนักงาน",
           img:
             "https://firebasestorage.googleapis.com/v0/b/auntie-and-me.appspot.com/o/images%2Ficons%2Fgirl2.png?alt=media&token=0f2c2b73-5f70-4376-8367-24e20655a97f",
-          path: "/employees"
+          path: "/user/employees"
         },
         {
           name: "คำขอเข้าร่วม",
           icon: "comment-medical",
           color: "orange",
-          path: "#"
+          path: "/user/request-join"
         }
       ],
       manufacItems: [
@@ -94,7 +94,7 @@ export default {
           name: "อนุมัติคำขอ",
           icon: "check",
           color: "teal",
-          path: "/work-offer/request"
+          path: "/request"
         },
         {
           name: "เสนองาน",
@@ -114,19 +114,6 @@ export default {
           color: "brown",
           path: "#"
         }
-
-        // {
-        //   name: "วัตถุดิบ",
-        //   img:
-        //     "https://firebasestorage.googleapis.com/v0/b/auntie-and-me.appspot.com/o/images%2Ficons%2Fdiamond.png?alt=media&token=6ef0e104-5262-41ff-93cb-f674f57ae2eb",
-        //   path: "#"
-        // },
-        // {
-        //   name: "รูปแบบปฏิทิน",
-        //   img:
-        //     "https://firebasestorage.googleapis.com/v0/b/auntie-and-me.appspot.com/o/images%2Ficons%2Fcalendar.png?alt=media&token=8f135a27-7ddb-4b0b-8b34-b5742493d7fd",
-        //   path: "#"
-        // }
       ]
     };
   },
@@ -164,9 +151,8 @@ export default {
   methods: {
     async onClickSignOut() {
       this.$store.commit("setLoading", true);
-
-      setTimeout(async () => {
-        await this.$store.dispatch("signOut");
+      this.$store.dispatch("signOut");
+      setTimeout(() => {
         this.$router.go({ path: "/" });
       }, 1000);
     }

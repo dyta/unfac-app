@@ -14,7 +14,7 @@
             <h5 class="text-center py-3 pb-4">สร้างโครงการของคุณ</h5>
             <b-form-group
               id="entName"
-              label="ชื่อองค์กร/ร้านค้า"
+              label="ชื่อโครงการ"
               label-for="entName"
               :state="stateText"
               class="px-3"

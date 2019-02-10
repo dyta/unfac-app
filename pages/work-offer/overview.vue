@@ -189,7 +189,7 @@
                       v-if="row.item.workStatus > 2 && row.item.workPickVolume !==0"
                       class="btn-option mt-2"
                       variant="primary"
-                      @click="()=> $router.push(`/work-offer/request/approve?wid=${row.item.workId}&eid=${$store.state.user.entId}`)"
+                      @click="()=> $router.push(`/request/approve?wid=${row.item.workId}&eid=${$store.state.user.entId}`)"
                     >รายการขออนุมัติ</b-button>
                   </div>
                 </b-button-group>

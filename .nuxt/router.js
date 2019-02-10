@@ -3,14 +3,15 @@ import Router from 'vue-router'
 import { interopDefault } from './utils'
 
 const _480946d5 = () => interopDefault(import('..\\pages\\account.vue' /* webpackChunkName: "pages_account" */))
-const _65b55c2d = () => interopDefault(import('..\\pages\\employees.vue' /* webpackChunkName: "pages_employees" */))
 const _4a934c32 = () => interopDefault(import('..\\pages\\join.vue' /* webpackChunkName: "pages_join" */))
 const _20dd6501 = () => interopDefault(import('..\\pages\\overview.vue' /* webpackChunkName: "pages_overview" */))
+const _0cc4eb2a = () => interopDefault(import('..\\pages\\request\\index.vue' /* webpackChunkName: "pages_request_index" */))
+const _212bb326 = () => interopDefault(import('..\\pages\\request\\approve.vue' /* webpackChunkName: "pages_request_approve" */))
 const _2224f188 = () => interopDefault(import('..\\pages\\setting\\application.vue' /* webpackChunkName: "pages_setting_application" */))
+const _f0da0cfc = () => interopDefault(import('..\\pages\\user\\employees.vue' /* webpackChunkName: "pages_user_employees" */))
+const _caec778a = () => interopDefault(import('..\\pages\\user\\request-join.vue' /* webpackChunkName: "pages_user_request-join" */))
 const _997441ae = () => interopDefault(import('..\\pages\\work-offer\\add.vue' /* webpackChunkName: "pages_work-offer_add" */))
 const _249f9521 = () => interopDefault(import('..\\pages\\work-offer\\overview.vue' /* webpackChunkName: "pages_work-offer_overview" */))
-const _6bc3228b = () => interopDefault(import('..\\pages\\work-offer\\request\\index.vue' /* webpackChunkName: "pages_work-offer_request_index" */))
-const _bf687974 = () => interopDefault(import('..\\pages\\work-offer\\request\\approve.vue' /* webpackChunkName: "pages_work-offer_request_approve" */))
 const _1070220c = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
 
 Vue.use(Router)
@@ -78,10 +79,6 @@ export function createRouter() {
       component: _480946d5,
       name: "account"
     }, {
-      path: "/employees",
-      component: _65b55c2d,
-      name: "employees"
-    }, {
       path: "/join",
       component: _4a934c32,
       name: "join"
@@ -90,9 +87,25 @@ export function createRouter() {
       component: _20dd6501,
       name: "overview"
     }, {
+      path: "/request",
+      component: _0cc4eb2a,
+      name: "request"
+    }, {
+      path: "/request/approve",
+      component: _212bb326,
+      name: "request-approve"
+    }, {
       path: "/setting/application",
       component: _2224f188,
       name: "setting-application"
+    }, {
+      path: "/user/employees",
+      component: _f0da0cfc,
+      name: "user-employees"
+    }, {
+      path: "/user/request-join",
+      component: _caec778a,
+      name: "user-request-join"
     }, {
       path: "/work-offer/add",
       component: _997441ae,
@@ -101,14 +114,6 @@ export function createRouter() {
       path: "/work-offer/overview",
       component: _249f9521,
       name: "work-offer-overview"
-    }, {
-      path: "/work-offer/request",
-      component: _6bc3228b,
-      name: "work-offer-request"
-    }, {
-      path: "/work-offer/request/approve",
-      component: _bf687974,
-      name: "work-offer-request-approve"
     }, {
       path: "/",
       component: _1070220c,

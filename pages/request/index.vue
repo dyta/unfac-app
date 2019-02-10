@@ -12,7 +12,7 @@
         <b-col v-for="(item, index) in items" :key="index" md="6" lg="4" class="py-2 px-1">
           <b-card
             class="selected-request"
-            @click="() => $router.push(`/work-offer/request/approve?wid=${item.workId}&eid=${user.entId}`)"
+            @click="() => $router.push(`/request/approve?wid=${item.workId}&eid=${user.entId}`)"
           >
             <b-media>
               <b-img slot="aside" rounded :src="item.workImages" width="80" height="80"/>
