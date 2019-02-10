@@ -8,7 +8,7 @@
     ></b-jumbotron>
 
     <b-container class="mb-5">
-      <div v-if="setting">
+      <div v-if="!asyncSource && setting">
         <b-tabs vertical nav-wrapper-class="col-12 col-md-4" content-class="col-12 col-md-8 px-4">
           <b-tab title="คีย์ API ของเว็บ" active>
             <b-card>
@@ -22,7 +22,7 @@
               <h6 class="bold">Webhook URL</h6>
               <hr>
               <div class="text-center">
-                <fa icon="exclamation-circle" size="2x" color="orange" class="mt-2"/>
+                <fa icon="exclamation-circle" size="3x" color="orange" class="mt-2"/>
                 <h6 class="mt-3">ไม่พร้อมใช้งาน</h6>
               </div>
             </b-card>
@@ -37,7 +37,7 @@
               <h6 class="bold">Channel access token</h6>
               <hr>
               <div class="text-center">
-                <fa icon="exclamation-circle" size="2x" color="orange" class="mt-2"/>
+                <fa icon="exclamation-circle" size="3x" color="orange" class="mt-2"/>
                 <h6 class="mt-3">ไม่พร้อมใช้งาน</h6>
               </div>
             </b-card>
@@ -45,7 +45,7 @@
               <h6 class="bold">Channel secret</h6>
               <hr>
               <div class="text-center">
-                <fa icon="exclamation-circle" size="2x" color="orange" class="mt-2"/>
+                <fa icon="exclamation-circle" size="3x" color="orange" class="mt-2"/>
                 <h6 class="mt-3">ไม่พร้อมใช้งาน</h6>
               </div>
             </b-card>
@@ -81,8 +81,8 @@
           </b-tab>
         </b-tabs>
       </div>
-      <b-card v-else class="text-center mt-3">
-        <fa icon="exclamation-circle" size="2x" color="orange" class="mt-2"/>
+      <b-card v-else-if="!setting && !asyncSource" class="text-center mt-3">
+        <fa icon="exclamation-circle" size="3x" color="orange" class="mt-2"/>
         <h5 class="mt-3">คุณยังไม่ได้เปิดใช้งาน</h5>
         <b-button
           variant="primary"

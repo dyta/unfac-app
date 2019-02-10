@@ -4,7 +4,7 @@
       fluid
       header="รายการคำขอเข้าร่วม"
       :lead="`จำนวนคำขอทั้งหมด ${this.items.length} รายการ`"
-      class="jumbotron-special-lg"
+      class="jumbotron-special-lg mb-0"
     >
       <b-row>
         <b-col md="7">
@@ -30,8 +30,12 @@
           </b-form-group>
         </b-col>
       </b-row>
+      <b-alert variant="warning" show>
+        <h6>ไม่แนะนำ</h6>
+        <small>เนื่องจากการขอเข้าร่ามโครงการ ผู้เข้าร่วมจะมีสถานะดูแลจัดการได้ทั้งหมด</small>
+      </b-alert>
     </b-jumbotron>
-    <b-container>
+    <b-container v-if="!asyncSource && items.length > 0">
       <!-- Main table element -->
       <b-table
         show-empty
@@ -69,6 +73,16 @@
           />
         </b-col>
       </b-row>
+    </b-container>
+    <b-container v-else-if="items.length === 0 && !asyncSource">
+      <b-card class="text-center" style="box-shadow: 0 0 1em var(--gray-light);">
+        <fa icon="exclamation-circle" size="3x" color="orange" class="mt-2"/>
+        <h5 class="mt-3">ไม่พบคำขอเข้าร่วมโครงการ</h5>
+        <small>
+          ไปที่
+          <b @click="()=>$router.push('/setting/application')">ตั้งค่าแอปพลิเคชัน</b> เพื่อรับลิงค์การเชื่อมต่อให้พนักงานเข้าใช้งาน หรือรับรหัสการขอเข้าร่วมโครงการ
+        </small>
+      </b-card>
     </b-container>
     <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".7" :height="34"></loading>
   </div>

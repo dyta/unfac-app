@@ -4,11 +4,11 @@
       fluid
       header="เลือกงานที่ถูกเผยแพร่"
       lead="แสดงงานทั้งหมดที่ถูก Published ในโครงการของคุณ"
-      class="jumbotron-special-lg"
+      class="jumbotron-special-lg mb-0"
     >
       <small>เลือกงานข้างล่างนี้เพื่อจัดการรายการคำขออนุมัติ</small>
     </b-jumbotron>
-    <b-container>
+    <b-container v-if="!asyncSource && items.length > 0">
       <b-row v-if="items.length > 0">
         <b-col v-for="(item, index) in items" :key="index" md="6" lg="4" class="py-2 px-1">
           <b-card
@@ -52,14 +52,16 @@
           </b-card>
         </b-col>
       </b-row>
-      <b-alert v-else class="text-center" variant="warning" show>
-        <fa icon="exclamation-circle" size="2x"/>
-        <p class="mt-2">ไม่พบงานที่ถูกเผยแพร่</p>
-        <b-button
-          variant="warning"
-          @click="()=> this.$router.push('/work-offer/overview')"
-        >จัดการงาน</b-button>
-      </b-alert>
+    </b-container>
+    <b-container v-else-if="items.length === 0 && !asyncSource">
+      <b-card class="text-center" style="box-shadow: 0 0 1em var(--gray-light);">
+        <fa icon="exclamation-circle" size="3x" color="orange" class="mt-2"/>
+        <h5 class="mt-3">ไม่พบงานที่ถูกเผยแพร่</h5>
+        <small>
+          ไปที่
+          <b @click="()=>$router.push('/work-offer')">งาน</b> เพื่อจัดการงานและเปิดใช้งาน
+        </small>
+      </b-card>
     </b-container>
     <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".7" :height="34"></loading>
   </div>

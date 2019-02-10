@@ -146,7 +146,7 @@ export default {
       sub_nav: [
         {
           text: "งานทั้งหมด",
-          to: { path: "/work-offer/overview" }
+          to: { path: "/work-offer" }
         },
         {
           text: "เพิ่มงาน",
@@ -260,7 +260,7 @@ export default {
                   theme: "bubble",
                   duration: 3000
                 });
-                self.$router.push("/work-offer/overview");
+                self.$router.push("/work-offer");
               },
               async function complete() {
                 let img = await task.snapshot.ref.getDownloadURL();
@@ -287,7 +287,7 @@ export default {
                     theme: "bubble",
                     duration: 3000
                   });
-                  self.$router.push("/work-offer/overview");
+                  self.$router.push("/work-offer");
                   self.$store.commit("setLoading", false);
                 }
               }

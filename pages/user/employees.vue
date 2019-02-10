@@ -3,7 +3,7 @@
     <b-jumbotron
       fluid
       header="พนักงาน"
-      class="jumbotron-special-lg"
+      class="jumbotron-special-lg mb-0"
       :lead="`จำนวนพนักงานทั้งหมด ${this.items.length} คน`"
     >
       <b-row>
@@ -24,7 +24,7 @@
         </b-col>
       </b-row>
     </b-jumbotron>
-    <b-container>
+    <b-container v-if="!asyncSource && items.length > 0">
       <!-- Main table element -->
       <b-table
         show-empty
@@ -68,6 +68,16 @@
           />
         </b-col>
       </b-row>
+    </b-container>
+    <b-container v-else-if="items.length === 0 && !asyncSource">
+      <b-card class="text-center" style="box-shadow: 0 0 1em var(--gray-light);">
+        <fa icon="exclamation-circle" size="3x" color="orange" class="mt-2"/>
+        <h5 class="mt-3">ไม่พบพนักงานในโครงการ</h5>
+        <small>
+          ไปที่
+          <b @click="()=>$router.push('/setting/application')">ตั้งค่าแอปพลิเคชัน</b> เพื่อรับลิงค์การเชื่อมต่อให้พนักงานเข้าใช้งาน
+        </small>
+      </b-card>
     </b-container>
     <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".7" :height="34"></loading>
   </div>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-jumbotron fluid header="งานทั้งหมด" class="jumbotron-special-lg" :lead="textHeader">
+    <b-jumbotron fluid header="งานทั้งหมด" class="jumbotron-special-lg mb-0" :lead="textHeader">
       <b-row>
         <b-col md="6">
           <b-form-group class="mb-0" label="ค้นหา">
@@ -41,7 +41,7 @@
         </b-col>
       </b-row>
     </b-jumbotron>
-    <b-container>
+    <b-container v-if="!asyncSource && items.length > 0">
       <!-- Main table element -->
       <b-table
         show-empty
@@ -415,6 +415,17 @@
           @click="updateStatus"
         >ยืนยัน</b-button>
       </b-modal>
+    </b-container>
+    <b-container v-else-if="items.length === 0 && !asyncSource">
+      <b-card class="text-center" style="box-shadow: 0 0 1em var(--gray-light);">
+        <fa icon="exclamation-circle" size="3x" color="orange" class="mt-2"/>
+        <h5 class="mt-3">ไม่พบงานในโครงการ</h5>
+        <b-button
+          variant="primary"
+          class="px-5 mb-3 mt-2"
+          @click="()=> this.$router.push('/work-offer/add')"
+        >เพิ่มงาน</b-button>
+      </b-card>
     </b-container>
     <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".7" :height="34"></loading>
   </div>

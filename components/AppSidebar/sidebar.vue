@@ -88,7 +88,7 @@ export default {
           name: "งาน",
           img:
             "https://firebasestorage.googleapis.com/v0/b/auntie-and-me.appspot.com/o/images%2Ficons%2Fdoc.png?alt=media&token=5a4fde8a-b8a4-41cb-abb2-10afb3f38ee4",
-          path: "/work-offer/overview"
+          path: "/work-offer"
         },
         {
           name: "อนุมัติคำขอ",

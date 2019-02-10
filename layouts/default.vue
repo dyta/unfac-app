@@ -7,11 +7,7 @@
       <sidebar-toggle/>
       <b-container>
         <b-col sm="4" md="6" class="p-0 m-0">
-          <b-navbar-brand
-            tag="h1"
-            @click="()=> $router.push('/overview')"
-            class="logo-nav mb-0"
-          >UNFAC
+          <b-navbar-brand tag="h1" @click="handleClick" class="logo-nav mb-0">UNFAC
             <div class="small-logo">
               <small>Management</small>
               <small>Console</small>
