@@ -134,6 +134,7 @@
             :title="`หมายเลขงานที่: <b>${row.item.workId}</b>`"
             :sub-title="`สร้างเมื่อ: ${date(row.item.workCreateAt).full}`"
           >
+          <small>{{row.item.workCreateAt}}</small>
             <b-media tag="li">
               <b-img slot="aside" rounded :src="row.item.workImages" width="86" height="86"/>
               <b-button-group v-if="row.item.workStatus !== 1">
