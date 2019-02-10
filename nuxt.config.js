@@ -74,7 +74,10 @@ module.exports = {
     "@nuxtjs/dotenv",
     '@nuxtjs/pwa',
     '@nuxtjs/toast',
-    ['@nuxtjs/moment', ['th']],
+    ['@nuxtjs/moment', {
+      locales: ['th'],
+      defaultLocale: 'th'
+    }],
     [
       "vue-sweetalert2/nuxt",
       {

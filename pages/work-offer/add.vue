@@ -96,7 +96,7 @@
           </b-form-group>
           <b-form-group
             id="workStartEndAtLabel"
-            description="ช่วงเวลาในการผลิตแบบคาดการณ์ เช่น 3 วัน"
+            description="ช่วงเวลาในการผลิตแบบคาดการณ์ *ระยะขั้นต่ำ 3 วัน นับจากวันเริ่ม"
             label="กำหนดช่วงเวลาของงาน"
             label-for="workStartEndAtLabel"
           >
@@ -172,32 +172,36 @@ export default {
   },
   computed: {
     stateCustomerName() {
-      return this.data.customerName.length >= 10 &&
+      return (
+        this.data.customerName.length >= 10 &&
         this.data.customerName.length <= 50
-        ? true
-        : false;
+      );
     },
     stateWorkName() {
-      return this.data.workName.length > 10 && this.data.workName.length <= 140
-        ? true
-        : false;
+      return this.data.workName.length > 10 && this.data.workName.length <= 140;
     },
     stateWorkDescription() {
-      return this.data.workDescription.length > 10 &&
+      return (
+        this.data.workDescription.length > 10 &&
         this.data.workDescription.length <= 240
-        ? true
-        : false;
+      );
     },
     stateWorkVolume() {
-      return this.data.workVolume > 0 && this.data.workVolume <= 100
-        ? true
-        : false;
+      return this.data.workVolume > 0 && this.data.workVolume <= 100;
     },
     stateWorkEarn() {
-      return this.data.workEarn >= 20 ? true : false;
+      return this.data.workEarn >= 20;
     },
     stateWorkImages() {
       return this.workImages ? true : false;
+    },
+    stateTime() {
+      const now = new Date().getTime();
+      let timeStart = new Date(this.data.workTime.start).getTime();
+      let timeEnd = new Date(this.data.workTime.end).getTime();
+      return (
+        timeStart > now && timeEnd > this.$moment(timeStart).add(1, "days")
+      );
     },
     btnAddWork() {
       return (
@@ -206,7 +210,8 @@ export default {
         this.stateWorkDescription &&
         this.stateWorkVolume &&
         this.stateWorkEarn &&
-        this.stateWorkImages
+        this.stateWorkImages &&
+        this.stateTime
       );
     }
   },

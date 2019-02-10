@@ -134,7 +134,6 @@
             :title="`หมายเลขงานที่: <b>${row.item.workId}</b>`"
             :sub-title="`สร้างเมื่อ: ${date(row.item.workCreateAt).full}`"
           >
-          <small>{{row.item.workCreateAt}}</small>
             <b-media tag="li">
               <b-img slot="aside" rounded :src="row.item.workImages" width="86" height="86"/>
               <b-button-group v-if="row.item.workStatus !== 1">
@@ -304,7 +303,7 @@
             <b-button
               block
               @click="resetInfoamtion()"
-              :disabled="ValidateWorkName && ValidateDescription && ValidateStartat && ValidateEarn"
+              :disabled="ValidateWorkName && ValidateDescription && ValidateEarn&& !vDtae "
             >รีเซ็ท</b-button>
           </b-col>
           <b-col class="pl-1">
@@ -312,7 +311,7 @@
               block
               variant="primary"
               @click="UpdateInformation()"
-              :disabled="ValidateWorkName && ValidateDescription && ValidateStartat && ValidateEarn"
+              :disabled="ValidateWorkName && ValidateDescription && !vDtae && ValidateEarn "
             >อัพเดทข้อมูล</b-button>
           </b-col>
         </b-row>
@@ -565,6 +564,14 @@ export default {
         return true;
       }
     },
+    vDtae() {
+      const now = new Date(this.$moment().add(1, "days")).getTime();
+      let timeStart = new Date(this.startDate.start).getTime();
+      let timeEnd = new Date(this.startDate.end).getTime();
+      return (
+        timeStart > now && timeEnd > this.$moment(timeStart).add(1, "days")
+      );
+    },
     ValidateEarn() {
       if (this.ModalIndex !== null) {
         if (this.workValue.workEarn !== this.WorkInfoItem.workEarn) {
@@ -586,7 +593,9 @@ export default {
     date(d) {
       let date = {
         format: this.$moment(d).format("ddd Do MMM"),
-        full: this.$moment(d).format("ddd Do MMM, HH:mm:ss"),
+        full: this.$moment(d)
+          .utc()
+          .format("ddd Do MMM, HH:mm:ss"),
         fromnow: this.$moment(d).fromNow(),
         intime: this.$moment(d) >= this.$moment(),
         color: this.$moment(d) >= this.$moment() ? "" : "danger",
