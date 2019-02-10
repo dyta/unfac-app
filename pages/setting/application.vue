@@ -1,11 +1,16 @@
 <template>
   <div>
-    <b-jumbotron fluid header="ตั้งค่าแอปพลิเคชัน" lead="เชื่อมโยงระบบ Unfac ไปยัง LINE@ ของคุณ"></b-jumbotron>
+    <b-jumbotron
+      fluid
+      header="ตั้งค่าแอปพลิเคชัน"
+      class="jumbotron-special"
+      lead="เชื่อมโยงระบบ Unfac ไปยัง LINE@ ของคุณ"
+    ></b-jumbotron>
 
     <b-container class="mb-5">
       <div v-if="setting">
         <b-tabs vertical nav-wrapper-class="col-12 col-md-4" content-class="col-12 col-md-8 px-4">
-          <b-tab title="คีย์ API ของเว็บ">
+          <b-tab title="คีย์ API ของเว็บ" active>
             <b-card class="text-left">
               <h6 class="bold">API KEY</h6>
               <hr>
@@ -34,7 +39,7 @@
               <code>{{setting.LINE_SECRET ? setting.LINE_SECRET : 'Disabled'}}</code>
             </b-card>
           </b-tab>
-          <b-tab title="ลิงค์เชื่อมต่อ" active>
+          <b-tab title="ลิงค์เชื่อมต่อ">
             <b-img
               rounded
               fluid

@@ -4,6 +4,7 @@
       fluid
       header="เลือกงานที่ถูกเผยแพร่"
       lead="แสดงงานทั้งหมดที่ถูก Published ในโครงการของคุณ"
+      class="jumbotron-special-lg"
     >
       <small>เลือกงานข้างล่างนี้เพื่อจัดการรายการคำขออนุมัติ</small>
     </b-jumbotron>

@@ -4,6 +4,7 @@
       fluid
       header="Dashboard"
       lead="Workforce management system for non-routine on Line Application."
+      class="jumbotron-special"
     ></b-jumbotron>
   </div>
 </template>

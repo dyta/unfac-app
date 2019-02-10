@@ -6,41 +6,44 @@
     <b-navbar toggleable="md" type="light" fixed="top" class="navbar-light bg-light">
       <sidebar-toggle/>
       <b-container>
-        <b-navbar-brand tag="h1" @click="handleClick" class="logo-nav mb-0">UNFAC
-          <div class="small-logo">
-            <small>Management</small>
-            <small>Console</small>
-          </div>
-        </b-navbar-brand>
+        <b-col sm="4" md="6" class="p-0 m-0">
+          <b-navbar-brand
+            tag="h1"
+            @click="()=> $router.push('/overview')"
+            class="logo-nav mb-0"
+          >UNFAC
+            <div class="small-logo">
+              <small>Management</small>
+              <small>Console</small>
+            </div>
+          </b-navbar-brand>
+        </b-col>
+        <b-col sm="8" md="6" class="p-0 m-0" style="display: flex;">
+          <b-navbar-nav class="nav-side ml-auto">
+            <div class="scrolling-wrapper">
+              <b-button
+                variant="link"
+                class="list"
+                @click="()=>{$router.push('/overview'), autoToggle()}"
+                v-if="user.entId"
+              >แดชบอร์ด</b-button>
+              <b-button variant="link" class="list" color="blue" @click="handleClick">คอลโซล</b-button>
+              <b-button
+                variant="link"
+                class="list"
+                @click="()=>{$router.push('/account'), autoToggle()}"
+              >บัญชี</b-button>
+              <b-button
+                variant="link"
+                class="list"
+                @click="()=>{$router.push('/setting/application'), autoToggle()}"
+                v-if="user.entId"
+              >ตั้งค่าแอปพลิเคชัน</b-button>
+            </div>
+          </b-navbar-nav>
+        </b-col>
+
         <!-- Right aligned nav items -->
-        <b-navbar-nav class="nav-side ml-auto">
-          <div class="scrolling-wrapper">
-            <b-button
-              variant="link"
-              class="list"
-              @click="()=>{$router.push('/overview'), autoToggle()}"
-              v-if="user.entId"
-            >หน้าแรก</b-button>
-            <b-button
-              variant="link"
-              class="list"
-              color="blue"
-              @click="handleClick"
-              v-if="user.entId"
-            >แผงควบคุม</b-button>
-            <b-button
-              variant="link"
-              class="list"
-              @click="()=>{$router.push('/account'), autoToggle()}"
-            >บัญชีของฉัน</b-button>
-            <b-button
-              variant="link"
-              class="list"
-              @click="()=>{$router.push('/setting/application'), autoToggle()}"
-              v-if="user.entId"
-            >ตั้งค่าแอปพลิเคชัน</b-button>
-          </div>
-        </b-navbar-nav>
       </b-container>
     </b-navbar>
     <div class="content-margin-top">
@@ -81,6 +84,7 @@ export default {
     auth() {
       return this.$store.state.auth;
     },
+
     user() {
       let user = this.$store.state.user;
       if (user && !user.entId) {
@@ -94,6 +98,9 @@ export default {
     },
     open() {
       return this.$store.state.sidebarOpen;
+    },
+    homeDisabled() {
+      return this.$nuxt.$route.name === "overview";
     }
   },
   methods: {
@@ -108,6 +115,7 @@ export default {
         }
       });
     },
+
     handleClick() {
       this.$store.dispatch("toggleSidebar");
     },
@@ -131,7 +139,7 @@ export default {
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
-
+  text-align: center;
   .list {
     display: inline-block;
     padding: 1rem;

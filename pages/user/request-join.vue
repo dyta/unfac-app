@@ -4,6 +4,7 @@
       fluid
       header="รายการคำขอเข้าร่วม"
       :lead="`จำนวนคำขอทั้งหมด ${this.items.length} รายการ`"
+      class="jumbotron-special-lg"
     >
       <b-row>
         <b-col md="7">

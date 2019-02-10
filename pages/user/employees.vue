@@ -1,6 +1,11 @@
 <template>
   <div>
-    <b-jumbotron fluid header="พนักงาน" :lead="`จำนวนพนักงานทั้งหมด ${this.items.length} คน`">
+    <b-jumbotron
+      fluid
+      header="พนักงาน"
+      class="jumbotron-special-lg"
+      :lead="`จำนวนพนักงานทั้งหมด ${this.items.length} คน`"
+    >
       <b-row>
         <b-col md="6">
           <b-form-group label class="mb-0">
@@ -166,5 +171,9 @@ export default {
 <style lang="scss" scoped>
 .display-3 {
   font-size: 2rem !important;
+}
+.form-control {
+  border: 1px solid #ced4da;
+  height: auto !important;
 }
 </style>

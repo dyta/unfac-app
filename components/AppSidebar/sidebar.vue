@@ -1,5 +1,5 @@
 <template>
-  <div :class="[$style.sidebar]" v-if="auth">
+  <div :class="[$style.sidebar]" v-if="auth || !homeDisabled">
     <b-card class="text-left profile">
       <div class="info">
         <b-img rounded="circle" :src="auth.photoURL" width="60"/>
@@ -137,6 +137,9 @@ export default {
     },
     currentPackage() {
       return this.$store.state.package;
+    },
+    homeDisabled() {
+      return this.$nuxt.$route.name === "overview";
     }
   },
   watch: {
@@ -163,8 +166,8 @@ export default {
 <style lang="scss" scoped>
 .card {
   border-radius: 0;
-  border-width: 0 0 1px 0;
-  background-color: var(--dark);
+  background-color: var(--bg-3-color);
+  border: 0;
 }
 
 .menu {

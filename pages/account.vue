@@ -6,6 +6,7 @@
       fluid
       header="บัญชีของฉัน"
       lead="Workforce management system for non-routine on Line Application."
+      class="jumbotron-special"
     ></b-jumbotron>
 
     <b-container class="mb-5">
