@@ -7,7 +7,12 @@
         <br>for non-routine on Line Application.
       </p>
       <div>
-        <b-button size="lg" class="btn-line" href="/user/authorize">เชื่อมต่อด้วยบัญชี Line</b-button>
+        <b-button
+          size="lg"
+          variant="primary"
+          class="btn-line"
+          href="/user/authorize"
+        >เชื่อมต่อด้วยบัญชี Line</b-button>
       </div>
       <small class="copy-right">&copy; 2019 unfac.co</small>
     </div>

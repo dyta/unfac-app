@@ -12,14 +12,16 @@
     <b-container class="mb-5">
       <b-tabs vertical nav-wrapper-class="col-12 col-md-4" content-class="col-12 col-md-8 px-4">
         <b-tab title="ข้อมูลบัญชี" active>
-          <b-alert variant="warning" show>
-            <i>Disabled</i>
-          </b-alert>
+          <b-card class="text-center">
+            <fa icon="exclamation-circle" size="2x" color="orange" class="mt-2"/>
+            <h5 class="mt-3">ไม่พร้อมใช้งาน</h5>
+          </b-card>
         </b-tab>
         <b-tab title="การเรียกเก็บเงิน">
-          <b-alert variant="warning" show>
-            <i>Disabled</i>
-          </b-alert>
+          <b-card class="text-center">
+            <fa icon="exclamation-circle" size="2x" color="orange" class="mt-2"/>
+            <h5 class="mt-3">ไม่พร้อมใช้งาน</h5>
+          </b-card>
         </b-tab>
       </b-tabs>
     </b-container>

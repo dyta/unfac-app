@@ -11,15 +11,20 @@
       <div v-if="setting">
         <b-tabs vertical nav-wrapper-class="col-12 col-md-4" content-class="col-12 col-md-8 px-4">
           <b-tab title="คีย์ API ของเว็บ" active>
-            <b-card class="text-left">
+            <b-card>
               <h6 class="bold">API KEY</h6>
               <hr>
-              <code>{{setting.API_KEY}}</code>
+              <div class="text-center">
+                <code>{{setting.API_KEY}}</code>
+              </div>
             </b-card>
-            <b-card class="text-left mt-2">
+            <b-card class="mt-3">
               <h6 class="bold">Webhook URL</h6>
               <hr>
-              <code>Disabled</code>
+              <div class="text-center">
+                <fa icon="exclamation-circle" size="2x" color="orange" class="mt-2"/>
+                <h6 class="mt-3">ไม่พร้อมใช้งาน</h6>
+              </div>
             </b-card>
             <div class="py-3">
               <b-link href="#">
@@ -28,15 +33,21 @@
             </div>
           </b-tab>
           <b-tab title="ตั้งค่า API สำหรับข้อความโต้ตอบ">
-            <b-card class="text-left">
+            <b-card>
               <h6 class="bold">Channel access token</h6>
               <hr>
-              <code>{{setting.LINE_ACCESS_TOKEN ? setting.LINE_ACCESS_TOKEN : 'Disabled'}}</code>
+              <div class="text-center">
+                <fa icon="exclamation-circle" size="2x" color="orange" class="mt-2"/>
+                <h6 class="mt-3">ไม่พร้อมใช้งาน</h6>
+              </div>
             </b-card>
-            <b-card class="text-left mt-2">
+            <b-card class="mt-3">
               <h6 class="bold">Channel secret</h6>
               <hr>
-              <code>{{setting.LINE_SECRET ? setting.LINE_SECRET : 'Disabled'}}</code>
+              <div class="text-center">
+                <fa icon="exclamation-circle" size="2x" color="orange" class="mt-2"/>
+                <h6 class="mt-3">ไม่พร้อมใช้งาน</h6>
+              </div>
             </b-card>
           </b-tab>
           <b-tab title="ลิงค์เชื่อมต่อ">
@@ -46,33 +57,39 @@
               src="https://developers.line.biz/media/liff/overview/viewTypes-4cb714f3.png"
               alt
             />
-            <b-card class="text-left mt-2">
+            <b-card class="mt-3">
               <h6 class="bold">Compact</h6>
               <hr>
-              <code>{{setting.liff_compact}}</code>
+              <div class="text-center">
+                <code class="text-center">{{setting.liff_compact}}</code>
+              </div>
             </b-card>
-            <b-card class="text-left mt-2">
+            <b-card class="mt-3">
               <h6 class="bold">Tall</h6>
               <hr>
-              <code>{{setting.liff_tall}}</code>
+              <div class="text-center">
+                <code class="text-center">{{setting.liff_tall}}</code>
+              </div>
             </b-card>
-            <b-card class="text-left mt-2">
+            <b-card class="mt-3">
               <h6 class="bold">Full</h6>
               <hr>
-              <code>{{setting.liff_full}}</code>
+              <div class="text-center">
+                <code class="text-center">{{setting.liff_full}}</code>
+              </div>
             </b-card>
           </b-tab>
         </b-tabs>
       </div>
-      <b-alert v-else variant="light" class="text-center" show>
-        <fa icon="exclamation-circle" size="2x" class="mt-2"/>
+      <b-card v-else class="text-center mt-3">
+        <fa icon="exclamation-circle" size="2x" color="orange" class="mt-2"/>
         <h5 class="mt-3">คุณยังไม่ได้เปิดใช้งาน</h5>
         <b-button
           variant="primary"
           class="px-5 mb-3 mt-2"
           @click="onClickOpenApi()"
         >เปิดใช้งานตอนนี้</b-button>
-      </b-alert>
+      </b-card>
     </b-container>
     <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".7" :height="34"></loading>
   </div>
@@ -154,5 +171,8 @@ export default {
 .form-control {
   border: 1px solid #ced4da;
   height: auto !important;
+}
+.card {
+  box-shadow: 0 0 1em var(--gray-light);
 }
 </style>

@@ -190,7 +190,7 @@ export default {
   height: 100%;
   max-width: 78vw;
   z-index: 1031;
-  border-right: 1px solid var(--border);
+  border-right: 1px solid var(--gray-light);
   background-color: var(--light);
 }
 
@@ -198,7 +198,7 @@ export default {
   .sidebar {
     width: 360px;
     max-width: 90vw;
-    border-right: 1px solid var(--border);
+    border-right: 1px solid var(--gray-light);
   }
 }
 </style>

@@ -306,7 +306,7 @@ export default {
   font-size: 2rem !important;
 }
 .form-control {
-  border: 1px solid var(--border);
+  border: 1px solid var(--gray-light);
 }
 .container-height-single {
   display: block;

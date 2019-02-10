@@ -39,11 +39,9 @@ a:hover,
   text-decoration: none;
 }
 
-.custom-file-input:lang(en)~.custom-file-label::after {
+.custom-file-input:lang(en) ~ .custom-file-label::after {
   content: "เลือกรูปภาพ";
 }
-
-
 
 // pagination
 .pagination-lg .page-link {
@@ -80,7 +78,7 @@ a:hover,
 
 .page-enter-active,
 .page-leave-active {
-  transition: all .2s ease-out;
+  transition: all 0.2s ease-out;
 }
 
 .page-enter,
@@ -93,7 +91,7 @@ a:hover,
   background: url("./images/blue_waves.png") var(--bg-1-color);
   background-position: top;
   background-repeat: no-repeat;
-  background-size: cover
+  background-size: cover;
 }
 
 .jumbotron-special {
@@ -104,7 +102,7 @@ a:hover,
   font-size: 14px;
 
   li a {
-    color: var(--gray)
+    color: var(--gray);
   }
 }
 
@@ -112,10 +110,9 @@ a:hover,
   background-color: transparent;
 }
 
-.breadcrumb-item+.breadcrumb-item::before {
+.breadcrumb-item + .breadcrumb-item::before {
   content: ":";
 }
-
 
 .nav {
   width: 100%;
@@ -133,8 +130,8 @@ a:hover,
 
 .navbar {
   padding: 0.1rem 0;
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 0.1rem .8em var(--secondary);
+  border-bottom: 1px solid var(--gray-light);
+  box-shadow: 0 0.1rem 0.8em var(--secondary);
 }
 
 .content-margin-top {
@@ -157,9 +154,9 @@ a:hover,
   .btn-line {
     width: 100%;
     border-radius: 50px;
-    background-color: var(--blue);
+    background-color: var(--primary-2);
     margin-bottom: 1rem;
-    border-color: var(--blue);
+    border-color: var(--primary-2);
   }
 
   .outline,
@@ -213,14 +210,14 @@ a:hover,
 .logo-nav {
   display: none;
   font-size: 1.6rem;
-  color: var(--bg-2-color) !important;
+  color: var(--primary-2) !important;
   font-weight: 600;
   cursor: pointer;
 }
 
 .small-logo {
   float: right;
-  margin-left: .4rem;
+  margin-left: 0.4rem;
   line-height: 12px;
   padding-top: 6px;
 
@@ -261,12 +258,10 @@ a:hover,
   padding-top: 12px;
 }
 
-
 // Text
 .text-delay {
-  color: var(--danger)
+  color: var(--danger);
 }
-
 
 // Tabs
 
@@ -279,8 +274,7 @@ a:hover,
 }
 
 .nav-tabs .nav-item {
-  margin-top: .5rem;
-
+  margin-top: 0.5rem;
 }
 
 .nav-tabs .nav-item:first-child {
@@ -291,13 +285,36 @@ a:hover,
   margin-bottom: 1rem;
 }
 
+.nav-tabs .nav-link {
+  border-color: var(--primary-2);
+  color: var(--primary-2);
+}
+
 .nav-tabs .nav-link:hover {
-  border-color: var(--primary)
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
   border: none;
-  background-color: var(--bg-2-color);
-  color: var(--light)
+  background: var(--primary-2);
+  background: -moz-linear-gradient(
+    left,
+    var(--primary) 0%,
+    var(--primary-2) 100%
+  );
+  background: -webkit-linear-gradient(
+    left,
+    var(--primary) 0%,
+    var(--primary-2) 100%
+  );
+  background: linear-gradient(
+    to right,
+    var(--primary) 0%,
+    var(--primary-2) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#87e0fd', endColorstr='#05abe0', GradientType=1);
+  /* IE6-9 */
+  color: var(--light);
 }
