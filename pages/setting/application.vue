@@ -10,7 +10,7 @@
     <b-container class="mb-5">
       <div v-if="!asyncSource && setting">
         <b-tabs vertical nav-wrapper-class="col-12 col-md-4" content-class="col-12 col-md-8 px-4">
-          <b-tab title="คีย์ API ของเว็บ" active>
+          <b-tab title="คีย์ API ของเว็บ">
             <b-card>
               <h6 class="bold">API KEY</h6>
               <hr>
@@ -50,7 +50,7 @@
               </div>
             </b-card>
           </b-tab>
-          <b-tab title="ลิงค์เชื่อมต่อ">
+          <b-tab title="ลิงค์เชื่อมต่อ" active>
             <b-img
               rounded
               fluid
@@ -58,25 +58,94 @@
               alt
             />
             <b-card class="mt-3">
-              <h6 class="bold">Compact</h6>
+              <h6 class="bold">แสดงงาน</h6>
               <hr>
-              <div class="text-center">
-                <code class="text-center">{{setting.liff_compact}}</code>
-              </div>
+              <b-row>
+                <b-col md="2">
+                  <small>Compact:</small>
+                </b-col>
+                <b-col>
+                  <code>{{setting.liff_compact_home}}</code>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col md="2">
+                  <small>Tall:</small>
+                </b-col>
+                <b-col>
+                  <code>{{setting.liff_tall_home}}</code>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col md="2">
+                  <small>Full:</small>
+                </b-col>
+                <b-col>
+                  <code>{{setting.liff_full_home}}</code>
+                </b-col>
+              </b-row>
             </b-card>
             <b-card class="mt-3">
-              <h6 class="bold">Tall</h6>
+              <h6 class="bold">ประวัติการรับงาน</h6>
               <hr>
-              <div class="text-center">
-                <code class="text-center">{{setting.liff_tall}}</code>
-              </div>
+              <b-row>
+                <b-col md="2">
+                  <small>Compact:</small>
+                </b-col>
+                <b-col>
+                  <code>{{setting.liff_compact_history}}</code>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col md="2">
+                  <small>Tall:</small>
+                </b-col>
+                <b-col>
+                  <code>{{setting.liff_tall_history}}</code>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col md="2">
+                  <small>Full:</small>
+                </b-col>
+                <b-col>
+                  <code>{{setting.liff_full_history}}</code>
+                </b-col>
+              </b-row>
             </b-card>
             <b-card class="mt-3">
-              <h6 class="bold">Full</h6>
+              <h6 class="bold">ข้อมูลส่วนตัวของพนักงาน</h6>
               <hr>
-              <div class="text-center">
-                <code class="text-center">{{setting.liff_full}}</code>
-              </div>
+              <b-row>
+                <b-col md="2">
+                  <small>Compact:</small>
+                </b-col>
+                <b-col>
+                  <code>{{setting.liff_compact_account}}</code>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col md="2">
+                  <small>Tall:</small>
+                </b-col>
+                <b-col>
+                  <code>{{setting.liff_tall_account}}</code>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col md="2">
+                  <small>Full:</small>
+                </b-col>
+                <b-col>
+                  <code>{{setting.liff_full_account}}</code>
+                </b-col>
+              </b-row>
+            </b-card>
+          </b-tab>
+          <b-tab title="ลิงค์กำหนดเอง">
+            <b-card class="text-center">
+              <fa icon="exclamation-circle" size="3x" color="orange" class="mt-2"/>
+              <h5 class="mt-3">ไม่พร้อมใช้งาน</h5>
             </b-card>
           </b-tab>
         </b-tabs>
