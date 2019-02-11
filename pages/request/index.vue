@@ -4,9 +4,14 @@
       fluid
       header="เลือกงานที่ถูกเผยแพร่"
       lead="แสดงงานทั้งหมดที่ถูก Published ในโครงการของคุณ"
-      class="jumbotron-special-lg mb-0"
+      class="jumbotron-special-lg mb-0 pb-3"
     >
       <small>เลือกงานข้างล่างนี้เพื่อจัดการรายการคำขออนุมัติ</small>
+
+      <b-button variant="outline-primary" size="sm" @click="()=> this.fetch()">
+        <fa icon="redo-alt" class="mr-1"/>
+        <small>Refresh</small>
+      </b-button>
     </b-jumbotron>
     <b-container v-if="!asyncSource && items.length > 0">
       <b-row v-if="items.length > 0">
@@ -19,7 +24,8 @@
               <b-img slot="aside" rounded :src="item.workImages" width="80" height="80"/>
               <b-container class="p-0 text-center">
                 <h6 class="mt-0 text-left">
-                  #{{item.workId}}
+                  SEQ.
+                  <b>{{item.workId}}</b>
                   <b-badge
                     pill
                     :variant="StatusColor(item.workStatus).color"

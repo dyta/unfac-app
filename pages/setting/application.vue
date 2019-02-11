@@ -7,10 +7,10 @@
       lead="เชื่อมโยงระบบ Unfac ไปยัง LINE@ ของคุณ"
     ></b-jumbotron>
 
-    <b-container class="mb-5">
+    <b-container>
       <div v-if="!asyncSource && setting">
         <b-tabs vertical nav-wrapper-class="col-12 col-md-4" content-class="col-12 col-md-8 px-4">
-          <b-tab title="คีย์ API ของเว็บ">
+          <b-tab title="คีย์ API ของเว็บ" active>
             <b-card>
               <h6 class="bold">API KEY</h6>
               <hr>
@@ -50,7 +50,7 @@
               </div>
             </b-card>
           </b-tab>
-          <b-tab title="ลิงค์เชื่อมต่อ" active>
+          <b-tab title="ลิงค์เชื่อมต่อ">
             <b-img
               rounded
               fluid

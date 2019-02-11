@@ -4,7 +4,7 @@
       fluid
       header="รายการคำขอเข้าร่วม"
       :lead="`จำนวนคำขอทั้งหมด ${this.items.length} รายการ`"
-      class="jumbotron-special-lg mb-0"
+      class="jumbotron-special-lg pb-0"
     >
       <b-row>
         <b-col md="7">
@@ -23,9 +23,9 @@
           </b-form-group>
         </b-col>
         <b-col sm="2">
-          <b-form-group label="ดึงข้อมูลใหม่">
-            <b-button block @click="()=> this.fetch()">
-              <fa icon="redo-alt"/>
+          <b-form-group label="โหลดอีกครั้ง">
+            <b-button block variant="outline-primary" @click="()=> this.fetch()">
+              <fa icon="redo-alt" class="mr-1"/>
             </b-button>
           </b-form-group>
         </b-col>

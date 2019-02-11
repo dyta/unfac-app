@@ -20,7 +20,7 @@
               </b-form-group>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="ดึงข้อมูลใหม่">
+              <b-form-group label="โหลดอีกครั้ง">
                 <b-button block @click="()=> this.fetch()">
                   <fa icon="redo-alt"/>
                 </b-button>
@@ -485,11 +485,6 @@ export default {
         {
           key: "workVolume",
           label: "จำนวน",
-          sortable: true
-        },
-        {
-          key: "workPickVolume",
-          label: "คำขออนุมัติ",
           sortable: true
         },
         { key: "actions", label: "ตัวเลือกการจัดการ" }

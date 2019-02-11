@@ -7,19 +7,26 @@
       :lead="`จำนวนพนักงานทั้งหมด ${this.items.length} คน`"
     >
       <b-row>
-        <b-col md="6">
-          <b-form-group label class="mb-0">
+        <b-col md="7">
+          <b-form-group label="ค้นหา">
             <b-input-group>
-              <b-form-input v-model="filter" placeholder="ค้นหาคำที่เกี่ยวข้อง"/>
+              <b-form-input v-model="filter" placeholder="ID ชื่อพนักงานหรือเบอร์โทร"/>
               <b-input-group-append>
                 <b-btn :disabled="!filter" @click="filter = ''" style="z-index: 0">ล้างคำค้นหา</b-btn>
               </b-input-group-append>
             </b-input-group>
           </b-form-group>
         </b-col>
-        <b-col md="6">
-          <b-form-group horizontal label="จำนวนรายการ" class="mb-0">
+        <b-col md="3">
+          <b-form-group label="จำนวนรายการ" class="mb-0">
             <b-form-select :options="pageOptions" v-model="perPage"/>
+          </b-form-group>
+        </b-col>
+        <b-col sm="2">
+          <b-form-group label="โหลดอีกครั้ง">
+            <b-button block variant="outline-primary" @click="()=> this.fetch()">
+              <fa icon="redo-alt" class="mr-1"/>
+            </b-button>
           </b-form-group>
         </b-col>
       </b-row>

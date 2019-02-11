@@ -1,7 +1,9 @@
 <template>
   <div>
-    <b-container class="mb-4">
-      <b-breadcrumb class="m-0 px-0 border-bottom" :items="sub_nav"/>
+    <b-container>
+      <div class="pt-1">
+        <b-breadcrumb class="px-0 mt-4 border-bottom" :items="sub_nav"/>
+      </div>
       <h1 class="display-3 my-3">เพิ่มงาน</h1>
       <hr>
       <b-row class="justify-content-md-center">
