@@ -61,7 +61,7 @@
               <h6 class="bold">แสดงงาน</h6>
               <hr>
               <b-row>
-                <b-col md="2">
+                <b-col lg="2">
                   <small>Compact:</small>
                 </b-col>
                 <b-col>
@@ -69,7 +69,7 @@
                 </b-col>
               </b-row>
               <b-row>
-                <b-col md="2">
+                <b-col lg="2">
                   <small>Tall:</small>
                 </b-col>
                 <b-col>
@@ -77,7 +77,7 @@
                 </b-col>
               </b-row>
               <b-row>
-                <b-col md="2">
+                <b-col lg="2">
                   <small>Full:</small>
                 </b-col>
                 <b-col>
@@ -89,7 +89,7 @@
               <h6 class="bold">ประวัติการรับงาน</h6>
               <hr>
               <b-row>
-                <b-col md="2">
+                <b-col lg="2">
                   <small>Compact:</small>
                 </b-col>
                 <b-col>
@@ -97,7 +97,7 @@
                 </b-col>
               </b-row>
               <b-row>
-                <b-col md="2">
+                <b-col lg="2">
                   <small>Tall:</small>
                 </b-col>
                 <b-col>
@@ -105,7 +105,7 @@
                 </b-col>
               </b-row>
               <b-row>
-                <b-col md="2">
+                <b-col lg="2">
                   <small>Full:</small>
                 </b-col>
                 <b-col>
@@ -117,7 +117,7 @@
               <h6 class="bold">ข้อมูลส่วนตัวของพนักงาน</h6>
               <hr>
               <b-row>
-                <b-col md="2">
+                <b-col lg="2">
                   <small>Compact:</small>
                 </b-col>
                 <b-col>
@@ -125,7 +125,7 @@
                 </b-col>
               </b-row>
               <b-row>
-                <b-col md="2">
+                <b-col lg="2">
                   <small>Tall:</small>
                 </b-col>
                 <b-col>
@@ -133,7 +133,7 @@
                 </b-col>
               </b-row>
               <b-row>
-                <b-col md="2">
+                <b-col lg="2">
                   <small>Full:</small>
                 </b-col>
                 <b-col>
