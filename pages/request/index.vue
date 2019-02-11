@@ -24,7 +24,7 @@
               <b-img slot="aside" rounded :src="item.workImages" width="80" height="80"/>
               <b-container class="p-0 text-center">
                 <h6 class="mt-0 text-left">
-                  SEQ.
+                  งานที่
                   <b>{{item.workId}}</b>
                   <b-badge
                     pill
@@ -32,20 +32,23 @@
                   >{{StatusColor(item.workStatus).text}}</b-badge>
                 </h6>
                 <b-row class="font-size-12 border-bottom border-top py-1 mx-1">
-                  <b-col md="4" class="border-right p-0">คำขอ</b-col>
+                  <b-col md="4" class="p-0">คำขอ</b-col>
                   <b-col md="4" class="p-0">อนุมัติ</b-col>
-                  <b-col md="4" class="border-left p-0">เสร็จสิ้น</b-col>
+                  <b-col md="4" class="p-0">คงเหลือ</b-col>
                 </b-row>
                 <b-row class="pt-1 mx-1">
-                  <b-col md="4" class="border-right p-0">{{item.pending}}</b-col>
-                  <b-col md="4" class="p-0">{{item.approved}}</b-col>
-                  <b-col md="4" class="border-left p-0">{{item.complete}}/{{item.workVolume}}</b-col>
+                  <b-col md="4" class="p-0">{{item.pendingSum ? item.pendingSum : 0}}</b-col>
+                  <b-col md="4" class="p-0">{{item.approvedSum ? item.approvedSum : 0}}</b-col>
+                  <b-col
+                    md="4"
+                    class="p-0"
+                  >{{item.workVolume-(item.approvedSum ? item.approvedSum : 0)}}</b-col>
                 </b-row>
               </b-container>
             </b-media>
             <div slot="footer">
               <b-progress
-                :value="item.complete"
+                :value="item.approvedSum ? item.approvedSum*2 : 0"
                 :max="item.workVolume"
                 :variant="StatusColor(item.workStatus).color"
                 height="3px"

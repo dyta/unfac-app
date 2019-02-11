@@ -2,7 +2,7 @@
   <div>
     <b-jumbotron
       fluid
-      :header="`รออนุมัติคำขอ #${$route.query.wid}`"
+      :header="`รายการอนุมัติคำขอ #${$route.query.wid}`"
       :lead="`Workforce management system for non-routine on Line Application.`"
       class="jumbotron-special-lg mb-0"
     >
@@ -42,7 +42,7 @@
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
-                    <b>หมายเลขคำขอ {{item.rwId}}</b>
+                    <b>#RID: {{item.rwId}}</b>
                   </small>
                   <br>
                   <small>จำนวนที่ขอ {{item.rwVolume}} รายการ เมื่อ {{$moment(item.rwCreateAt).fromNow()}}</small>
@@ -86,7 +86,7 @@
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
-                    <b>หมายเลขคำขอ {{item.rwId}}</b>
+                    <b>#RID: {{item.rwId}}</b>
                   </small>
                   <br>
                   <small>จำนวนที่ขอ {{item.rwVolume}} รายการ เมื่อ {{$moment(item.rwCreateAt).fromNow()}}</small>
@@ -127,7 +127,7 @@
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
-                    <b>หมายเลขคำขอ {{item.rwId}}</b>
+                    <b>#RID: {{item.rwId}}</b>
                   </small>
                   <br>
                   <small>จำนวนที่ขอ {{item.rwVolume}} รายการ เมื่อ {{$moment(item.rwCreateAt).fromNow()}}</small>
@@ -168,7 +168,7 @@
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
-                    <b>หมายเลขคำขอ {{item.rwId}}</b>
+                    <b>#RID: {{item.rwId}}</b>
                   </small>
                   <br>
                   <small>จำนวนที่ขอ {{item.rwVolume}} รายการ เมื่อ {{$moment(item.rwCreateAt).fromNow()}}</small>
@@ -251,34 +251,33 @@ export default {
     async UpdateToDatabase(toStatus, approve) {
       let self = this;
       let element = this.selectElement;
-      let data = {
-        newStatus: toStatus,
-        approve,
-        ...element
-      };
-      console.log("data: ", data);
-      // await this.$axios
-      //   .$put(`/console/v2/request/${element.rwId}`, )
-      //   .then(function(res) {
-      //     element.rwStatus = toStatus;
-      //     self.$toast.success(
-      //       `${self.status(toStatus)} หมายเลขคำขอ #${
-      //         self.selectElement.rwId
-      //       } จำนวน ${approve ? approve : element.rwVolume} รายการแล้ว`,
-      //       {
-      //         theme: "outline",
-      //         position: "bottom-center",
-      //         duration: 4000
-      //       }
-      //     );
-      //   })
-      //   .catch(e => {
-      //     self.$toast.error(e, {
-      //       theme: "outline",
-      //       position: "bottom-center",
-      //       duration: 4000
-      //     });
-      //   });
+
+      await this.$axios
+        .$put(`/v2/request/${element.rwId}/${self.user.entId}`, {
+          newStatus: toStatus,
+          approve,
+          ...element
+        })
+        .then(function(res) {
+          element.rwStatus = toStatus;
+          self.$toast.info(
+            `${self.status(toStatus)} RID${self.selectElement.rwId} จำนวน ${
+              approve ? approve : element.rwVolume
+            } รายการแล้ว`,
+            {
+              theme: "outline",
+              position: "bottom-right",
+              duration: 4000
+            }
+          );
+        })
+        .catch(e => {
+          self.$toast.error(e, {
+            theme: "outline",
+            position: "bottom-right",
+            duration: 4000
+          });
+        });
       this.fetch();
     },
     changeStatus(toStatus) {
@@ -291,9 +290,7 @@ export default {
           if (self.selectElement.rwVolume === 1) {
             self
               .$swal({
-                title: `${self.status(toStatus)} หมายเลขคำขอ #${
-                  self.selectElement.rwId
-                }`,
+                title: `${self.status(toStatus)} RID${self.selectElement.rwId}`,
                 html: "กรุณายืนยันภายใน <strong>15</strong> วินาที",
                 type: "question",
                 timer: 15000,
@@ -324,9 +321,7 @@ export default {
             self
               .$swal({
                 input: "number",
-                title: `${self.status(toStatus)} หมายเลขคำขอ #${
-                  self.selectElement.rwId
-                }`,
+                title: `${self.status(toStatus)} RID${self.selectElement.rwId}`,
                 text: `มีปริมาณงานที่สามารถอนุมัติได้ ทั้งหมด ${
                   amount > self.selectElement.rwVolume
                     ? self.selectElement.rwVolume
@@ -349,7 +344,7 @@ export default {
                   result.value > self.selectElement.rwVolume
                 ) {
                   self.$toast.error(
-                    `หมายเลขคำขอ #${
+                    `RID${
                       self.selectElement.rwId
                     } มีปริมาณที่สามารถอนุมัติได้ ${
                       amount > self.selectElement.rwVolume
@@ -382,9 +377,7 @@ export default {
       } else if (formStatus === 1 && toStatus === 3) {
         self
           .$swal({
-            title: `${self.status(toStatus)} หมายเลขคำขอ #${
-              self.selectElement.rwId
-            }`,
+            title: `${self.status(toStatus)} RID${self.selectElement.rwId}`,
             html: "กรุณายืนยันภายใน <strong>15</strong> วินาที",
             type: "question",
             timer: 15000,
@@ -410,49 +403,55 @@ export default {
             }
           });
       } else if (formStatus === 2 && toStatus === 3) {
-        self
-          .$swal({
-            input: "number",
-            title: `${self.status(toStatus)} หมายเลขคำขอ #${
-              self.selectElement.rwId
-            }`,
-            text: `มีปริมาณงานที่สามารถยกเลิกได้ ทั้งหมด ${self.selectElement
-              .rwVolume - self.selectElement.mfProgress} รายการ`,
-            confirmButtonText: "ยืนยัน",
-            showCancelButton: true,
-            cancelButtonText: "ยกเลิก"
-          })
-          .then(result => {
-            if (
-              result.value > 0 &&
-              result.value <=
-                self.selectElement.rwVolume - self.selectElement.mfProgress
-            ) {
-              self.$toast.success(`ยกเลิก ${result.value} รายการสำเร็จ`, {
-                theme: "outline",
-                position: "bottom-right",
-                duration: 4000
-              });
-            } else if (
-              result.value < 1 ||
-              result.value >
-                self.selectElement.rwVolume - self.selectElement.mfProgress
-            ) {
-              self.$toast.error(
-                `หมายเลขคำขอ #${self.selectElement.rwId} ยกเลิกได้ ${self
-                  .selectElement.rwVolume -
-                  self.selectElement.mfProgress} รายการเท่านั้น`,
-                {
+        if (self.selectElement.rwVolume - self.selectElement.mfProgress !== 0) {
+          self
+            .$swal({
+              input: "number",
+              title: `${self.status(toStatus)} RID${self.selectElement.rwId}`,
+              text: `มีปริมาณงานที่สามารถยกเลิกได้ ทั้งหมด ${self.selectElement
+                .rwVolume - self.selectElement.mfProgress} รายการ`,
+              confirmButtonText: "ยืนยัน",
+              showCancelButton: true,
+              cancelButtonText: "ยกเลิก"
+            })
+            .then(result => {
+              if (
+                result.value > 0 &&
+                result.value <=
+                  self.selectElement.rwVolume - self.selectElement.mfProgress
+              ) {
+                self.$toast.info(`ยกเลิก ${result.value} รายการสำเร็จ`, {
                   theme: "outline",
                   position: "bottom-right",
                   duration: 4000
-                }
-              );
-            }
-            self.fetch();
+                });
+              } else if (
+                result.value < 1 ||
+                result.value >
+                  self.selectElement.rwVolume - self.selectElement.mfProgress
+              ) {
+                self.$toast.error(
+                  `RID${self.selectElement.rwId} ยกเลิกได้ ${self.selectElement
+                    .rwVolume - self.selectElement.mfProgress} รายการเท่านั้น`,
+                  {
+                    theme: "outline",
+                    position: "bottom-right",
+                    duration: 4000
+                  }
+                );
+              }
+              self.fetch();
+            });
+        } else {
+          self.$toast.error(`ไม่สามารถยกเลิกได้`, {
+            theme: "outline",
+            position: "bottom-right",
+            duration: 4000
           });
+          self.fetch();
+        }
       } else if (formStatus === 2 && toStatus === 4) {
-        self.$toast.info(`ระบบจะอัพเดทอัตโนมัติเมื่อเสร็จสิ้นกระบวนการรับมอบ`, {
+        self.$toast.info(`ระบบจะอัพเดทอัตโนมัติเมื่อเสร็จสิ้นกระบวนการผลิต`, {
           theme: "outline",
           position: "bottom-right",
           duration: 4000
