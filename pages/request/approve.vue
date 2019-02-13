@@ -332,7 +332,7 @@ export default {
                 if (result.value) {
                   self.UpdateToDatabase(toStatus, 1);
                 } else {
-                  self.fetch();
+                  self.fetchLoading();
                 }
               });
           } else {
@@ -375,9 +375,9 @@ export default {
                       duration: 4000
                     }
                   );
-                  self.fetch();
+                  self.fetchLoading();
                 } else {
-                  self.fetch();
+                  self.fetchLoading();
                 }
               });
           }
@@ -390,7 +390,7 @@ export default {
               duration: 4000
             }
           );
-          self.fetch();
+          self.fetchLoading();
         }
       } else if (formStatus === 1 && toStatus === 3) {
         self
@@ -417,7 +417,7 @@ export default {
             if (result.value) {
               self.UpdateToDatabase(toStatus);
             } else {
-              self.fetch();
+              self.fetchLoading();
             }
           });
       } else if (formStatus === 2 && toStatus === 3) {
@@ -454,7 +454,7 @@ export default {
                   true
                 );
               } else {
-                self.fetch();
+                self.fetchLoading();
               }
             });
         } else {
@@ -463,7 +463,7 @@ export default {
             position: "bottom-right",
             duration: 4000
           });
-          self.fetch();
+          self.fetchLoading();
         }
       } else {
         self.$toast.error(`ปฏิเสธคำขอไปยังสถานะ${self.status(toStatus)}`, {
@@ -471,7 +471,7 @@ export default {
           position: "bottom-right",
           duration: 4000
         });
-        self.fetch();
+        self.fetchLoading();
       }
     },
     fetchLoading() {

@@ -412,7 +412,7 @@ export default {
                 self.fetchLoading();
               });
           } else {
-            self.fetch();
+            self.fetchLoading();
           }
         });
     },
@@ -472,10 +472,11 @@ export default {
                     if (result.value) {
                       self.UpdateToDB(toStatus, result.value);
                     } else {
-                      self.fetch();
+                      self.fetchLoading();
                     }
                   });
               } else {
+                self.fetchLoading();
                 self.errorDialog(
                   "ยังส่งความคืบหน้าไม่ครบถ้วน ลดปริมาณงานได้ที่เมนูอนุมัติคำขอ"
                 );
