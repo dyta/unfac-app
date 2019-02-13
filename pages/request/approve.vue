@@ -2,18 +2,27 @@
   <div>
     <b-jumbotron
       fluid
-      :header="`รายการอนุมัติคำขอ #${$route.query.wid}`"
+      :header="`จัดการคำของาน #${$route.query.wid}`"
       :lead="`Workforce management system for non-routine on Line Application.`"
       class="jumbotron-special-lg mb-0"
     >
       <small>ลากงานข้างล่างนี้เพื่อจัดการรายการคำขอ</small>
+      <b-button
+        v-if="approved.length > 0"
+        variant="primary"
+        size="sm"
+        @click="()=> $router.push(`/manufacture/manage?wid=${$route.query.wid}&eid=${user.entId}`)"
+      >
+        <fa icon="eye" class="mr-1"/>
+        <small>ดูรายการผลิตของงานนี้</small>
+      </b-button>
       <b-button variant="outline-primary" size="sm" @click="()=> this.fetchLoading()">
         <fa icon="redo-alt" class="mr-1"/>
         <small>Refresh</small>
       </b-button>
     </b-jumbotron>
 
-    <b-container fluid v-if="!asyncSource && totalRows > 0" class="w-75">
+    <b-container fluid v-if="!asyncSource && totalRows > 0" class="w-75 p-0">
       <b-row class="text-center">
         <b-col md="6" lg="3" class="text-left mt-3">
           <h5 class="py-2">รออนุมัติ
@@ -42,7 +51,7 @@
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
-                    <b>#RID: {{item.rwId}}</b>
+                    <b>#รหัสคำขอ: {{item.rwId}}</b>
                   </small>
                   <br>
                   <small>จำนวนที่ขอ {{item.rwVolume}} รายการ เมื่อ {{$moment(item.rwCreateAt).fromNow()}}</small>
@@ -55,7 +64,7 @@
               v-model="pending"
               :options="{group:{name: 'rwStatus', pull: false, put:false }}"
             >
-              <b-card class="text-center mt-2">ไม่มีรายการ</b-card>
+              <b-card class="text-center mt-2" bg-variant="light">ไม่มีรายการ</b-card>
             </draggable>
           </div>
         </b-col>
@@ -86,7 +95,9 @@
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
-                    <b>#RID: {{item.rwId}}</b>
+                    <b>#รหัสคำขอ: {{item.rwId}}</b>
+                    
+                    <b class="text-primary">#รหัสการผลิต: {{item.mfId}}</b>
                   </small>
                   <br>
                   <small>จำนวนที่ขอ {{item.rwVolume}} รายการ เมื่อ {{$moment(item.rwCreateAt).fromNow()}}</small>
@@ -95,7 +106,7 @@
             </draggable>
           </div>
           <div v-else>
-            <draggable v-model="approved" :options="{group:{name: 'rwStatus', pull: false }}">
+            <draggable v-model="approved" :options="{group:{name: 'rwStatus', pull: false, }}">
               <b-card class="text-center mt-2" bg-variant="light">ไม่มีรายการ</b-card>
             </draggable>
           </div>
@@ -107,7 +118,7 @@
           <div v-if="completed.length > 0">
             <draggable
               v-model="completed"
-              :options="{group:{name: 'rwStatus', pull: false}}"
+              :options="{group:{name: 'rwStatus', pull: false, put: false}}"
               @add="changeStatus(4)"
               @change="changeElement"
             >
@@ -127,7 +138,9 @@
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
-                    <b>#RID: {{item.rwId}}</b>
+                    <b>#รหัสคำขอ: {{item.rwId}}</b>
+                    
+                    <b class="text-success">#รหัสการผลิต: {{item.mfId}}</b>
                   </small>
                   <br>
                   <small>จำนวนที่ขอ {{item.rwVolume}} รายการ เมื่อ {{$moment(item.rwCreateAt).fromNow()}}</small>
@@ -136,7 +149,10 @@
             </draggable>
           </div>
           <div v-else>
-            <draggable v-model="completed" :options="{group:{name: 'rwStatus', pull: false}}">
+            <draggable
+              v-model="completed"
+              :options="{group:{name: 'rwStatus', pull: false, put: false}}"
+            >
               <b-card class="text-center mt-2" bg-variant="light">ไม่มีรายการ</b-card>
             </draggable>
           </div>
@@ -168,7 +184,9 @@
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
-                    <b>#RID: {{item.rwId}}</b>
+                    <b>#รหัสคำขอ: {{item.rwId}}</b>
+                    
+                    <b class="text-danger">#รหัสการผลิต: {{item.mfId}}</b>
                   </small>
                   <br>
                   <small>จำนวนที่ขอ {{item.rwVolume}} รายการ เมื่อ {{$moment(item.rwCreateAt).fromNow()}}</small>
@@ -200,7 +218,7 @@ export default {
   layout: "default",
   head() {
     return {
-      title: "Approve"
+      title: "Approve Request"
     };
   },
   data() {
@@ -248,14 +266,14 @@ export default {
         this.selectElement = c.added.element;
       }
     },
-    async UpdateToDatabase(toStatus, approve) {
+    async UpdateToDatabase(toStatus, approve, cutloss) {
       let self = this;
       let element = this.selectElement;
-
       await this.$axios
         .$put(`/v2/request/${element.rwId}/${self.user.entId}`, {
           newStatus: toStatus,
           approve,
+          cutloss,
           ...element
         })
         .then(function(res) {
@@ -406,41 +424,38 @@ export default {
         if (self.selectElement.rwVolume - self.selectElement.mfProgress !== 0) {
           self
             .$swal({
-              input: "number",
               title: `${self.status(toStatus)} RID${self.selectElement.rwId}`,
-              text: `มีปริมาณงานที่สามารถยกเลิกได้ ทั้งหมด ${self.selectElement
-                .rwVolume - self.selectElement.mfProgress} รายการ`,
-              confirmButtonText: "ยืนยัน",
+              html: `ยกเลิกจำนวนที่เหลือ ${self.selectElement.rwVolume -
+                self.selectElement
+                  .mfProgress} รายการ <br><small>กรุณายืนยันภายใน <strong>15</strong> วินาที</small>`,
+              type: "question",
+              timer: 15000,
+              onBeforeOpen: () => {
+                timerInterval = setInterval(() => {
+                  self.$swal
+                    .getContent()
+                    .querySelector("strong").textContent = (
+                    self.$swal.getTimerLeft() / 1000
+                  ).toFixed(0);
+                }, 1000);
+              },
+              onClose: () => {
+                clearInterval(timerInterval);
+              },
               showCancelButton: true,
+              confirmButtonText: "ยืนยัน",
               cancelButtonText: "ยกเลิก"
             })
             .then(result => {
-              if (
-                result.value > 0 &&
-                result.value <=
-                  self.selectElement.rwVolume - self.selectElement.mfProgress
-              ) {
-                self.$toast.info(`ยกเลิก ${result.value} รายการสำเร็จ`, {
-                  theme: "outline",
-                  position: "bottom-right",
-                  duration: 4000
-                });
-              } else if (
-                result.value < 1 ||
-                result.value >
-                  self.selectElement.rwVolume - self.selectElement.mfProgress
-              ) {
-                self.$toast.error(
-                  `RID${self.selectElement.rwId} ยกเลิกได้ ${self.selectElement
-                    .rwVolume - self.selectElement.mfProgress} รายการเท่านั้น`,
-                  {
-                    theme: "outline",
-                    position: "bottom-right",
-                    duration: 4000
-                  }
+              if (result.value) {
+                self.UpdateToDatabase(
+                  toStatus,
+                  self.selectElement.rwVolume - self.selectElement.mfProgress,
+                  true
                 );
+              } else {
+                self.fetch();
               }
-              self.fetch();
             });
         } else {
           self.$toast.error(`ไม่สามารถยกเลิกได้`, {
@@ -450,13 +465,6 @@ export default {
           });
           self.fetch();
         }
-      } else if (formStatus === 2 && toStatus === 4) {
-        self.$toast.info(`ระบบจะอัพเดทอัตโนมัติเมื่อเสร็จสิ้นกระบวนการผลิต`, {
-          theme: "outline",
-          position: "bottom-right",
-          duration: 4000
-        });
-        self.fetch();
       } else {
         self.$toast.error(`ปฏิเสธคำขอไปยังสถานะ${self.status(toStatus)}`, {
           theme: "outline",

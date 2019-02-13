@@ -77,10 +77,10 @@ export default {
           path: "/user/employees"
         },
         {
-          name: "คำขอเข้าร่วม",
+          name: "Collaborators",
           icon: "comment-medical",
           color: "orange",
-          path: "/user/request-join"
+          path: "/user/collaborators"
         }
       ],
       manufacItems: [
@@ -97,7 +97,7 @@ export default {
           path: "/request"
         },
         {
-          name: "เสนองาน",
+          name: "ประกาศงาน",
           icon: "bell",
           color: "green",
           path: "#"
@@ -106,11 +106,11 @@ export default {
           name: "การผลิต",
           img:
             "https://firebasestorage.googleapis.com/v0/b/auntie-and-me.appspot.com/o/images%2Ficons%2Fprojector.png?alt=media&token=aae71cbe-4de4-41b0-9ac0-e2005f871416",
-          path: "#"
+          path: "/manufacture"
         },
         {
-          name: "รับสินค้า",
-          icon: "hand-holding-heart",
+          name: "สรุปงาน",
+          icon: "chart-line",
           color: "brown",
           path: "#"
         }

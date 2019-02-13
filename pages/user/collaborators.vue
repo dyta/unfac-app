@@ -2,15 +2,15 @@
   <div>
     <b-jumbotron
       fluid
-      header="รายการคำขอเข้าร่วม"
-      :lead="`จำนวนคำขอทั้งหมด ${this.items.length} รายการ`"
+      header="Collaborators"
+      :lead="`จำนวนผู้ร่วมงานทั้งหมด ${this.items.length} คน`"
       class="jumbotron-special-lg pb-0"
     >
       <b-row>
         <b-col md="7">
           <b-form-group label="ค้นหา" class="mb-0">
             <b-input-group>
-              <b-form-input v-model="filter" placeholder="ID ชื่อผู้ขอเข้าร่วมหรือเบอร์โทร"/>
+              <b-form-input v-model="filter" placeholder="ID ชื่อผู้ร่วมงานหรือเบอร์โทร"/>
               <b-input-group-append>
                 <b-btn :disabled="!filter" @click="filter = ''" style="z-index: 0">ล้างคำค้นหา</b-btn>
               </b-input-group-append>
@@ -31,8 +31,8 @@
         </b-col>
       </b-row>
       <b-alert variant="warning" show>
-        <h6>ไม่แนะนำ</h6>
-        <small>เนื่องจากการขอเข้าร่ามโครงการ ผู้เข้าร่วมจะมีสถานะดูแลจัดการได้ทั้งหมด</small>
+        <h6>คำแนะนำ</h6>
+        <small>การขอเข้าร่ามโครงการ ผู้เข้าร่วมจะมีสถานะดูแลจัดการได้ทั้งหมด</small>
       </b-alert>
     </b-jumbotron>
     <b-container v-if="!asyncSource && items.length > 0">
@@ -77,10 +77,10 @@
     <b-container v-else-if="items.length === 0 && !asyncSource">
       <b-card class="text-center" style="box-shadow: 0 0 1em var(--gray-light);">
         <fa icon="exclamation-circle" size="3x" color="orange" class="mt-2"/>
-        <h5 class="mt-3">ไม่พบคำขอเข้าร่วมโครงการ</h5>
+        <h5 class="mt-3">ไม่พบผู้ร่วมงานในโครงการ</h5>
         <small>
           ไปที่
-          <b @click="()=>$router.push('/setting/application')">ตั้งค่าแอปพลิเคชัน</b> เพื่อรับลิงค์การเชื่อมต่อให้พนักงานเข้าใช้งาน หรือรับรหัสการขอเข้าร่วมโครงการ
+          <b @click="()=>$router.push('/setting/application')">ตั้งค่าแอปพลิเคชัน</b> เพื่อรับรหัสการขอเข้าร่วมโครงการ
         </small>
       </b-card>
     </b-container>
@@ -93,7 +93,7 @@ export default {
   layout: "default",
   head() {
     return {
-      title: "Employees"
+      title: "Collaborators"
     };
   },
   data() {

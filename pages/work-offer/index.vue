@@ -41,12 +41,13 @@
         </b-col>
       </b-row>
     </b-jumbotron>
-    <b-container v-if="!asyncSource && items.length > 0">
+    <b-container fluid v-if="!asyncSource && items.length > 0" class="w-75 p-0">
       <!-- Main table element -->
       <b-table
         show-empty
         responsive
         hover
+        bordered
         striped
         :items="items"
         :fields="fields"

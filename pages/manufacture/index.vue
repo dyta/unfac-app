@@ -2,11 +2,11 @@
   <div>
     <b-jumbotron
       fluid
-      header="Published"
-      lead="แสดงงานที่เปิดให้รับในโครงการของคุณ"
+      header="Manufacture"
+      lead="แสดงงานที่ได้รับอนุมัติการผลิต"
       class="jumbotron-special-lg mb-0 pb-3"
     >
-      <small>เลือกงานข้างล่างนี้เพื่อจัดการรายการคำขออนุมัติ</small>
+      <small>เลือกงานข้างล่างนี้เพื่อจัดการรายการผลิต</small>
 
       <b-button variant="outline-primary" size="sm" @click="()=> this.fetch()">
         <fa icon="redo-alt" class="mr-1"/>
@@ -18,44 +18,39 @@
         <b-col v-for="(item, index) in items" :key="index" md="6" lg="3" class="py-2 px-1">
           <b-card
             class="selected-request"
-            @click="() => $router.push(`/request/approve?wid=${item.workId}&eid=${user.entId}`)"
+            @click="() => $router.push(`/manufacture/manage?wid=${item.workId}&eid=${user.entId}`)"
           >
             <b-media>
               <b-img slot="aside" rounded :src="item.workImages" width="80" height="80"/>
               <b-container class="p-0 text-center">
                 <h6 class="mt-0 text-left">
-                  งานที่
+                  หมายเลขงาน
                   <b>{{item.workId}}</b>
-                  <b-badge
-                    pill
-                    :variant="StatusColor(item.workStatus).color"
-                  >{{StatusColor(item.workStatus).text}}</b-badge>
                 </h6>
                 <b-row class="font-size-12 border-bottom border-top py-1 mx-1">
-                  <b-col md="4" class="p-0">ผู้ขอ</b-col>
-                  <b-col md="4" class="p-0">อนุมัติ</b-col>
-                  <b-col md="4" class="p-0">คงเหลือ</b-col>
+                  <b-col md="4" class="p-0">สั่งผลิต</b-col>
+                  <b-col md="4" class="p-0">ดำเนินการ</b-col>
+                  <b-col md="4" class="p-0">เสร็จสิ้น</b-col>
                 </b-row>
                 <b-row class="pt-1 mx-1">
-                  <b-col md="4" class="p-0">{{item.pending ? item.pending : 0}}</b-col>
-                  <b-col md="4" class="p-0">{{item.approvedSum ? item.approvedSum : 0}}</b-col>
-                  <b-col
-                    md="4"
-                    class="p-0"
-                  >{{item.workVolume-(item.approvedSum ? item.approvedSum : 0)}}</b-col>
+                  <b-col md="4" class="p-0">{{item.workVolume ? item.workVolume : 0}}</b-col>
+                  <b-col md="4" class="p-0">{{item.mfAllProcess ? item.mfAllProcess : 0}}</b-col>
+                  <b-col md="4" class="p-0">{{item.mfAllSuccess ?item.mfAllSuccess :0 }}</b-col>
                 </b-row>
               </b-container>
             </b-media>
             <div slot="footer">
-              <b-progress
-                :value="item.approvedSum ? item.approvedSum : 0"
-                :max="item.workVolume"
-                height="8px"
-                striped
-                animated
-                class="mb-2"
-              ></b-progress>
-              <small class="text-muted">อัพเดทล่าสุด {{date(item.workUpdateAt)}}</small>
+              <b-progress :max="item.workVolume" height="8px" class="mb-3">
+                <b-progress-bar variant="primary" :value="item.mfAllProcess" animated></b-progress-bar>
+                <b-progress-bar variant="success" :value="item.mfAllSuccess" striped></b-progress-bar>
+              </b-progress>
+
+              <small class="text-muted">คาดว่าจะเสร็จ {{date(item.workEndAt)}}</small>
+              <small>#Tag:</small>
+              <b-badge
+                pill
+                :variant="StatusColor(item.workStatus).color"
+              >{{StatusColor(item.workStatus).text}}</b-badge>
             </div>
           </b-card>
         </b-col>
@@ -64,10 +59,10 @@
     <b-container v-else-if="items.length === 0 && !asyncSource">
       <b-card class="text-center" style="box-shadow: 0 0 1em var(--gray-light);">
         <fa icon="exclamation-circle" size="3x" color="orange" class="mt-2"/>
-        <h5 class="mt-3">ไม่พบงานที่เปิดรับ</h5>
+        <h5 class="mt-3">ไม่พบงานที่อยู่ระหว่างการผลิต</h5>
         <small>
           ไปที่
-          <b @click="()=>$router.push('/work-offer')">งาน</b> เพื่อจัดการงานและเปิดใช้งาน
+          <b @click="()=>$router.push('/work-offer')">งาน</b> เพื่อจัดการงาน
         </small>
       </b-card>
     </b-container>
@@ -80,7 +75,7 @@ export default {
   layout: "default",
   head() {
     return {
-      title: "Published"
+      title: "Manufacture"
     };
   },
   data() {
@@ -129,7 +124,7 @@ export default {
       let self = this;
       this.$store.dispatch("sourceLoaded", true);
       await this.$axios
-        .$get(`/v2/work/published/${this.$store.state.user.entId}`)
+        .$get(`/v2/manufacture/${this.$store.state.user.entId}`)
         .then(function(res) {
           if (res.length > 0) {
             self.items = res;

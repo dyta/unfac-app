@@ -23,19 +23,19 @@
                   class="list"
                   @click="()=>{$router.push('/overview'), autoToggle()}"
                   v-if="user.entId"
-                >แดชบอร์ด</b-button>
-                <b-button variant="link" class="list" color="blue" @click="handleClick">คอลโซล</b-button>
+                >Dashboard</b-button>
+                <b-button variant="link" class="list" color="blue" @click="handleClick">Console</b-button>
                 <b-button
                   variant="link"
                   class="list"
                   @click="()=>{$router.push('/account'), autoToggle()}"
-                >บัญชี</b-button>
+                >Account</b-button>
                 <b-button
                   variant="link"
                   class="list"
                   @click="()=>{$router.push('/setting/application'), autoToggle()}"
                   v-if="user.entId"
-                >ตั้งค่าแอปพลิเคชัน</b-button>
+                >Settings</b-button>
               </div>
             </b-navbar-nav>
           </b-col>
@@ -49,11 +49,24 @@
     </div>
     <div id="footer">
       <div class="container copy-right-ele border-top">
-        <small>&copy; 2019 Unfac.co
-          <b-link class="ml-2">หน้าหลัก</b-link>
-          <b-link class="ml-2">ข้อกำหนดและเงื่อนไข</b-link>
-          <b-link class="ml-2">ติดต่อเรา</b-link>
-        </small>
+        <div class="w-50">
+          <small>&copy; 2019 Unfac.co</small>
+        </div>
+
+        <div class="scrolling-wrapper pb-1 ml-auto flex-center">
+          <b-link class="inline ml-2" to="/overview">
+            <small>แดชบอร์ด</small>
+          </b-link>
+          <b-link class="inline ml-2">
+            <small>คู่มือการใช้งาน</small>
+          </b-link>
+          <b-link class="inline ml-2">
+            <small>ข้อกำหนดและเงื่อนไข</small>
+          </b-link>
+          <b-link class="inline ml-2">
+            <small>ติดต่อเรา</small>
+          </b-link>
+        </div>
       </div>
     </div>
   </div>
@@ -138,12 +151,21 @@ export default {
   overflow-y: hidden;
   white-space: nowrap;
   text-align: center;
+  height: 100%;
   .list {
     display: inline-block;
     padding: 1rem;
     padding-bottom: 1.3rem;
     transition: 300ms ease-in-out;
   }
+  .inline {
+    display: inline-block;
+    transition: 300ms ease-in-out;
+  }
+}
+.flex-center {
+  display: flex;
+  align-items: center;
 }
 </style>
 
