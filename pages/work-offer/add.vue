@@ -96,6 +96,13 @@
               autocomplete="off"
             ></b-form-input>
           </b-form-group>
+          <b-form-group label="ประเภทค่าจ้าง">
+            <b-form-radio-group id="radios2" v-model="data.workEarnType" name="radioSubComponent">
+              <b-form-radio :value="1">ต่อชิ้น</b-form-radio>
+              <b-form-radio :value="2">เหมาจ่าย</b-form-radio>
+            </b-form-radio-group>
+          </b-form-group>
+
           <b-form-group
             id="workStartEndAtLabel"
             description="ช่วงเวลาในการผลิตแบบคาดการณ์ *ระยะขั้นต่ำ 3 วัน นับจากวันเริ่ม"
@@ -161,6 +168,7 @@ export default {
         workDescription: "",
         workVolume: null,
         workEarn: null,
+        workEarnType: 1,
         workTime: {
           start: this.$moment().add("2", "days"),
           end: this.$moment().add("5", "days")
@@ -180,7 +188,7 @@ export default {
       );
     },
     stateWorkName() {
-      return this.data.workName.length > 10 && this.data.workName.length <= 140;
+      return this.data.workName.length > 2 && this.data.workName.length <= 140;
     },
     stateWorkDescription() {
       return (

@@ -224,9 +224,7 @@
         size="lg"
         hide-footer
         centered
-        header-bg-variant="dark"
         header-text-variant="light"
-        header-border-variant="dark"
         :title="`หมายเลขงาน: ${WorkInfoItem.workId}`"
         ok-only
       >
@@ -289,6 +287,17 @@
             :value="WorkInfoItem.workEarn"
           ></b-form-input>
         </b-form-group>
+        <b-form-group label="ประเภทค่าจ้าง">
+          <b-form-radio-group
+            :disabled="WorkInfoItem.workStatus > 2"
+            id="radios2"
+            v-model="workValue.workEarnType"
+            name="radioSubComponent"
+          >
+            <b-form-radio :value="1">ต่อชิ้น</b-form-radio>
+            <b-form-radio :value="2">เหมาจ่าย</b-form-radio>
+          </b-form-radio-group>
+        </b-form-group>
         <b-form-group
           id="DatePicker"
           :description="`<small>เดิมเริ่มต้น: ${date(WorkInfoItem.workStartAt).format} สิ้นสุด: ${date(WorkInfoItem.workEndAt).format}</small>`"
@@ -336,9 +345,6 @@
         @hide="resetModal"
         :title="`เปลี่ยนรูปภาพงาน: ${WorkInfoItem.workId}`"
         ok-only
-        header-bg-variant="dark"
-        header-text-variant="light"
-        header-border-variant="dark"
         :no-close-on-esc="uploading"
         :no-close-on-backdrop="uploading"
         :no-enforce-focus="uploading"
@@ -373,9 +379,6 @@
         @hide="resetModal"
         :title="`หมายเลขงาน: ${WorkInfoItem.workId}`"
         ok-only
-        header-bg-variant="dark"
-        header-text-variant="light"
-        header-border-variant="dark"
         hide-footer
         lazy
         busy
@@ -691,9 +694,13 @@ export default {
     },
     async updateStatus() {
       let update = await this.$axios.put(
-        `/v2/work/status/${this.workValue.workId}`,
+        `/v2/work/status/${this.workValue.workId}/${
+          this.$store.state.user.entId
+        }`,
         {
-          workStatus: this.workValue.workStatus
+          work: this.workValue,
+          workStatus: this.workValue.workStatus,
+          workStatusOld: this.WorkInfoItem.workStatus
         }
       );
       if (update.data) {
@@ -723,7 +730,8 @@ export default {
               new Date(this.startDate.end).getTime() < new Date().getTime()
             ? this.workValue.workEndAt
             : new Date(this.startDate.end).getTime(),
-        workEarn: this.workValue.workEarn
+        workEarn: this.workValue.workEarn,
+        workEarnType: this.workValue.workEarnType
       };
       this.$store.commit("setLoading", true);
       let update = await this.$axios.put(
