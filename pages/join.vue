@@ -304,6 +304,7 @@ export default {
 <style lang="scss" scoped>
 .display-3 {
   font-size: 2rem !important;
+  color: var(--light);
 }
 .form-control {
   border: 1px solid var(--gray-light);

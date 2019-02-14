@@ -32,7 +32,7 @@
               </b-link>
             </div>
           </b-tab>
-          <b-tab title="ตั้งค่า API สำหรับข้อความโต้ตอบ">
+          <b-tab title="LINE Webhooks">
             <b-card>
               <h6 class="bold">Channel access token</h6>
               <hr>
@@ -50,7 +50,7 @@
               </div>
             </b-card>
           </b-tab>
-          <b-tab title="ลิงค์เชื่อมต่อ">
+          <b-tab title="LINE Front-end Framework (LIFF)">
             <b-img
               rounded
               fluid
@@ -110,6 +110,34 @@
                 </b-col>
                 <b-col>
                   <code>{{setting.liff_full_history}}</code>
+                </b-col>
+              </b-row>
+            </b-card>
+            <b-card class="mt-3">
+              <h6 class="bold">สรุปรายได้ของพนักงาน</h6>
+              <hr>
+              <b-row>
+                <b-col lg="2">
+                  <small>Compact:</small>
+                </b-col>
+                <b-col>
+                  <code>{{setting.liff_compact_wallet}}</code>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col lg="2">
+                  <small>Tall:</small>
+                </b-col>
+                <b-col>
+                  <code>{{setting.liff_tall_wallet}}</code>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col lg="2">
+                  <small>Full:</small>
+                </b-col>
+                <b-col>
+                  <code>{{setting.liff_full_wallet}}</code>
                 </b-col>
               </b-row>
             </b-card>
