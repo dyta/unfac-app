@@ -171,7 +171,7 @@ export default {
         workEarnType: 1,
         workTime: {
           start: this.$moment().add("2", "days"),
-          end: this.$moment().add("5", "days")
+          end: this.$moment().add("7", "days")
         }
       },
       workImages: null,
