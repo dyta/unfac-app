@@ -68,6 +68,10 @@
             <fa icon="fire" color="orange"></fa>
           </b-btn>
         </template>
+        <template slot="workImages" slot-scope="row">
+          <b-img :src="row.value" rounded width="60" height="60"/>
+          <small>{{row.item.workName}}</small>
+        </template>
         <template slot="workStartAt" slot-scope="row">
           <small v-if="row.item.workStatus > 1">
             {{date(row.value).format}}
@@ -465,6 +469,10 @@ export default {
           key: "workId",
           label: "รหัสงาน",
           sortable: true
+        },
+        {
+          key: "workImages",
+          label: "รูปภาพ"
         },
         {
           key: "customerName",

@@ -4,7 +4,7 @@
 
 html,
 body {
-  font-family: "Open Sans", "Sarabun", sans-serif !important;
+  font-family: "Sarabun", sans-serif !important;
   font-size: 1rem;
   word-spacing: 1px;
   background-color: var(--bg-1-color);
@@ -22,6 +22,11 @@ body {
 *:after {
   box-sizing: border-box;
   margin: 0;
+}
+
+small.normal {
+  font-family: "Sarabun",
+    sans-serif !important;
 }
 
 #container {

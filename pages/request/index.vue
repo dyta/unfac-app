@@ -26,36 +26,46 @@
                 <h6 class="mt-0 text-left">
                   งานที่
                   <b>{{item.workId}}</b>
-                  <b-badge
-                    pill
-                    :variant="StatusColor(item.workStatus).color"
-                  >{{StatusColor(item.workStatus).text}}</b-badge>
+                  <small class="normal">{{item.workName}}</small>
                 </h6>
+
                 <b-row class="font-size-12 border-bottom border-top py-1 mx-1">
                   <b-col md="4" class="p-0">ผู้ขอ</b-col>
                   <b-col md="4" class="p-0">อนุมัติ</b-col>
                   <b-col md="4" class="p-0">คงเหลือ</b-col>
                 </b-row>
                 <b-row class="pt-1 mx-1">
-                  <b-col md="4" class="p-0">{{item.pending ? item.pending : 0}}</b-col>
-                  <b-col md="4" class="p-0">{{item.approvedSum ? item.approvedSum : 0}}</b-col>
                   <b-col
                     md="4"
                     class="p-0"
-                  >{{item.workVolume-(item.approvedSum ? item.approvedSum : 0)}}</b-col>
+                  >{{item.complete === item.workVolume ? 'S' : item.pending}}</b-col>
+                  <b-col
+                    md="4"
+                    class="p-0"
+                  >{{item.complete === item.workVolume ? 'S' :item.approved+item.complete }}</b-col>
+                  <b-col
+                    md="4"
+                    class="p-0"
+                  >{{item.complete === item.workVolume ? 'S' : item.workVolume-(item.approvedSum ? item.approvedSum : 0)}}</b-col>
                 </b-row>
               </b-container>
             </b-media>
             <div slot="footer">
               <b-progress
-                :value="item.approvedSum ? item.approvedSum : 0"
+                :value="item.approvedSum ? item.approvedSum : item.complete ? item.complete : 0"
                 :max="item.workVolume"
                 height="8px"
                 striped
                 animated
                 class="mb-2"
               ></b-progress>
-              <small class="text-muted">อัพเดทล่าสุด {{date(item.workUpdateAt)}}</small>
+              <small class="text-muted">
+                อัพเดทล่าสุด {{date(item.workUpdateAt)}}
+                <b-badge
+                  pill
+                  :variant="StatusColor(item.workStatus).color"
+                >{{StatusColor(item.workStatus).text}}</b-badge>
+              </small>
             </div>
           </b-card>
         </b-col>

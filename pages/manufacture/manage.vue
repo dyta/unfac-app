@@ -501,6 +501,7 @@ export default {
           `/v2/manufacture/manage/${this.$route.query.wid}/${this.user.entId}`
         )
         .then(function(res) {
+          self.processing , self.checking,self.reprocess,self.completed,self.reject,self.SumToChecking =[]
           if (res.length > 0) {
             self.processing = filter.SeparateByStatus(res, "mfStatus", 1);
             self.checking = filter.SeparateByStatus(res, "mfStatus", 2);

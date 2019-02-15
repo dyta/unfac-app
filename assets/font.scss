@@ -1,3 +1,23 @@
+@font-face {
+  font-family: 'Anakotmai Medium';
+  font-weight: normal;
+  src: url('./fonts/anakotmai/anakotmai-medium.eot');
+  /* IE9 Compat Mode */
+  src: url('./fonts/anakotmai/anakotmai-medium.woff') format('woff'),
+    url('./fonts/anakotmai/anakotmai-medium.eot') format('eot');
+}
+
+@font-face {
+  font-family: 'Anakotmai Light';
+  font-weight: normal;
+  src: url('./fonts/anakotmai/anakotmai-light.eot');
+  /* IE9 Compat Mode */
+  src: url('./fonts/anakotmai/anakotmai-light.woff') format('woff'),
+    url('./fonts/anakotmai/anakotmai-light.eot') format('eot');
+  font-weight: 400;
+  font-size: 100%;
+}
+
 h1,
 h2,
 h3,
@@ -13,7 +33,7 @@ h6,
 .scrolling-wrapper,
 .menu-list,
 .col-form-label {
-  font-family: "Open Sans", "Mitr",
+  font-family: "Anakotmai Medium",
     sans-serif !important;
 }
 

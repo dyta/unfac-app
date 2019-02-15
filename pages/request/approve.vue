@@ -279,7 +279,7 @@ export default {
         .then(function(res) {
           element.rwStatus = toStatus;
           self.$toast.info(
-            `${self.status(toStatus)} RID${self.selectElement.rwId} จำนวน ${
+            `${self.status(toStatus)} งาน #${self.selectElement.rwId} จำนวน ${
               approve ? approve : element.rwVolume
             } รายการแล้ว`,
             {
@@ -308,7 +308,9 @@ export default {
           if (self.selectElement.rwVolume === 1) {
             self
               .$swal({
-                title: `${self.status(toStatus)} RID${self.selectElement.rwId}`,
+                title: `${self.status(toStatus)} งาน #${
+                  self.selectElement.rwId
+                }`,
                 html: "กรุณายืนยันภายใน <strong>15</strong> วินาที",
                 type: "question",
                 timer: 15000,
@@ -339,7 +341,9 @@ export default {
             self
               .$swal({
                 input: "number",
-                title: `${self.status(toStatus)} RID${self.selectElement.rwId}`,
+                title: `${self.status(toStatus)} งาน #${
+                  self.selectElement.rwId
+                }`,
                 text: `มีปริมาณงานที่สามารถอนุมัติได้ ทั้งหมด ${
                   amount > self.selectElement.rwVolume
                     ? self.selectElement.rwVolume
@@ -362,7 +366,7 @@ export default {
                   result.value > self.selectElement.rwVolume
                 ) {
                   self.$toast.error(
-                    `RID${
+                    `งาน #${
                       self.selectElement.rwId
                     } มีปริมาณที่สามารถอนุมัติได้ ${
                       amount > self.selectElement.rwVolume
@@ -395,7 +399,7 @@ export default {
       } else if (formStatus === 1 && toStatus === 3) {
         self
           .$swal({
-            title: `${self.status(toStatus)} RID${self.selectElement.rwId}`,
+            title: `${self.status(toStatus)} งาน #${self.selectElement.rwId}`,
             html: "กรุณายืนยันภายใน <strong>15</strong> วินาที",
             type: "question",
             timer: 15000,
@@ -424,7 +428,7 @@ export default {
         if (self.selectElement.rwVolume - self.selectElement.mfProgress !== 0) {
           self
             .$swal({
-              title: `${self.status(toStatus)} RID${self.selectElement.rwId}`,
+              title: `${self.status(toStatus)} งาน #${self.selectElement.rwId}`,
               html: `ยกเลิกจำนวนที่เหลือ ${self.selectElement.rwVolume -
                 self.selectElement
                   .mfProgress} รายการ <br><small>กรุณายืนยันภายใน <strong>15</strong> วินาที</small>`,
