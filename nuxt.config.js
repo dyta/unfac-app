@@ -78,16 +78,6 @@ module.exports = {
             statuses: [0, 200]
           }
         }
-      },
-      {
-        urlPattern: 'https://firebasestorage.googleapis.com/.*',
-        handler: 'cacheFirst',
-        method: 'GET',
-        strategyOptions: {
-          cacheableResponse: {
-            statuses: [0, 200]
-          }
-        }
       }
     ]
   },
