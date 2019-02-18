@@ -20,7 +20,7 @@ module.exports = {
       },
       {
         property: "og:image",
-        content: ""
+        content: "/meta-content.png"
       },
       {
         hid: 'description',
