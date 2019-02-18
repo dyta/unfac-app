@@ -1,17 +1,5 @@
 <template>
   <div>
-    <LazyHydrate ssr-only>
-      <nuxt/>
-    </LazyHydrate>
+    <nuxt/>
   </div>
 </template>
-
-<script>
-import LazyHydrate from "vue-lazy-hydration";
-
-export default {
-  components: {
-    LazyHydrate
-  }
-};
-</script>
