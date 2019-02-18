@@ -1,7 +1,7 @@
 <template>
   <b-container class="container-height">
     <div class="login" v-if="!user && !line">
-      <img class="logo" src="~/assets/images/logo.png">
+      <img class="logo" src="~/assets/images/logo.png" alt="Unfac.co">
       <h3>ลงชื่อเข้าใช้</h3>
       <p>Workforce management system
         <br>for non-routine on Line Application.

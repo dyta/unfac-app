@@ -34,8 +34,6 @@ small.normal {
   position: relative !important;
 }
 
-#header {}
-
 #body {
   padding-bottom: 5em;
 }
@@ -190,7 +188,6 @@ a:hover,
   .btn-line {
     width: 100%;
     border-radius: 50px;
-    background-color: var(--primary-2);
     margin-bottom: 1rem;
     border-color: var(--primary-2);
   }
