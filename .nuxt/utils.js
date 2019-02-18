@@ -129,7 +129,7 @@ export async function setContext(app, context) {
       payload: context.payload,
       error: context.error,
       base: '/',
-      env: {"API_SERVICE":"http://192.168.1.2:5001","LINE_LOGIN_CHANNEL_ID":"1636599747","LINE_LOGIN_CHANNEL_SECRET":"6d5ffbe193fd5b3ff44954054d0ec594","LINE_LOGIN_CALLBACK_URL":"http://192.168.1.2:3000/user/authorized"}
+      env: {"API_SERVICE":"http://172.20.10.8:5001","LINE_LOGIN_CHANNEL_ID":"1636599747","LINE_LOGIN_CHANNEL_SECRET":"6d5ffbe193fd5b3ff44954054d0ec594","LINE_LOGIN_CALLBACK_URL":"http://192.168.1.2:3000/user/authorized"}
     }
     // Only set once
     if (context.req) app.context.req = context.req

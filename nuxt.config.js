@@ -8,17 +8,19 @@ const pkg = require('./package')
 module.exports = {
   mode: 'universal',
 
-  /*
-   ** Headers of the page
-   */
   head: {
     title: 'Management Console - Unfac.co',
+
     meta: [{
         charset: 'utf-8'
       },
       {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1'
+      },
+      {
+        property: "og:image",
+        content: ""
       },
       {
         hid: 'description',
@@ -48,6 +50,14 @@ module.exports = {
     src: "~/assets/customize.scss",
     lang: "scss"
   }],
+
+  // PWA -- Workbox Module
+  manifest: {
+    name: "Unfac",
+    short_name: "Unfac",
+    description: "Unfac built with Nuxt.js",
+    theme_color: "#56a7ff"
+  },
 
   /*
    ** Plugins to load before mounting the App
