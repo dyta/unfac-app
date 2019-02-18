@@ -50,7 +50,7 @@
               class="mb-2"
               @change="AssignFileImage(workImages, $event)"
             ></b-form-file>
-            <b-img thumbnail fluid v-if="workImages" :src="preview"/>
+            <b-img thumbnail fluid v-if="workImages" :src="preview" alt="preview"/>
           </b-form-group>
           <b-form-group
             id="workDescriptionLabel"

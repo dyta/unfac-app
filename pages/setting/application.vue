@@ -55,7 +55,7 @@
               rounded
               fluid
               src="https://developers.line.biz/media/liff/overview/viewTypes-4cb714f3.png"
-              alt
+              alt="Line Liff descriptions"
             />
             <b-card class="mt-3">
               <h6 class="bold">แสดงงาน</h6>

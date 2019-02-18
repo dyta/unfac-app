@@ -69,7 +69,7 @@
           </b-btn>
         </template>
         <template slot="workImages" slot-scope="row">
-          <b-img :src="row.value" rounded width="60" height="60"/>
+          <b-img :src="row.value" rounded width="60" height="60" :alt="row.item.workName"/>
           <small>{{row.item.workName}}</small>
         </template>
         <template slot="workStartAt" slot-scope="row">
@@ -147,6 +147,7 @@
                 :src="row.item.workImages"
                 width="140"
                 height="140"
+                :alt="row.item.workName"
               />
 
               <div v-if="row.item.workStatus !== 1">

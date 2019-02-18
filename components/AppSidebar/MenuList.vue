@@ -12,7 +12,7 @@
       >
         <div class="menu-list" @click="()=> router(item.path)">
           <div>
-            <b-img v-if="item.img" :src="item.img" height="34"/>
+            <b-img v-if="item.img" :src="item.img" height="34" :alt="item.name"/>
             <fa v-else :icon="item.icon" size="2x" :color="item.color"/>
           </div>
           <div class="mt-2">

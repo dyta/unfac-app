@@ -21,7 +21,14 @@
             @click="() => $router.push(`/request/approve?wid=${item.workId}&eid=${user.entId}`)"
           >
             <b-media>
-              <b-img slot="aside" rounded :src="item.workImages" width="80" height="80"/>
+              <b-img
+                slot="aside"
+                rounded
+                :src="item.workImages"
+                width="80"
+                height="80"
+                :alt="item.workName"
+              />
               <b-container class="p-0 text-center">
                 <h6 class="mt-0 text-left">
                   งานที่

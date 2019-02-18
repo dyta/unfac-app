@@ -48,6 +48,7 @@
                     :src="item.empPictureUrl"
                     width="50"
                     height="50"
+                    :alt="item.rwId"
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
@@ -92,6 +93,7 @@
                     :src="item.empPictureUrl"
                     width="50"
                     height="50"
+                    :alt="item.rwId"
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
@@ -135,6 +137,7 @@
                     :src="item.empPictureUrl"
                     width="50"
                     height="50"
+                    :alt="item.rwId"
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
@@ -181,6 +184,7 @@
                     :src="item.empPictureUrl"
                     width="50"
                     height="50"
+                    :alt="item.rwId"
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>

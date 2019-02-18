@@ -2,7 +2,7 @@
   <div :class="[$style.sidebar]" v-if="auth || !homeDisabled">
     <b-card class="text-left profile">
       <div class="info">
-        <b-img rounded="circle" :src="auth.photoURL" width="60"/>
+        <b-img rounded="circle" :src="auth.photoURL" width="60" :alt="auth.name"/>
       </div>
 
       <div class="info text">

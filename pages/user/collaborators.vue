@@ -53,7 +53,14 @@
         @filtered="onFiltered"
       >
         <template slot="userPictureUrl" slot-scope="row">
-          <b-img rounded="circle" :src="row.value" width="50" height="50" class="m-1"/>
+          <b-img
+            rounded="circle"
+            :src="row.value"
+            width="50"
+            height="50"
+            class="m-1"
+            :alt="row.item.workName"
+          />
         </template>
         <template slot="actions" slot-scope="row">
           <b-button-group v-if="row">
