@@ -58,7 +58,39 @@ module.exports = {
     description: "Unfac built with Nuxt.js",
     theme_color: "#56a7ff"
   },
-
+  workbox: {
+    runtimeCaching: [{
+        urlPattern: 'https://fonts.googleapis.com/.*',
+        handler: 'cacheFirst',
+        method: 'GET',
+        strategyOptions: {
+          cacheableResponse: {
+            statuses: [0, 200]
+          }
+        }
+      },
+      {
+        urlPattern: 'https://fonts.gstatic.com/.*',
+        handler: 'cacheFirst',
+        method: 'GET',
+        strategyOptions: {
+          cacheableResponse: {
+            statuses: [0, 200]
+          }
+        }
+      },
+      {
+        urlPattern: 'https://firebasestorage.googleapis.com/.*',
+        handler: 'cacheFirst',
+        method: 'GET',
+        strategyOptions: {
+          cacheableResponse: {
+            statuses: [0, 200]
+          }
+        }
+      }
+    ]
+  },
   /*
    ** Plugins to load before mounting the App
    */
