@@ -3,6 +3,7 @@
     :class="[open ? [$style.active,$style.button_d]  : $style.button_d,  $style.button]"
     @click="handleClick"
     class="toggle"
+    aria-label="toggle"
   >
     <svg
       fill="#000000"

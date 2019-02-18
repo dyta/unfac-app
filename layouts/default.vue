@@ -16,7 +16,7 @@
             </b-navbar-brand>
           </b-col>
           <b-col sm="8" md="6" class="p-0 m-0" style="display: flex;">
-            <b-navbar-nav class="nav-side ml-auto">
+            <div class="nav-side ml-auto">
               <div class="scrolling-wrapper">
                 <b-button
                   variant="link"
@@ -37,7 +37,7 @@
                   v-if="user.entId"
                 >Settings</b-button>
               </div>
-            </b-navbar-nav>
+            </div>
           </b-col>
         </b-container>
       </b-navbar>
