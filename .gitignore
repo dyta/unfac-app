@@ -61,4 +61,4 @@ typings/
 .next
 
 .nuxt
-sw.*
+sw.*node_modules
