@@ -109,6 +109,7 @@
 </template>
 
 <script>
+import firebase from "./../../configs/firebase.sdk.js";
 export default {
   layout: "single",
   head() {
@@ -293,6 +294,7 @@ export default {
     },
     onClickSignOut() {
       this.$store.commit("setLoading", true);
+      firebase.auth().signOut();
       setTimeout(() => {
         this.$store.dispatch("signOut");
         this.$router.go({ path: "/" });
