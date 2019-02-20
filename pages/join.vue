@@ -26,13 +26,6 @@
                 autocomplete="off"
               ></b-form-input>
             </b-form-group>
-            <b-form-group id="entIdentity" label="รหัสทะเบียน" label-for="entIdentity" class="px-3">
-              <b-form-input
-                id="entIdentity"
-                v-model.trim="createForm.entIdentity"
-                autocomplete="off"
-              ></b-form-input>
-            </b-form-group>
 
             <b-form-group id="entAddress" label="ที่ตั้ง" label-for="entAddress" class="px-3">
               <b-form-input
@@ -53,6 +46,14 @@
                 />
               </div>
             </no-ssr>
+            <b-form-group id="entIdentity" label="รหัสทะเบียน" label-for="entIdentity" class="px-3">
+              <b-form-input
+                id="entIdentity"
+                v-model.trim="createForm.entIdentity"
+                autocomplete="off"
+                placeholder="0-00-00-00/0-0000"
+              ></b-form-input>
+            </b-form-group>
             <b-form-group
               id="entTel"
               label="โทรศัพท์"
