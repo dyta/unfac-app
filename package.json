@@ -4,6 +4,12 @@
   "description": "Workforce management system for non-routine on Line Application.",
   "author": "K. Nattawut",
   "private": true,
+  "cacheDirectories": [
+    "node_modules"
+  ],
+  "engines": {
+    "node": "10.x"
+  },
   "scripts": {
     "dev": "cross-env NODE_ENV=development HOST=0.0.0.0 nuxt",
     "build": "nuxt build",
