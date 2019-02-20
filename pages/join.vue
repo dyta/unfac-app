@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import firebase from "./../../configs/firebase.sdk.js";
+import firebase from "./../configs/firebase.sdk.js";
 export default {
   layout: "single",
   head() {
