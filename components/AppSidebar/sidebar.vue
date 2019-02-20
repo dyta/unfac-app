@@ -42,6 +42,7 @@
 <script>
 import { TweenMax, Power4 } from "gsap";
 import MenuList from "./MenuList";
+import firebase from "./../../configs/firebase.sdk.js";
 export default {
   name: "sidebar",
   components: {
@@ -154,6 +155,7 @@ export default {
   methods: {
     async onClickSignOut() {
       this.$store.commit("setLoading", true);
+      firebase.auth().signOut();
       this.$store.dispatch("signOut");
       setTimeout(() => {
         this.$router.go({ path: "/" });

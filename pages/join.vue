@@ -14,7 +14,7 @@
             <h5 class="text-center py-3 pb-4">สร้างโครงการของคุณ</h5>
             <b-form-group
               id="entName"
-              label="ชื่อโครงการ"
+              label="ชื่อ"
               label-for="entName"
               :state="stateText"
               class="px-3"
@@ -26,8 +26,15 @@
                 autocomplete="off"
               ></b-form-input>
             </b-form-group>
+            <b-form-group id="entIdentity" label="รหัสทะเบียน" label-for="entIdentity" class="px-3">
+              <b-form-input
+                id="entIdentity"
+                v-model.trim="createForm.entIdentity"
+                autocomplete="off"
+              ></b-form-input>
+            </b-form-group>
 
-            <b-form-group id="entAddress" label="ที่อยู่" label-for="entAddress" class="px-3">
+            <b-form-group id="entAddress" label="ที่ตั้ง" label-for="entAddress" class="px-3">
               <b-form-input
                 id="entAddress"
                 v-model.trim="createForm.entAddress"
@@ -48,7 +55,7 @@
             </no-ssr>
             <b-form-group
               id="entTel"
-              label="เบอร์โทร"
+              label="โทรศัพท์"
               label-for="entTel"
               class="px-3"
               :state="stateTel"
@@ -59,14 +66,6 @@
                 v-model.trim="createForm.entTel"
                 autocomplete="off"
                 placeholder="0987654321"
-              ></b-form-input>
-            </b-form-group>
-            <b-form-group id="entDomain" label="เว็บไซต์" label-for="entDomain" class="px-3">
-              <b-form-input
-                id="entDomain"
-                v-model.trim="createForm.entDomain"
-                autocomplete="off"
-                placeholder="URL"
               ></b-form-input>
             </b-form-group>
             <div class="px-3">
@@ -114,7 +113,7 @@ export default {
   layout: "single",
   head() {
     return {
-      title: "Join a Company"
+      title: "สร้างหรือเข้าร่วมโครงการ"
     };
   },
 
@@ -124,6 +123,7 @@ export default {
       isLoading: false,
       createForm: {
         entName: "",
+        entIdentity: "",
         entDomain: "",
         entTel: "",
         entAddress: "",
@@ -156,7 +156,7 @@ export default {
       return this.createForm.entName.length >= 2 ? true : false;
     },
     stateTel() {
-      const valid = /^[0]{0,1}[2-9]{1}[0-9]{8}$/;
+      const valid = /^[0]{0,9}[2-9]{1}[0-9]{8}$/;
       return valid.test(this.createForm.entTel) ? true : false;
     }
   },
@@ -231,6 +231,7 @@ export default {
             " " +
             this.createForm.entPostal,
           entPackage: 0,
+          entIdentity: this.createForm.entIdentity,
           entTel: this.createForm.entTel
         };
         this.$swal

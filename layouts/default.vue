@@ -1,74 +1,78 @@
 <template>
-  <div v-if="user && user.entId" id="container">
-    <loading :active.sync="isLoading" :can-cancel="false" :is-full-page="true" :height="34"></loading>
-    <sidebar/>
-
-    <div id="header">
-      <b-navbar toggleable="md" type="light" fixed="top" class="navbar-light bg-light">
-        <sidebar-toggle/>
-        <b-container>
-          <b-col sm="4" md="6" class="p-0 m-0">
-            <b-navbar-brand tag="h1" @click="handleClick" class="logo-nav mb-0">UNFAC
-              <div class="small-logo">
-                <small>Management</small>
-                <small>Console</small>
+  <div v-if="user && user.entId">
+    <div id="container">
+      <loading :active.sync="isLoading" :can-cancel="false" :is-full-page="true" :height="34"></loading>
+      <sidebar/>
+      <div id="header">
+        <b-navbar toggleable="md" type="light" fixed="top" class="navbar-light bg-light">
+          <sidebar-toggle/>
+          <b-container>
+            <b-col sm="4" md="6" class="p-0 m-0">
+              <b-navbar-brand tag="h1" @click="handleClick" class="logo-nav mb-0">UNFAC
+                <div class="small-logo">
+                  <small>Management</small>
+                  <small>Console</small>
+                </div>
+              </b-navbar-brand>
+            </b-col>
+            <b-col sm="8" md="6" class="p-0 m-0" style="display: flex;">
+              <div class="nav-side ml-auto">
+                <div class="scrolling-wrapper">
+                  <b-button
+                    variant="link"
+                    class="list"
+                    @click="()=>{$router.push('/overview'), autoToggle()}"
+                    v-if="user.entId"
+                  >Dashboard</b-button>
+                  <b-button variant="link" class="list" color="blue" @click="handleClick">Console</b-button>
+                  <b-button
+                    variant="link"
+                    class="list"
+                    @click="()=>{$router.push('/account'), autoToggle()}"
+                  >Account</b-button>
+                  <b-button
+                    variant="link"
+                    class="list"
+                    @click="()=>{$router.push('/setting/application'), autoToggle()}"
+                    v-if="user.entId"
+                  >Settings</b-button>
+                </div>
               </div>
-            </b-navbar-brand>
-          </b-col>
-          <b-col sm="8" md="6" class="p-0 m-0" style="display: flex;">
-            <div class="nav-side ml-auto">
-              <div class="scrolling-wrapper">
-                <b-button
-                  variant="link"
-                  class="list"
-                  @click="()=>{$router.push('/overview'), autoToggle()}"
-                  v-if="user.entId"
-                >Dashboard</b-button>
-                <b-button variant="link" class="list" color="blue" @click="handleClick">Console</b-button>
-                <b-button
-                  variant="link"
-                  class="list"
-                  @click="()=>{$router.push('/account'), autoToggle()}"
-                >Account</b-button>
-                <b-button
-                  variant="link"
-                  class="list"
-                  @click="()=>{$router.push('/setting/application'), autoToggle()}"
-                  v-if="user.entId"
-                >Settings</b-button>
-              </div>
-            </div>
-          </b-col>
-        </b-container>
-      </b-navbar>
-    </div>
-    <div id="body">
-      <div class="content-margin-top">
-        <nuxt-child/>
+            </b-col>
+          </b-container>
+        </b-navbar>
       </div>
-    </div>
-    <div id="footer">
-      <div class="container copy-right-ele border-top">
-        <div class="w-50">
-          <small>&copy; 2019 Unfac.co</small>
-        </div>
-
-        <div class="scrolling-wrapper pb-1 ml-auto flex-center">
-          <b-link class="inline ml-2" to="/overview">
-            <small>แดชบอร์ด</small>
-          </b-link>
-          <b-link class="inline ml-2">
-            <small>คู่มือการใช้งาน</small>
-          </b-link>
-          <b-link class="inline ml-2">
-            <small>ข้อกำหนดและเงื่อนไข</small>
-          </b-link>
-          <b-link class="inline ml-2">
-            <small>ติดต่อเรา</small>
-          </b-link>
+      <div id="body">
+        <div class="content-margin-top">
+          <nuxt-child/>
         </div>
       </div>
+      <div id="footer">
+        <div class="container copy-right-ele border-top">
+          <div class="w-50">
+            <small>&copy; 2019 Unfac.co</small>
+          </div>
+
+          <div class="scrolling-wrapper pb-1 ml-auto flex-center">
+            <b-link class="inline ml-2" to="/overview">
+              <small>แดชบอร์ด</small>
+            </b-link>
+            <b-link class="inline ml-2">
+              <small>คู่มือการใช้งาน</small>
+            </b-link>
+            <b-link class="inline ml-2">
+              <small>ข้อกำหนดและเงื่อนไข</small>
+            </b-link>
+            <b-link class="inline ml-2">
+              <small>ติดต่อเรา</small>
+            </b-link>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+  <div v-else>
+    <loading active :can-cancel="false" :is-full-page="true" :height="34"></loading>
   </div>
 </template>
 
@@ -121,7 +125,6 @@ export default {
         if (user) {
           self.$store.commit("setLoading", false);
         } else {
-          self.$store.dispatch("signInWithToken", self.$store.state.token);
           self.$store.commit("setLoading", false);
         }
       });

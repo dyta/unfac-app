@@ -18,7 +18,7 @@
     </div>
     <div v-else-if="line && !user && !auth">
       <div class="login">
-        <b-img rounded="circle" :src="line.picture" width="100" :alt="auth.name"/>
+        <b-img rounded="circle" :src="line.picture" width="100" :alt="line.name"/>
         <div class="text-left mb-3">
           <b-form-group
             id="fieldset1"
@@ -203,7 +203,7 @@ export default {
                       `/v2/account/token`,
                       line
                     );
-                    this.$store.dispatch("signInWithToken", token.data);
+
                     commit("setLoading", false);
                   }
                 }

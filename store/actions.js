@@ -1,5 +1,6 @@
 import {
-  auth
+  auth,
+  firebase
 } from '../configs/firebase.sdk'
 import axios from 'axios'
 import convert from "./../scripts/ConvertText";
@@ -12,7 +13,7 @@ export default {
     req,
     $axios
   }) {
-    // ค่าจาก line
+
     commit('setLine', req.session.auth)
     if (!req.session.user && (req.session && req.session.auth)) {
       const exist = await $axios.$get(`${process.env.API_SERVICE}/v2/account/_/${req.session.auth.uid}`)
@@ -35,11 +36,16 @@ export default {
       // create to auth
       const createUser = await $axios.$post(`${process.env.API_SERVICE}/v2/account/auth`, merge)
       if (createUser) {
-        const token = await $axios.$post(`${process.env.API_SERVICE}/v2/account/token`, req.session.auth)
-
-        commit('setToken', token)
-        await auth.signInWithCustomToken(token)
-
+        await auth.onAuthStateChanged(async user => {
+          if (user) {
+            commit('setLoading', false)
+            commit('setAuth', user)
+          } else {
+            const token = await $axios.$post(`${process.env.API_SERVICE}/v2/account/token`, req.session.auth)
+            await auth.signInWithCustomToken(token)
+            commit('setLoading', false)
+          }
+        })
       }
       const packageUser = await $axios.$get(`${process.env.API_SERVICE}/v2/account/package/${req.session.user.entId}`)
 
@@ -47,16 +53,8 @@ export default {
         name: convert.package(packageUser),
         key: packageUser
       })
-      await auth.onAuthStateChanged(user => {
-        if (user) {
-          commit('setLoading', false)
-          commit('setAuth', user)
-        } else {
-          commit('setLoading', false)
-        }
-      })
-    }
 
+    }
 
   },
   async signInWithToken({
@@ -106,18 +104,10 @@ export default {
   async signOut({
     commit
   }) {
+    auth.signOut()
     axios.post('/user/logout')
-    auth.signOut().then(function (e) {
-      setTimeout(() => {
-        commit('setUser', null)
-        commit('setAuth', null)
-        commit('setLine', null)
-      }, 1000);
-    }).catch(function (error) {
-      console.log('error: ', error);
-      // An error happened.
-    });
-
-
+    commit('setUser', null)
+    commit('setAuth', null)
+    commit('setLine', null)
   }
 };

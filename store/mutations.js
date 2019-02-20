@@ -8,9 +8,6 @@ export default {
   setLine(state, payload) {
     state.line = payload
   },
-  setToken(state, payload) {
-    state.token = payload
-  },
   setPackage(state, payload) {
     state.package = payload
   },
