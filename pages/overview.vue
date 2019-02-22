@@ -28,7 +28,7 @@
               <b-img
                 slot="aside"
                 :blank="item.image ? false : true"
-                blank-color="#56a7ff"
+                :blank-color="item.image ? null : item.color"
                 width="40"
                 height="40"
                 rounded="circle"
