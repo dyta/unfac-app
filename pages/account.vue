@@ -25,7 +25,7 @@
         </b-tab>
       </b-tabs>
     </b-container>
-    <loading :active.sync="asyncSource" :is-full-page="false" :opacity="1" :height="34"></loading>
+    <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".9" :height="34"></loading>
   </div>
 </template>
 
