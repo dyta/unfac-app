@@ -666,6 +666,7 @@ export default {
     },
     async fetch() {
       let self = this;
+      self.items = [];
       this.$store.dispatch("sourceLoaded", true);
       await this.$axios
         .$get(`/v2/work/${this.$store.state.user.entId}`)

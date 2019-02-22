@@ -168,10 +168,10 @@ export default {
       keyInvite: "",
       isLoading: false,
       createForm: {
-        entName: "Unfac",
-        entIdentity: "0-00-00-00/0-0000",
+        entName: "",
+        entIdentity: "",
         entDomain: "",
-        entTel: "0957192597",
+        entTel: "",
         entAddress: "",
         entPostal: "",
         district: "",

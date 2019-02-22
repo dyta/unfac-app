@@ -15,4 +15,5 @@ const config = {
 
   !firebase.apps.length ? firebase.initializeApp(config) : ''
 export const auth = firebase.auth()
+export const activity = firebase.firestore();
 export default firebase

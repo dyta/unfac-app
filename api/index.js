@@ -1,7 +1,6 @@
 /*eslint-disable */
 const app = require('express')();
 const line_login = require("line-login")
-
 const login = new line_login({
   channel_id: process.env.LINE_LOGIN_CHANNEL_ID,
   channel_secret: process.env.LINE_LOGIN_CHANNEL_SECRET,
@@ -33,7 +32,6 @@ app.use("/authorized", login.callback(
 
     req.session.auth = callback
     res.redirect('/?rdr=success');
-
   },
   (req, res, next, error) => {
     // Failure callback

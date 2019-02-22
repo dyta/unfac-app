@@ -8,5 +8,8 @@ export default {
   },
   SummaryByVolume(objects) {
     return _.sumBy(objects, 'rwVolume');
+  },
+  sortByActivity(objects) {
+    return _.orderBy(objects, 'time', 'desc');
   }
 };

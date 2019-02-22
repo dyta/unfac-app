@@ -265,12 +265,14 @@ export default {
                 self.uploader = percentage;
               },
               function error(err) {
+                console.log("err: ", err);
                 self.$toast.error("เกิดข้อผิดพลาด โปรดลองใหม่อีกครั้ง", {
                   position: "bottom-right",
                   theme: "bubble",
                   duration: 3000
                 });
-                self.$router.push("/work-offer");
+                self.$store.commit("setLoading", false);
+                // self.$router.push("/work-offer");
               },
               async function complete() {
                 let img = await task.snapshot.ref.getDownloadURL();
