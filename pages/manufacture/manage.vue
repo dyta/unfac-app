@@ -314,7 +314,7 @@
         <h5 class="mt-3">ไม่พบรายการผลิตในโครงการ</h5>
       </b-card>
     </b-container>
-    <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".1" :height="34"></loading>
+    <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".3" :height="34"></loading>
   </div>
 </template>
 
