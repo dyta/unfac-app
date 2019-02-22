@@ -6,7 +6,9 @@
       lead="Workforce management system for non-routine on Line Application."
       style="background-color: transparent; color: white"
       class="pb-0"
-    ></b-jumbotron>
+    >
+      <b-button variant="outline-danger" @click="onClickSignOut">ออกจากระบบ</b-button>
+    </b-jumbotron>
     <b-container>
       <b-row align-content="center">
         <b-col md="6" class="mt-3">
@@ -69,19 +71,65 @@
                 placeholder="0987654321"
               ></b-form-input>
             </b-form-group>
-            <div class="px-3">
-              <b-button
-                :variant="!stateText || !stateTel ? 'secondary' : 'success'"
-                :disabled="!stateText || !stateTel"
-                @click="onClickCreateCompany"
-                block
-              >สร้าง</b-button>
-            </div>
           </b-card>
         </b-col>
         <b-col md="6" class="mt-3">
-          <b-card class="text-left">
-            <h5 class="text-center py-3 pb-4">กรอกรหัสเพื่อเข้าร่วมได้ที่นี่</h5>
+          <b-row class="mb-2">
+            <b-col>
+              <b-card
+                class="text-center text-dark package"
+                bg-variant="light"
+                @click="()=> createForm.entPackage = 1"
+              >
+                <h5 class="pt-3 text-dark">Member</h5>
+                <fa icon="star"/>
+
+                <h6 class="h-normal pt-3 text-dark">ฟรี</h6>
+                <small>*ไม่เสียค่าใช้จ่าย</small>
+                <br>
+                <b-form-radio :value="1" v-model="createForm.entPackage" name="entPackage">
+                  <small class="text-dark">ปัจจุบัน</small>
+                </b-form-radio>
+              </b-card>
+            </b-col>
+            <b-col lg="4" class="mb-2">
+              <b-card class="text-center text-light package" bg-variant="secondary">
+                <h5 class="pt-3 text-light">Silver</h5>
+                <fa icon="star"/>
+                <fa icon="star"/>
+                <h6 class="h-normal pt-3 text-light">฿300/เดือน</h6>
+                <small>*฿3,300/ปี</small>
+                <br>
+                <b-form-radio :value="2" disabled name="entPackage">
+                  <small class="text-light">ไม่มีแพ็กเกจ</small>
+                </b-form-radio>
+              </b-card>
+            </b-col>
+            <b-col>
+              <b-card class="text-center text-dark package" bg-variant="warning">
+                <h5 class="pt-3 text-dark">Gold</h5>
+                <fa icon="star"/>
+                <fa icon="star"/>
+                <fa icon="star"/>
+                <h6 class="h-normal pt-3 text-dark">฿480/เดือน</h6>
+                <small>*฿5,500/ปี</small>
+                <br>
+                <b-form-radio :value="3" disabled name="entPackage">
+                  <small class="text-dark">ไม่มีแพ็กเกจ</small>
+                </b-form-radio>
+              </b-card>
+            </b-col>
+          </b-row>
+          <div class="mb-3">
+            <b-button
+              :variant="!stateText || !stateTel ? 'secondary' : 'success'"
+              :disabled="!stateText || !stateTel"
+              @click="onClickCreateCompany"
+              block
+            >สร้าง</b-button>
+          </div>
+          <b-card class="text-left" bg-variant="dark">
+            <h5 class="text-center py-3 pb-4 text-light">หรือกรอกรหัสเพื่อเข้าร่วมได้ที่นี่</h5>
             <b-form-group class="mx-3">
               <b-form-input
                 :state="stateKInvite"
@@ -96,12 +144,9 @@
                 :disabled="!stateKInvite"
                 @click="OnClickJoinWithCode"
                 block
-              >ขอเข้าร่วม</b-button>
+              >ส่งคำขอเข้าร่วม</b-button>
             </div>
           </b-card>
-          <div class="text-left my-5 px-5 mx-5">
-            <b-button block variant="danger" @click="onClickSignOut">ออกจากระบบ</b-button>
-          </div>
         </b-col>
       </b-row>
     </b-container>
@@ -118,25 +163,24 @@ export default {
       title: "สร้างหรือเข้าร่วมโครงการ"
     };
   },
-
   data() {
     return {
       keyInvite: "",
       isLoading: false,
       createForm: {
-        entName: "",
-        entIdentity: "",
+        entName: "Unfac",
+        entIdentity: "0-00-00-00/0-0000",
         entDomain: "",
-        entTel: "",
+        entTel: "0957192597",
         entAddress: "",
         entPostal: "",
         district: "",
         amphoe: "",
-        province: ""
+        province: "",
+        entPackage: 1
       }
     };
   },
-  created() {},
   computed: {
     stateKInvite() {
       return this.keyInvite.length === 16 &&
@@ -232,7 +276,7 @@ export default {
             this.createForm.province +
             " " +
             this.createForm.entPostal,
-          entPackage: 0,
+          entPackage: this.createForm.entPackage,
           entIdentity: this.createForm.entIdentity,
           entTel: this.createForm.entTel
         };
@@ -318,5 +362,12 @@ export default {
 }
 .list-container {
   max-height: 210px;
+}
+.package {
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+.package:hover {
+  transform: scale(1.05);
 }
 </style>

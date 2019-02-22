@@ -63,10 +63,12 @@
           />
         </template>
         <template slot="actions" slot-scope="row">
-          <b-button-group v-if="row">
-            <b-button variant="outline-danger">ปฏิเสธ</b-button>
-            <b-button variant="success">ยอมรับ</b-button>
-          </b-button-group>
+          <b-button
+            v-if="user.userRole === 2"
+            :variant="row.item.invStatus === '0' ? 'success' : 'danger'"
+            block
+          >{{row.item.invStatus === '0' ? 'ยอมรับ':'ยกเลิกผู้ใช้นี้'}}</b-button>
+          <small v-else>Access Denied</small>
         </template>
       </b-table>
       <b-row>
@@ -91,7 +93,7 @@
         </small>
       </b-card>
     </b-container>
-    <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".7" :height="34"></loading>
+    <loading :active.sync="asyncSource" :is-full-page="false" :opacity="1" :height="34"></loading>
   </div>
 </template>
 
@@ -114,11 +116,6 @@ export default {
         {
           key: "userFullname",
           label: "ชื่อผู้ขอเข้าร่วม",
-          sortable: true
-        },
-        {
-          key: "userDisplayName",
-          label: "ชื่อที่ใช้แสดง",
           sortable: true
         },
         {
@@ -154,6 +151,9 @@ export default {
   computed: {
     asyncSource() {
       return this.$store.state.source;
+    },
+    user() {
+      return this.$store.state.user;
     },
     sortOptions() {
       return this.fields

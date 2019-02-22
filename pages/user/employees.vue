@@ -86,7 +86,7 @@
         </small>
       </b-card>
     </b-container>
-    <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".7" :height="34"></loading>
+    <loading :active.sync="asyncSource" :is-full-page="false" :opacity="1" :height="34"></loading>
   </div>
 </template>
 
