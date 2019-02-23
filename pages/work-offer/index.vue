@@ -641,10 +641,10 @@ export default {
           return "Completed";
           break;
         case 2:
-          return "Unpublished";
+          return "Disabled";
           break;
         case 3:
-          return "Published";
+          return "Enabled";
           break;
         case 4:
           return "Urgently";
