@@ -73,9 +73,63 @@
         </template>
         <template slot="row-details" slot-scope="row">
           <b-card>
-            <ul>
-              <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value}}</li>
-            </ul>
+            <div class="form-row">
+              <div class="col">
+                <b-form-group label="Line Uniq:">
+                  <b-form-input :value="row.item.empLineId" disabled/>
+                </b-form-group>
+              </div>
+              <div class="col">
+                <b-form-group label="ปริมาณการรับงานสูงสุด:">
+                  <div class="input-group mb-3">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="ปริมาณการรับงานสูงสุด"
+                      v-model="row.item.empCapacity"
+                    >
+                    <div class="input-group-append">
+                      <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        @click="clickCapacity(row.item)"
+                      >อัพเดท</button>
+                    </div>
+                  </div>
+                </b-form-group>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col">
+                <b-form-group label="เลขบัตรประจำตัวประชาชน:">
+                  <b-form-input :value="row.item.empIdentity" disabled/>
+                </b-form-group>
+              </div>
+              <div class="col">
+                <b-form-group label="ชื่อ-นามสกุล:">
+                  <b-form-input :value="row.item.empFullname" disabled/>
+                </b-form-group>
+              </div>
+              <div class="col">
+                <b-form-group label="เบอร์โทร:">
+                  <b-form-input :value="row.item.empPhoneNumber" disabled/>
+                </b-form-group>
+              </div>
+            </div>
+            <b-form-group label="ที่อยู่:">
+              <b-form-textarea
+                size="sm"
+                rows="3"
+                disabled
+                :value="row.item.empAddress + row.item.empAddress2"
+              />
+            </b-form-group>
+            <b-button
+              variant="success"
+              v-if="!row.item.userAuth"
+              @click="clickConfirm(row.item, 1)"
+            >ยืนยันพนักงาน</b-button>
+            <b-button variant="danger" @click="clickConfirm(row.item, 0)" v-else>ปลดพนักงานคนนี้</b-button>
           </b-card>
         </template>
       </b-table>
@@ -205,7 +259,6 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-
     myRowClickHandler(record, index) {
       console.log("record: ", record);
     },
@@ -220,6 +273,52 @@ export default {
             self.totalRows = res.length;
           }
           self.$store.dispatch("sourceLoaded", false);
+        });
+    },
+    async clickConfirm(item, key) {
+      let self = this;
+      await this.$axios
+        .$put(`/v2/employee/${key}`, item)
+        .then(function(res) {
+          self.$toast.success(
+            `พนักงาน ${item.empFullname} ได้รับการเปลี่ยนแปลงเรียบร้อยแล้ว`,
+            {
+              theme: "outline",
+              position: "bottom-right",
+              duration: 4000
+            }
+          );
+        })
+        .catch(e => {
+          self.$toast.error(e, {
+            theme: "outline",
+            position: "bottom-right",
+            duration: 4000
+          });
+        });
+      self.fetch();
+    },
+    async clickCapacity(item) {
+      console.log("item: ", item);
+      let self = this;
+      await this.$axios
+        .$put(`/v2/employee/${item.empId}/capacity`, item)
+        .then(function(res) {
+          self.$toast.success(
+            `พนักงาน ${item.empFullname} ได้รับการเปลี่ยนแปลงเรียบร้อยแล้ว`,
+            {
+              theme: "outline",
+              position: "bottom-right",
+              duration: 4000
+            }
+          );
+        })
+        .catch(e => {
+          self.$toast.error(e, {
+            theme: "outline",
+            position: "bottom-right",
+            duration: 4000
+          });
         });
     }
   }
