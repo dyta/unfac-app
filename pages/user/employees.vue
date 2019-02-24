@@ -49,6 +49,21 @@
         @row-clicked="myRowClickHandler"
         @filtered="onFiltered"
       >
+        <template slot="empPictureUrl" slot-scope="row">
+          <b-img
+            rounded="circle"
+            :src="row.value"
+            width="40"
+            height="40"
+            :alt="row.item.empFullname"
+          />
+        </template>
+        <template slot="empStatus" slot-scope="row">
+          <b-badge :variant="status(row.value).color">{{status(row.value).text}}</b-badge>
+        </template>
+        <template slot="userAuth" slot-scope="row">
+          <fa :icon="row.value ? 'check' : 'times'" :color="row.value ? 'green' : 'red'"/>
+        </template>
         <template slot="actions" slot-scope="row">
           <b-button
             size="sm"
@@ -108,28 +123,26 @@ export default {
           sortable: true
         },
         {
+          key: "empPictureUrl",
+          label: "Avatar"
+        },
+        {
           key: "empFullname",
           label: "ชื่อพนักงาน",
           sortable: true
         },
         {
           key: "empPhoneNumber",
-          label: "เบอร์โทร",
-          sortable: true
+          label: "เบอร์โทร"
         },
         {
           key: "empStatus",
-          label: "สถานะการทำงาน",
+          label: "สถานะ",
           sortable: true
         },
         {
           key: "userAuth",
-          label: "ยืนยันตัวคน",
-          sortable: true
-        },
-        {
-          key: "empRole",
-          label: "ตำแหน่ง",
+          label: "ยืนยันพนักงาน",
           sortable: true
         },
         { key: "actions", label: "ตัวเลือกการจัดการ" }
@@ -160,6 +173,34 @@ export default {
     }
   },
   methods: {
+    status(key) {
+      let convert = {
+        text: "ยังไม่ได้กรอกข้อมูล",
+        color: ""
+      };
+      switch (key) {
+        case 1:
+          return convert;
+          break;
+        case 2:
+          convert.text = "รอการตรวจสอบ";
+          convert.color = "primary";
+          return convert;
+          break;
+        case 3:
+          convert.text = "พร้อมทำงาน";
+          convert.color = "success";
+          return convert;
+          break;
+        case 4:
+          convert.text = "ไม่พร้อมทำงาน";
+          convert.color = "danger";
+          return convert;
+          break;
+        default:
+          break;
+      }
+    },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
