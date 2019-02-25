@@ -14,29 +14,29 @@
               <b-col cols="6" md="6" lg="3" class="list-statistic">
                 <h6 class="m-0">อยู่ระหว่างการผลิต*</h6>
                 <p class="m-0 statistics">
-                  20
-                  <small>/20</small>
+                  N/a
+                  <small>/N/a</small>
                 </p>
               </b-col>
               <b-col cols="6" md="6" lg="3" class="list-statistic">
                 <h6 class="m-0">รอการตรวจสอบ*</h6>
                 <p class="m-0 statistics">
-                  20
-                  <small>/20</small>
+                  N/a
+                  <small>/N/a</small>
                 </p>
               </b-col>
               <b-col cols="6" md="6" lg="3" class="list-statistic">
                 <h6 class="m-0">งานที่เปิดรับปัจจุบัน*</h6>
                 <p class="m-0 statistics">
-                  20
-                  <small>/20</small>
+                  N/a
+                  <small>/N/a</small>
                 </p>
               </b-col>
               <b-col cols="6" md="6" lg="3" class="list-statistic">
                 <h6 class="m-0">รายการคำขอ*</h6>
                 <p class="m-0 statistics">
-                  20
-                  <small>/20</small>
+                  N/a
+                  <small>/N/a</small>
                 </p>
               </b-col>
             </b-row>
@@ -71,27 +71,32 @@
               :is-full-page="false"
               :height="34"
             ></loading>
-            <b-media
-              v-for="(item, index) in activities"
-              :key="index"
-              left-align
-              vertical-align="top"
-              style="line-height: 14px;"
-              class="pb-2"
-            >
-              <b-img
-                slot="aside"
-                :blank="item.image ? false : true"
-                :blank-color="item.image ? null : item.color"
-                width="40"
-                height="40"
-                rounded="circle"
-                :src="item.image"
-                alt="placeholder"
-              />
-              <h6 class="m-0 font-size-12 h6-normal">{{item.title}}</h6>
-              <small class="mb-0 sm-normal">เมื่อ {{$moment(item.time).fromNow()}}</small>
-            </b-media>
+            <div v-if="activities.length > 0">
+              <b-media
+                v-for="(item, index) in activities"
+                :key="index"
+                left-align
+                vertical-align="top"
+                style="line-height: 14px;"
+                class="pb-2"
+              >
+                <b-img
+                  slot="aside"
+                  :blank="item.image ? false : true"
+                  :blank-color="item.image ? null : item.color"
+                  width="40"
+                  height="40"
+                  rounded="circle"
+                  :src="item.image"
+                  alt="placeholder"
+                />
+                <h6 class="m-0 font-size-12 h6-normal">{{item.title}}</h6>
+                <small class="mb-0 sm-normal">เมื่อ {{$moment(item.time).fromNow()}}</small>
+              </b-media>
+            </div>
+            <div v-else class="text-center">
+              <small>ไม่มีกิจกรรมที่เกิดขึ้นในช่วงเวลานี้</small>
+            </div>
           </b-card>
         </b-col>
       </b-row>
@@ -127,7 +132,7 @@ export default {
         themeSystem: "bootstrap4",
         defaultView: "month",
         allDayText: "ทั้งวัน",
-        aspectRatio: 1.3,
+        aspectRatio: 1.5,
         header: {
           left: "title",
           center: "",
