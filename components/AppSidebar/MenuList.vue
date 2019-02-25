@@ -10,7 +10,11 @@
         cols="4"
         class="small-device pt-3 pb-2"
       >
-        <div class="menu-list" @click="()=> router(item.path)">
+        <div
+          class="menu-list"
+          @click="()=> router(item.path)"
+          v-if="(item.path!=='/user/collaborators' && user.userRole === 1) || user.userRole === 2"
+        >
           <div>
             <b-img v-if="item.img" :src="item.img" height="34" :alt="item.name"/>
             <fa v-else :icon="item.icon" size="2x" :color="item.color"/>
@@ -27,6 +31,11 @@
 <script>
 export default {
   props: ["header", "list"],
+  computed: {
+    user() {
+      return this.$store.state.user;
+    }
+  },
   methods: {
     router(path) {
       this.$router.push(path);

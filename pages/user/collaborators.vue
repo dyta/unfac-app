@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="user.userRole !== 1">
     <b-jumbotron
       fluid
       header="Collaborators"
@@ -32,7 +32,7 @@
       </b-row>
       <b-alert variant="warning" show>
         <h6>คำแนะนำ</h6>
-        <small>การขอเข้าร่ามโครงการ ผู้เข้าร่วมจะมีสถานะดูแลจัดการได้ทั้งหมด</small>
+        <small>การขอเข้าร่ามโครงการ ผู้เข้าร่วมจะมีสถานะดูแลจัดการได้บางส่วน</small>
       </b-alert>
     </b-jumbotron>
     <b-container v-if="!asyncSource && items.length > 0">
@@ -146,7 +146,11 @@ export default {
     };
   },
   created() {
-    this.fetch();
+    if (this.$store.state.user.userRole === 1) {
+      this.$router.back();
+    } else {
+      this.fetch();
+    }
   },
   computed: {
     asyncSource() {
@@ -169,9 +173,7 @@ export default {
       this.currentPage = 1;
     },
 
-    myRowClickHandler(record, index) {
-      console.log("record: ", record);
-    },
+    myRowClickHandler(record, index) {},
     async fetch() {
       let self = this;
       this.$store.dispatch("sourceLoaded", true);

@@ -128,7 +128,7 @@
               variant="success"
               v-if="!row.item.userAuth"
               @click="clickConfirm(row.item, 1)"
-            >ยืนยันพนักงาน</b-button>
+            >ยืนยันการเป็นพนักงานของโครงการนี้</b-button>
             <b-button variant="danger" @click="clickConfirm(row.item, 0)" v-else>ปลดพนักงานคนนี้</b-button>
           </b-card>
         </template>
@@ -259,9 +259,7 @@ export default {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    myRowClickHandler(record, index) {
-      console.log("record: ", record);
-    },
+    myRowClickHandler(record, index) {},
     async fetch() {
       let self = this;
       this.$store.dispatch("sourceLoaded", true);
@@ -299,7 +297,6 @@ export default {
       self.fetch();
     },
     async clickCapacity(item) {
-      console.log("item: ", item);
       let self = this;
       await this.$axios
         .$put(`/v2/employee/${item.empId}/capacity`, item)

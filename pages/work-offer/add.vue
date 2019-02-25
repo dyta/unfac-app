@@ -265,7 +265,6 @@ export default {
                 self.uploader = percentage;
               },
               function error(err) {
-                console.log("err: ", err);
                 self.$toast.error("เกิดข้อผิดพลาด โปรดลองใหม่อีกครั้ง", {
                   position: "bottom-right",
                   theme: "bubble",

@@ -19,9 +19,12 @@ export default {
       const exist = await $axios.$get(`${process.env.API_SERVICE}/v2/account/_/${req.session.auth.uid}`)
       if (exist.exists) {
         // ถ้ามี user ในระบบ
-        const response = await $axios.$get(`${process.env.API_SERVICE}/v2/account/${req.session.auth.uid}`)
-        commit('setUser', response[0])
-        req.session.user = response[0]
+        const UpdateProfile = await $axios.$put(`${process.env.API_SERVICE}/v2/account/update`, req.session.auth)
+        if (UpdateProfile) {
+          const response = await $axios.$get(`${process.env.API_SERVICE}/v2/account/${req.session.auth.uid}`)
+          commit('setUser', response[0])
+          req.session.user = response[0]
+        }
       }
     }
 

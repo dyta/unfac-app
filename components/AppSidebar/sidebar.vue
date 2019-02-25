@@ -1,13 +1,13 @@
 <template>
-  <div :class="[$style.sidebar]" v-if="auth || !homeDisabled">
+  <div :class="[$style.sidebar]" v-if="user || !homeDisabled">
     <b-card class="text-left profile">
       <div class="info">
-        <b-img rounded="circle" :src="auth.photoURL" width="60" :alt="auth.name"/>
+        <b-img rounded="circle" :src="user.userPictureUrl" width="60" :alt="user.displayName"/>
       </div>
 
       <div class="info text">
         <p>{{user.userFullname}}</p>
-        <small>{{auth.email}}</small>
+        <small>{{user.userEmail}}</small>
         <div>
           <small>
             <fa icon="trophy"/>
@@ -16,7 +16,7 @@
         </div>
       </div>
     </b-card>
-    <div class="menu">
+    <div class="menu" v-if="user.entId">
       <menu-list header="Retail" :list="shopItems"/>
       <menu-list header="Manufacture" :list="manufacItems"/>
       <menu-list header="Account" :list="accountList"/>

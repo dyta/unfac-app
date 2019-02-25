@@ -12,6 +12,13 @@
         <b-tabs vertical nav-wrapper-class="col-12 col-md-4" content-class="col-12 col-md-8 px-4">
           <b-tab title="คีย์ API ของเว็บ" active>
             <b-card>
+              <h6 class="bold">รหัสการขอเข้าร่วม</h6>
+              <hr>
+              <div class="text-center">
+                <code>{{setting.entKeyInvite}}</code>
+              </div>
+            </b-card>
+            <b-card class="mt-3">
               <h6 class="bold">API KEY</h6>
               <hr>
               <div class="text-center">
@@ -168,12 +175,6 @@
                   <code>{{setting.liff_full_account}}</code>
                 </b-col>
               </b-row>
-            </b-card>
-          </b-tab>
-          <b-tab title="ลิงค์กำหนดเอง">
-            <b-card class="text-center">
-              <fa icon="exclamation-circle" size="3x" color="orange" class="mt-2"/>
-              <h5 class="mt-3">ไม่พร้อมใช้งาน</h5>
             </b-card>
           </b-tab>
         </b-tabs>
