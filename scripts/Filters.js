@@ -11,5 +11,32 @@ export default {
   },
   sortByActivity(objects) {
     return _.orderBy(objects, 'time', 'desc');
+  },
+  events(objects) {
+    return _.filter(objects, function (o) {
+      o['title'] = "#" + o['id'] + " - " + o['title'] + " - " + o['customer']
+      switch (o['backgroundColor']) {
+        case 5:
+          o['backgroundColor'] = 'orange'
+          break;
+        case 4:
+          o['backgroundColor'] = 'red'
+          break;
+        case 3:
+          o['backgroundColor'] = 'blue'
+          break;
+        case 2:
+          o['backgroundColor'] = 'gray'
+          break;
+        case 1:
+          o['backgroundColor'] = 'green'
+          break;
+        default:
+          o['backgroundColor'] = 'white'
+          o['textColor'] = 'black'
+          break;
+      }
+      return o;
+    });
   }
 };

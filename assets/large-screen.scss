@@ -37,7 +37,11 @@
     position: -webkit-sticky;
     position: sticky;
     top: 6em !important;
-    z-index: 994;
+    z-index: 500;
+  }
+
+  .top {
+    top: 4em !important;
   }
 }
 

@@ -90,6 +90,9 @@ module.exports = {
   }, {
     src: '~/plugins/vue-date-picker',
     ssr: false
+  }, {
+    src: '~/plugins/jquery',
+    ssr: false
   }],
 
   router: {
