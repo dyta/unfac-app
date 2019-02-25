@@ -1,5 +1,17 @@
 @import "color";
 
+@media (min-width: 980px) {
+  .list-statistic {
+    border-left: 1px solid var(--highlight);
+  }
+
+  .list-statistic:first-child {
+    border-left: 0;
+  }
+
+
+}
+
 @media (min-width: 768px) {
 
   .toggle {
@@ -14,14 +26,18 @@
     overflow: hidden !important;
   }
 
-  // sidebar
-
-
   .jumbotron-special-lg {
     background: url("./images/blue_waves.png") var(--bg-1-color);
     background-position: top;
     background-repeat: no-repeat;
     background-size: cover
+  }
+
+  .p-sicky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 6em !important;
+    z-index: 994;
   }
 }
 

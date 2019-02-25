@@ -2,7 +2,7 @@
   <div>
     <b-jumbotron
       fluid
-      header="Published"
+      header="Enabled"
       lead="แสดงงานที่เปิดให้รับในโครงการของคุณ"
       class="jumbotron-special-lg mb-0 pb-3"
     >
@@ -97,7 +97,7 @@ export default {
   layout: "default",
   head() {
     return {
-      title: "Published"
+      title: "Enabled"
     };
   },
   data() {
@@ -126,7 +126,7 @@ export default {
         case 3:
           return {
             color: "primary",
-            text: "Published"
+            text: "Enabled"
           };
         case 4:
           return {

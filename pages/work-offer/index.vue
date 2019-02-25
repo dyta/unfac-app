@@ -398,13 +398,13 @@
           >
             <span v-if="WorkInfoItem.workStatus > 2">
               <b-form-radio :value="4" class="pt-2">Urgently</b-form-radio>
-              <b-form-radio :value="3">Published</b-form-radio>
-              <b-form-radio v-if="WorkInfoItem.workPickVolume === 0" :value="2">Unpublished</b-form-radio>
+              <b-form-radio :value="3">Enabled</b-form-radio>
+              <b-form-radio v-if="WorkInfoItem.workPickVolume === 0" :value="2">Disabled</b-form-radio>
               <b-form-radio v-else :value="5">Paused</b-form-radio>
             </span>
             <span v-else-if="WorkInfoItem.workStatus === 2">
-              <b-form-radio :value="2">Unpublished</b-form-radio>
-              <b-form-radio :value="3">Published</b-form-radio>
+              <b-form-radio :value="2">Disabled</b-form-radio>
+              <b-form-radio :value="3">Enabled</b-form-radio>
               <b-form-radio :value="4">Urgently</b-form-radio>
               <b-form-radio :value="0">
                 <small class="text-danger">Delete Protection</small>

@@ -98,6 +98,18 @@ a:hover,
   border: 0;
 }
 
+.no-radius {
+  border-radius: 0 !important
+}
+
+.no-radius-bt {
+  border-radius: 3px 3px 0 0 !important
+}
+
+.no-bdt {
+  border-top: 0;
+}
+
 .btn {
   font-size: 1rem;
 }
@@ -341,4 +353,13 @@ a:hover,
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#87e0fd', endColorstr='#05abe0', GradientType=1);
   /* IE6-9 */
   color: var(--light);
+}
+
+.statistics {
+  font-size: 2rem;
+
+  small {
+    font-size: .8rem;
+    color: var(--gray)
+  }
 }

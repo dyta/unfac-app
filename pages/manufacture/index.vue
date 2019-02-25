@@ -111,7 +111,7 @@ export default {
         case 3:
           return {
             color: "primary",
-            text: "Published"
+            text: "Enabled"
           };
         case 4:
           return {
