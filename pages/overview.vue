@@ -17,15 +17,31 @@
                   {{statistics.unit_enabled ? statistics.unit_enabled : 0}}
                   <small
                     :class="statistics.unit_enabled-statistics.unit_approved !==0 ? 'text-danger' : 'text-success'"
-                  >/{{statistics.unit_enabled-statistics.unit_approved !==0 ? 'เหลือ '+ (statistics.unit_enabled-statistics.unit_approved) : 'อนุมัติครบ'}}</small>
+                  >
+                    :: {{statistics.unit_enabled-statistics.unit_approved !==0 ? 'เหลือ '+ (statistics.unit_enabled-statistics.unit_approved) : 'อนุมัติครบ'}}
+                    <span
+                      v-if="statistics.unit_enabled-statistics.unit_approved !==0"
+                      style="vertical-align: super;"
+                      class="font-size-10"
+                    >ชื้น</span>
+                  </small>
                 </p>
                 <div class="text-right border-top">
                   <b-link class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
                 </div>
               </b-col>
               <b-col cols="6" md="6" lg="3" class="list-statistic">
-                <h6 class="m-0">รายการคำขอ*</h6>
-                <p class="m-0 statistics">{{statistics.unit_request ? statistics.unit_request : 0}}</p>
+                <h6 class="m-0">รายการคำขอ</h6>
+                <p class="m-0 statistics">
+                  3
+                  <small>
+                    :: รวม {{statistics.unit_request ? statistics.unit_request : 0}}
+                    <span
+                      style="vertical-align: super;"
+                      class="font-size-10"
+                    >ชื้น</span>
+                  </small>
+                </p>
                 <div class="text-right border-top">
                   <b-link class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
                 </div>
@@ -47,22 +63,22 @@
             </b-row>
 
             <small class="font-size-10">
-              จำนวนงานทั้งหมด
+              *หน่วย: ชิ้น | จำนวนงานทั้งหมด
               <b>{{statistics.w_all ? statistics.w_all : 0}}</b> งาน | จำนวนงานที่เปิดรับ
-              <b>{{statistics.w_enabled ? statistics.w_enabled : 0}}</b> งาน | *หน่วย: ชิ้น
+              <b>{{statistics.w_enabled ? statistics.w_enabled : 0}}</b> งาน
             </small>
           </b-card>
 
-          <b-row>
-            <b-col class="pr-0">
+          <b-row class="no-gutters">
+            <b-col class="padded" lg="6" cols="12">
               <b-card
                 class="no-radius no-bdt"
                 style="height: 100%"
-                bg-variant="secondary"
+                bg-variant="dark"
                 text-variant="light"
               >
                 <h5 class="text-warning">
-                  <fa icon="exclamation-triangle" class="mr-2"/>งานเร่งด่วน
+                  <fa icon="clock" class="mr-2"/>กำหนดส่งในสัปดาห์นี้
                 </h5>
                 <hr>
                 <div v-if="workUrgently.length > 0">
@@ -79,13 +95,13 @@
                         blank-color="#ccc"
                         width="64"
                         rounded
-                        alt="placeholder"
+                        :alt="`workUrgently-${index}`"
                       />
                       <h6 class="m-0 text-light font-size-14">#400{{index}} - ชื่องาน</h6>
                       <ul class="m-0 pl-3 font-size-10">
-                        <li>จำนวนสั่งทำทั้งหมด 100 รายการ</li>
-                        <li>ปริมาณที่ยังไม่ได้ผลิต 20 รายการ</li>
-                        <li>คาดว่าจะเสร็จ</li>
+                        <li>สั่งทำทั้งหมด 100 รายการ - รวม 1111 บาท</li>
+                        <li>ลูกค้า: คุณ</li>
+                        <li>กำหนดส่ง</li>
                       </ul>
                     </b-media>
                   </b-link>
@@ -98,10 +114,10 @@
                 </div>
               </b-card>
             </b-col>
-            <b-col class="pl-0">
+            <b-col>
               <b-card class="no-radius no-bdt" style="height: 100%" bg-variant="white">
                 <h5 class="text-success">
-                  <fa icon="check-circle" class="mr-2"/>คำขออนุมัติล่าสุด
+                  <fa icon="check-circle" class="mr-2"/>รายการคำขออนุมัติล่าสุด
                 </h5>
                 <hr>
                 <div v-if="recentApprove.length > 0">
@@ -118,7 +134,7 @@
                         blank-color="#ccc"
                         width="45"
                         rounded="circle"
-                        alt="placeholder"
+                        :alt="`recentApprove-${index}`"
                       />
                       <b-img
                         slot="aside"
@@ -286,6 +302,7 @@ export default {
   methods: {
     async activity() {
       let self = this;
+      let f = 0;
       activity
         .collection(`${this.user.entId}`)
         .orderBy("time", "desc")
@@ -293,10 +310,15 @@ export default {
         .onSnapshot(function(querySnapshot) {
           self.isActivity = true;
           self.activities, (self.items = []);
+
           querySnapshot.forEach(function(doc) {
             self.items.push(doc.data());
           });
           self.activities = filter.sortByActivity(self.items);
+          if (self.f === 0) {
+            self.fetchEvent();
+            self.fetchStatistic();
+          }
           setTimeout(() => {
             self.isActivity = false;
           }, 1000);
@@ -315,11 +337,9 @@ export default {
     },
     async fetchStatistic() {
       let self = this;
-      self.statistics = [];
       await this.$axios
         .$get(`/v2/statistic/${this.$store.state.user.entId}`)
         .then(function(res) {
-          console.log("res: ", res);
           if (res.length > 0) {
             self.statistics = res[0];
           }
