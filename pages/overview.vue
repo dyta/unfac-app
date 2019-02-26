@@ -10,39 +10,128 @@
       <b-row>
         <b-col md="8">
           <b-card class="p-sicky no-radius-bt top">
-            <b-row class="pb-2">
-              <b-col cols="6" md="6" lg="3" class="list-statistic">
-                <h6 class="m-0">อยู่ระหว่างการผลิต*</h6>
-                <p class="m-0 statistics">
-                  N/a
-                  <small>/N/a</small>
-                </p>
-              </b-col>
-              <b-col cols="6" md="6" lg="3" class="list-statistic">
-                <h6 class="m-0">รอการตรวจสอบ*</h6>
-                <p class="m-0 statistics">
-                  N/a
-                  <small>/N/a</small>
-                </p>
-              </b-col>
+            <b-row class="pb-2" v-if="statistics">
               <b-col cols="6" md="6" lg="3" class="list-statistic">
                 <h6 class="m-0">งานที่เปิดรับปัจจุบัน*</h6>
                 <p class="m-0 statistics">
-                  N/a
-                  <small>/N/a</small>
+                  {{statistics.unit_enabled}}
+                  <small
+                    :class="statistics.unit_enabled-statistics.unit_approved !==0 ? 'text-danger' : 'text-success'"
+                  >/{{statistics.unit_enabled-statistics.unit_approved !==0 ? 'เหลือ '+ (statistics.unit_enabled-statistics.unit_approved) : 'อนุมัติครบ'}}</small>
                 </p>
+                <div class="text-right border-top">
+                  <b-link class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
+                </div>
               </b-col>
               <b-col cols="6" md="6" lg="3" class="list-statistic">
                 <h6 class="m-0">รายการคำขอ*</h6>
-                <p class="m-0 statistics">
-                  N/a
-                  <small>/N/a</small>
-                </p>
+                <p class="m-0 statistics">{{statistics.unit_request}}</p>
+                <div class="text-right border-top">
+                  <b-link class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
+                </div>
+              </b-col>
+              <b-col cols="6" md="6" lg="3" class="list-statistic">
+                <h6 class="m-0">อยู่ระหว่างการผลิต*</h6>
+                <p class="m-0 statistics">{{statistics.unit_process}}</p>
+                <div class="text-right border-top">
+                  <b-link class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
+                </div>
+              </b-col>
+              <b-col cols="6" md="6" lg="3" class="list-statistic">
+                <h6 class="m-0">รอการตรวจสอบ*</h6>
+                <p class="m-0 statistics">{{statistics.unit_check}}</p>
+                <div class="text-right border-top">
+                  <b-link class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
+                </div>
               </b-col>
             </b-row>
 
-            <small class="font-size-10">*หน่วย: รายการ</small>
+            <small class="font-size-10">
+              จำนวนงานทั้งหมด
+              <b>{{statistics.w_all}}</b> งาน | จำนวนงานที่เปิดรับ
+              <b>{{statistics.w_enabled}}</b> งาน | *หน่วย: ชิ้น
+            </small>
           </b-card>
+
+          <b-row>
+            <b-col class="pr-0">
+              <b-card
+                class="no-radius no-bdt"
+                style="height: 100%"
+                bg-variant="secondary"
+                text-variant="light"
+              >
+                <h5 class="text-warning">
+                  <fa icon="exclamation-triangle" class="mr-2"/>งานเร่งด่วน
+                </h5>
+                <hr>
+                <b-link
+                  class="text-light"
+                  v-for="(item, index) in 5"
+                  :key="index"
+                  :to="`/request/approve?wid=${index}&eid=${index}`"
+                >
+                  <b-media class="mb-3">
+                    <b-img
+                      slot="aside"
+                      blank
+                      blank-color="#ccc"
+                      width="64"
+                      rounded
+                      alt="placeholder"
+                    />
+                    <h6 class="m-0 text-light font-size-14">#400{{index}} - ชื่องาน</h6>
+                    <ul class="m-0 pl-3 font-size-10">
+                      <li>จำนวนสั่งทำทั้งหมด 100 รายการ</li>
+                      <li>ปริมาณที่ยังไม่ได้ผลิต 20 รายการ</li>
+                      <li>คาดว่าจะเสร็จ</li>
+                    </ul>
+                  </b-media>
+                </b-link>
+                <b-link class="font-size-12 text-light right" to="/work-offer">ดูทั้งหมด &rarr;</b-link>
+              </b-card>
+            </b-col>
+            <b-col class="pl-0">
+              <b-card class="no-radius no-bdt" style="height: 100%" bg-variant="white">
+                <h5 class="text-success">
+                  <fa icon="check-circle" class="mr-2"/>คำขออนุมัติการผลิตล่าสุด
+                </h5>
+                <hr>
+                <b-link
+                  class="text-dark"
+                  v-for="(item, index) in 7"
+                  :key="index"
+                  :to="`/request/approve?wid=${index}&eid=${index}`"
+                >
+                  <b-media class="mb-3">
+                    <b-img
+                      slot="aside"
+                      blank
+                      blank-color="#ccc"
+                      width="45"
+                      rounded="circle"
+                      alt="placeholder"
+                    />
+                    <b-img
+                      slot="aside"
+                      blank
+                      blank-color="#eee"
+                      width="45"
+                      class="ml-2"
+                      rounded
+                      alt="placeholder"
+                    />
+                    <h6 class="text-dark m-0 font-size-14">#400{{index}} จำนวน 10 รายการ</h6>
+                    <small
+                      class="m-0 font-size-10"
+                    >โดยคุณ ณัฐวุฒิ กิติวรรณ เมื่อ {{$moment().fromNow()}}</small>
+                  </b-media>
+                </b-link>
+                <b-link class="font-size-12 text-dark right" to="/request">ดูทั้งหมด &rarr;</b-link>
+              </b-card>
+            </b-col>
+          </b-row>
+
           <b-card class="no-radius no-bdt" bg-variant="light">
             <h5>
               <fa icon="calendar-alt" class="mr-2"/>ภาพรวมตารางงาน
@@ -62,42 +151,47 @@
           </b-card>
         </b-col>
         <b-col md="4">
-          <b-card class="p-sicky no-radius-bt">
-            <h6>กิจกรรมที่เกิดขึ้นล่าสุด</h6>
-            <hr>
-            <loading
-              :active.sync="this.isActivity"
-              :can-cancel="false"
-              :is-full-page="false"
-              :height="34"
-            ></loading>
-            <div v-if="activities.length > 0">
-              <b-media
-                v-for="(item, index) in activities"
-                :key="index"
-                left-align
-                vertical-align="top"
-                style="line-height: 14px;"
-                class="pb-2"
-              >
-                <b-img
-                  slot="aside"
-                  :blank="item.image ? false : true"
-                  :blank-color="item.image ? null : item.color"
-                  width="40"
-                  height="40"
-                  rounded="circle"
-                  :src="item.image"
-                  alt="placeholder"
-                />
-                <h6 class="m-0 font-size-12 h6-normal">{{item.title}}</h6>
-                <small class="mb-0 sm-normal">เมื่อ {{$moment(item.time).fromNow()}}</small>
-              </b-media>
-            </div>
-            <div v-else class="text-center">
-              <small>ไม่มีกิจกรรมที่เกิดขึ้นในช่วงเวลานี้</small>
-            </div>
-          </b-card>
+          <div class="p-sicky">
+            <b-card class="no-radius-bt no-radius mb-3">
+              <menu-list header="เมนู" :list="[...manufacItems , ...accountList[0]]"/>
+            </b-card>
+            <b-card class="no-radius-bt">
+              <h6>กิจกรรมที่เกิดขึ้นล่าสุด</h6>
+              <hr>
+              <loading
+                :active.sync="this.isActivity"
+                :can-cancel="false"
+                :is-full-page="false"
+                :height="34"
+              ></loading>
+              <div v-if="activities.length > 0">
+                <b-media
+                  v-for="(item, index) in activities"
+                  :key="index"
+                  left-align
+                  vertical-align="top"
+                  style="line-height: 14px;"
+                  class="pb-2"
+                >
+                  <b-img
+                    slot="aside"
+                    :blank="item.image && item.image != 'undefined' ? false : true"
+                    :blank-color="item.image && item.image != 'undefined' ? null : item.color"
+                    width="40"
+                    height="40"
+                    rounded
+                    :src="item.image"
+                    alt="placeholder"
+                  />
+                  <h6 class="m-0 font-size-12 h6-normal">{{item.title}}</h6>
+                  <small class="mb-0 sm-normal">เมื่อ {{$moment(item.time).fromNow()}}</small>
+                </b-media>
+              </div>
+              <div v-else class="text-center">
+                <small>ไม่มีกิจกรรมที่เกิดขึ้นในช่วงเวลานี้</small>
+              </div>
+            </b-card>
+          </div>
         </b-col>
       </b-row>
     </b-container>
@@ -122,6 +216,7 @@ export default {
     return {
       items: [],
       activities: [],
+      statistics: [],
       isActivity: false,
       events: [],
       config: {
@@ -154,6 +249,7 @@ export default {
   },
   created() {
     this.fetchEvent();
+    this.fetchStatistic();
     this.activity();
   },
   computed: {
@@ -176,7 +272,7 @@ export default {
       activity
         .collection(`${this.user.entId}`)
         .orderBy("time", "desc")
-        .limit(14)
+        .limit(8)
         .onSnapshot(function(querySnapshot) {
           self.isActivity = true;
           self.activities, (self.items = []);
@@ -197,6 +293,18 @@ export default {
         .then(function(res) {
           if (res.length > 0) {
             self.events = filter.events(res);
+          }
+        });
+    },
+    async fetchStatistic() {
+      let self = this;
+      self.statistics = [];
+      await this.$axios
+        .$get(`/v2/statistic/${this.$store.state.user.entId}`)
+        .then(function(res) {
+          console.log("res: ", res);
+          if (res.length > 0) {
+            self.statistics = res[0];
           }
         });
     }

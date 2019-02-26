@@ -1,15 +1,13 @@
 <template>
   <div>
-    <b-row class="pl-4 pt-2 mx-0 title-menu-list">
-      <h6 class="sidebar-header ml-2">{{header}}</h6>
+    <b-row class="mx-0 mb-2 border-bottom">
+      <h6>{{header}}</h6>
     </b-row>
     <b-row class="mx-4">
       <b-col
         v-for="(item, index) in list"
         :key="index+item.name"
         cols="4"
-        sm="3"
-        lg="2"
         class="small-device pt-3 pb-2"
       >
         <div

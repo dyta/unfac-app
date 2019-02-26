@@ -2,7 +2,7 @@
   <div>
     <b-jumbotron
       fluid
-      header="Enabled"
+      header="Approve Request"
       lead="แสดงงานที่เปิดให้รับในโครงการของคุณ"
       class="jumbotron-special-lg mb-0 pb-3"
     >
@@ -97,7 +97,7 @@ export default {
   layout: "default",
   head() {
     return {
-      title: "Enabled"
+      title: "Approve Request"
     };
   },
   data() {
