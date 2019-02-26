@@ -258,7 +258,7 @@ export default {
         eventTextColor: "white",
         themeSystem: "bootstrap4",
         defaultView: "month",
-        allDayText: "ทั้งวัน",
+        allDayText: "",
         aspectRatio: 1.5,
         header: {
           left: "title",

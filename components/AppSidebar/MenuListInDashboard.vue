@@ -3,7 +3,7 @@
     <b-row class="mx-0 mb-2 border-bottom">
       <h6>{{header}}</h6>
     </b-row>
-    <b-row class="mx-4">
+    <b-row class="mx-0">
       <b-col
         v-for="(item, index) in list"
         :key="index+item.name"
