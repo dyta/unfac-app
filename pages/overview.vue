@@ -14,7 +14,7 @@
               <b-col cols="6" md="6" lg="3" class="list-statistic">
                 <h6 class="m-0">งานที่เปิดรับปัจจุบัน*</h6>
                 <p class="m-0 statistics">
-                  {{statistics.unit_enabled}}
+                  {{statistics.unit_enabled ? statistics.unit_enabled : 0}}
                   <small
                     :class="statistics.unit_enabled-statistics.unit_approved !==0 ? 'text-danger' : 'text-success'"
                   >/{{statistics.unit_enabled-statistics.unit_approved !==0 ? 'เหลือ '+ (statistics.unit_enabled-statistics.unit_approved) : 'อนุมัติครบ'}}</small>
@@ -25,21 +25,21 @@
               </b-col>
               <b-col cols="6" md="6" lg="3" class="list-statistic">
                 <h6 class="m-0">รายการคำขอ*</h6>
-                <p class="m-0 statistics">{{statistics.unit_request}}</p>
+                <p class="m-0 statistics">{{statistics.unit_request ? statistics.unit_request : 0}}</p>
                 <div class="text-right border-top">
                   <b-link class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
                 </div>
               </b-col>
               <b-col cols="6" md="6" lg="3" class="list-statistic">
                 <h6 class="m-0">อยู่ระหว่างการผลิต*</h6>
-                <p class="m-0 statistics">{{statistics.unit_process}}</p>
+                <p class="m-0 statistics">{{statistics.unit_process ? statistics.unit_process : 0}}</p>
                 <div class="text-right border-top">
                   <b-link class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
                 </div>
               </b-col>
               <b-col cols="6" md="6" lg="3" class="list-statistic">
                 <h6 class="m-0">รอการตรวจสอบ*</h6>
-                <p class="m-0 statistics">{{statistics.unit_check}}</p>
+                <p class="m-0 statistics">{{statistics.unit_check ? statistics.unit_check : 0}}</p>
                 <div class="text-right border-top">
                   <b-link class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
                 </div>
@@ -48,8 +48,8 @@
 
             <small class="font-size-10">
               จำนวนงานทั้งหมด
-              <b>{{statistics.w_all}}</b> งาน | จำนวนงานที่เปิดรับ
-              <b>{{statistics.w_enabled}}</b> งาน | *หน่วย: ชิ้น
+              <b>{{statistics.w_all ? statistics.w_all : 0}}</b> งาน | จำนวนงานที่เปิดรับ
+              <b>{{statistics.w_enabled ? statistics.w_enabled : 0}}</b> งาน | *หน่วย: ชิ้น
             </small>
           </b-card>
 
@@ -65,69 +65,83 @@
                   <fa icon="exclamation-triangle" class="mr-2"/>งานเร่งด่วน
                 </h5>
                 <hr>
-                <b-link
-                  class="text-light"
-                  v-for="(item, index) in 5"
-                  :key="index"
-                  :to="`/request/approve?wid=${index}&eid=${index}`"
-                >
-                  <b-media class="mb-3">
-                    <b-img
-                      slot="aside"
-                      blank
-                      blank-color="#ccc"
-                      width="64"
-                      rounded
-                      alt="placeholder"
-                    />
-                    <h6 class="m-0 text-light font-size-14">#400{{index}} - ชื่องาน</h6>
-                    <ul class="m-0 pl-3 font-size-10">
-                      <li>จำนวนสั่งทำทั้งหมด 100 รายการ</li>
-                      <li>ปริมาณที่ยังไม่ได้ผลิต 20 รายการ</li>
-                      <li>คาดว่าจะเสร็จ</li>
-                    </ul>
-                  </b-media>
-                </b-link>
-                <b-link class="font-size-12 text-light right" to="/work-offer">ดูทั้งหมด &rarr;</b-link>
+                <div v-if="workUrgently.length > 0">
+                  <b-link
+                    class="text-light"
+                    v-for="(item, index) in workUrgently"
+                    :key="index"
+                    :to="`/request/approve?wid=${index}&eid=${index}`"
+                  >
+                    <b-media class="mb-3">
+                      <b-img
+                        slot="aside"
+                        blank
+                        blank-color="#ccc"
+                        width="64"
+                        rounded
+                        alt="placeholder"
+                      />
+                      <h6 class="m-0 text-light font-size-14">#400{{index}} - ชื่องาน</h6>
+                      <ul class="m-0 pl-3 font-size-10">
+                        <li>จำนวนสั่งทำทั้งหมด 100 รายการ</li>
+                        <li>ปริมาณที่ยังไม่ได้ผลิต 20 รายการ</li>
+                        <li>คาดว่าจะเสร็จ</li>
+                      </ul>
+                    </b-media>
+                  </b-link>
+                  <b-link class="font-size-12 text-light right" to="/work-offer">ดูทั้งหมด &rarr;</b-link>
+                </div>
+                <div v-else>
+                  <b-card class="text-center" bg-variant="dark">
+                    <small>ไม่พบรายการ</small>
+                  </b-card>
+                </div>
               </b-card>
             </b-col>
             <b-col class="pl-0">
               <b-card class="no-radius no-bdt" style="height: 100%" bg-variant="white">
                 <h5 class="text-success">
-                  <fa icon="check-circle" class="mr-2"/>คำขออนุมัติการผลิตล่าสุด
+                  <fa icon="check-circle" class="mr-2"/>คำขออนุมัติล่าสุด
                 </h5>
                 <hr>
-                <b-link
-                  class="text-dark"
-                  v-for="(item, index) in 7"
-                  :key="index"
-                  :to="`/request/approve?wid=${index}&eid=${index}`"
-                >
-                  <b-media class="mb-3">
-                    <b-img
-                      slot="aside"
-                      blank
-                      blank-color="#ccc"
-                      width="45"
-                      rounded="circle"
-                      alt="placeholder"
-                    />
-                    <b-img
-                      slot="aside"
-                      blank
-                      blank-color="#eee"
-                      width="45"
-                      class="ml-2"
-                      rounded
-                      alt="placeholder"
-                    />
-                    <h6 class="text-dark m-0 font-size-14">#400{{index}} จำนวน 10 รายการ</h6>
-                    <small
-                      class="m-0 font-size-10"
-                    >โดยคุณ ณัฐวุฒิ กิติวรรณ เมื่อ {{$moment().fromNow()}}</small>
-                  </b-media>
-                </b-link>
-                <b-link class="font-size-12 text-dark right" to="/request">ดูทั้งหมด &rarr;</b-link>
+                <div v-if="recentApprove.length > 0">
+                  <b-link
+                    class="text-dark"
+                    v-for="(item, index) in recentApprove"
+                    :key="index"
+                    :to="`/request/approve?wid=${index}&eid=${index}`"
+                  >
+                    <b-media class="mb-3">
+                      <b-img
+                        slot="aside"
+                        blank
+                        blank-color="#ccc"
+                        width="45"
+                        rounded="circle"
+                        alt="placeholder"
+                      />
+                      <b-img
+                        slot="aside"
+                        blank
+                        blank-color="#eee"
+                        width="45"
+                        class="ml-2"
+                        rounded
+                        alt="placeholder"
+                      />
+                      <h6 class="text-dark m-0 font-size-14">#400{{index}} จำนวน 10 รายการ</h6>
+                      <small
+                        class="m-0 font-size-10"
+                      >โดยคุณ ณัฐวุฒิ กิติวรรณ เมื่อ {{$moment().fromNow()}}</small>
+                    </b-media>
+                  </b-link>
+                  <b-link class="font-size-12 text-dark right" to="/request">ดูทั้งหมด &rarr;</b-link>
+                </div>
+                <div v-else>
+                  <b-card class="text-center">
+                    <small>ไม่พบรายการ</small>
+                  </b-card>
+                </div>
               </b-card>
             </b-col>
           </b-row>
@@ -217,6 +231,8 @@ export default {
       items: [],
       activities: [],
       statistics: [],
+      workUrgently: [],
+      recentApprove: [],
       isActivity: false,
       events: [],
       config: {
@@ -248,6 +264,7 @@ export default {
     };
   },
   created() {
+    this.isActivity = true;
     this.fetchEvent();
     this.fetchStatistic();
     this.activity();
