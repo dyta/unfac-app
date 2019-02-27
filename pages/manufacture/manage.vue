@@ -55,7 +55,7 @@
                     :src="item.empPictureUrl"
                     width="50"
                     height="50"
-                    :alt="item.mfId"
+                    :alt="`p-`+item.mfId"
                   />
                   <h6 class="mt-0 mb-1">
                     <b>#{{item.mfId}}</b>
@@ -119,7 +119,7 @@
                     :src="item.empPictureUrl"
                     width="50"
                     height="50"
-                    :alt="item.mfId"
+                    :alt="`c-`+item.mfId"
                   />
                   <h6 class="mt-0 mb-1">
                     <b>#{{item.mfId}}</b>
@@ -134,7 +134,7 @@
                         >ดำเนินการแก้ไข</b-button>
                         <b-button
                           variant="success"
-                          @click="onClickUpdate(4,item.mfId,item.workId, item.rwId)"
+                          @click="onClickUpdate(4,item.mfId,item.workId, item.rwId, item)"
                         >เสร็จสิ้น</b-button>
                       </div>
                     </small>
@@ -178,7 +178,7 @@
                     :src="item.empPictureUrl"
                     width="50"
                     height="50"
-                    :alt="item.mfId"
+                    :alt="`e-`+item.mfId"
                   />
                   <h6 class="mt-0 mb-1">
                     <b>#{{item.mfId}}</b>
@@ -236,7 +236,7 @@
                     :src="item.empPictureUrl"
                     width="50"
                     height="50"
-                    :alt="item.mfId"
+                    :alt="`s-`+item.mfId"
                   />
                   <h6 class="mt-0 mb-1">
                     <b>#{{item.mfId}}</b>
@@ -284,7 +284,7 @@
                     :src="item.empPictureUrl"
                     width="50"
                     height="50"
-                    :alt="item.mfId"
+                    :alt="`d-`+item.mfId"
                   />
                   <h6 class="mt-0 mb-1">
                     <b>#{{item.mfId}}</b>
@@ -292,7 +292,7 @@
                   </h6>
 
                   <small>
-                    ความคืบหน้า {{item.mfProgress}}/{{item.maxVolume}} รายการ
+                    ยกเลิก {{item.rwVolume}} รายการ
                     <br>
                     อัพเดทเมื่อ {{$moment(item.mfUpdateAt).fromNow()}}
                   </small>
@@ -337,7 +337,8 @@ export default {
       MaxToChecking: 0,
       selectElement: null,
       fromStatus: null,
-      displayFull: true
+      displayFull: true,
+      full: []
     };
   },
   created() {
@@ -372,7 +373,7 @@ export default {
       });
       this.fetch();
     },
-    async onClickUpdate(toStatus, mfId, workId, rwId) {
+    async onClickUpdate(toStatus, mfId, workId, rwId, work) {
       let self = this;
       let timerInterval;
       self
@@ -403,6 +404,8 @@ export default {
                 toStatus: toStatus,
                 workId: workId,
                 rwId: rwId,
+                full: work ? work.full : 0,
+                success: work ? work.success + work.mfProgress : 0,
                 onClick: true
               })
               .then(function(res) {
@@ -520,6 +523,7 @@ export default {
             self.reject = filter.SeparateByStatus(res, "mfStatus", 5);
             self.SumToChecking = filter.SummaryByVolume(self.checking);
             self.MaxToChecking = res[0].workVolume;
+            self.full = res[0];
             self.totalRows = res.length;
           }
           self.$store.dispatch("sourceLoaded", false);

@@ -124,6 +124,10 @@ export default {
             text: "Paused"
           };
         default:
+          return {
+            color: "success",
+            text: "Completed"
+          };
           break;
       }
     },

@@ -8,7 +8,7 @@
     >
       <small>ลากงานข้างล่างนี้เพื่อจัดการรายการคำขอ</small>
       <b-button
-        v-if="approved.length > 0"
+        v-if="approved.length !== 0 || completed.length !== 0 "
         variant="primary"
         size="sm"
         @click="()=> $router.push(`/manufacture/manage?wid=${$route.query.wid}&eid=${user.entId}`)"
@@ -31,7 +31,7 @@
           <div v-if="pending.length > 0">
             <draggable
               v-model="pending"
-              :options="{group:{name:'rwStatus', put:false}}"
+              :options="{group:{name:'rwStatus', put:false, pull: full.workVolume !== full.success}}"
               @add="changeStatus(1)"
               @change="changeElement"
             >
@@ -48,7 +48,7 @@
                     :src="item.empPictureUrl"
                     width="50"
                     height="50"
-                    :alt="item.rwId"
+                    :alt="`p-`+item.rwId"
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
@@ -93,7 +93,7 @@
                     :src="item.empPictureUrl"
                     width="50"
                     height="50"
-                    :alt="item.rwId"
+                    :alt="`a-`+item.rwId"
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
@@ -137,7 +137,7 @@
                     :src="item.empPictureUrl"
                     width="50"
                     height="50"
-                    :alt="item.rwId"
+                    :alt="`s-`+item.rwId"
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
@@ -184,7 +184,7 @@
                     :src="item.empPictureUrl"
                     width="50"
                     height="50"
-                    :alt="item.rwId"
+                    :alt="`c-`+item.rwId"
                   />
                   <h6 class="mt-0 mb-1">{{item.empFullname}}</h6>
                   <small>
@@ -231,6 +231,7 @@ export default {
       approved: [],
       canceled: [],
       completed: [],
+      full: [],
       totalRows: 0,
       SumApproved: 0,
       MaxApproved: 0,
@@ -305,7 +306,12 @@ export default {
     changeStatus(toStatus) {
       let self = this;
       let formStatus = this.selectElement.rwStatus;
-      let amount = this.MaxApproved - this.SumApproved; // คงเหลือ
+      let amount =
+        self.selectElement.rwVolume <
+        self.selectElement.workVolume - self.full.success
+          ? self.selectElement.rwVolume
+          : self.selectElement.workVolume - self.full.success; // คงเหลือ
+
       let timerInterval;
       if (formStatus === 1 && toStatus === 2) {
         if (self.SumApproved < self.MaxApproved) {
@@ -349,33 +355,27 @@ export default {
                   self.selectElement.rwId
                 }`,
                 text: `มีปริมาณงานที่สามารถอนุมัติได้ ทั้งหมด ${
-                  amount > self.selectElement.rwVolume
+                  self.selectElement.rwVolume <
+                  self.selectElement.workVolume - self.full.success
                     ? self.selectElement.rwVolume
-                    : amount
+                    : self.selectElement.workVolume - self.full.success
                 } รายการ`,
                 confirmButtonText: "ยืนยัน",
                 showCancelButton: true,
                 cancelButtonText: "ยกเลิก"
               })
               .then(result => {
-                if (
-                  result.value > 0 &&
-                  result.value <= amount &&
-                  result.value <= self.selectElement.rwVolume
-                ) {
+                if (result.value > 0 && result.value <= amount) {
                   self.UpdateToDatabase(toStatus, result.value * 1);
-                } else if (
-                  result.value < 1 ||
-                  result.value > amount ||
-                  result.value > self.selectElement.rwVolume
-                ) {
+                } else if (result.value < 1 || result.value > amount) {
                   self.$toast.error(
                     `งาน #${
                       self.selectElement.rwId
                     } มีปริมาณที่สามารถอนุมัติได้ ${
-                      amount > self.selectElement.rwVolume
+                      self.selectElement.rwVolume <
+                      self.selectElement.workVolume - self.full.success
                         ? self.selectElement.rwVolume
-                        : amount
+                        : self.selectElement.workVolume - self.full.success
                     } รายการเท่านั้น`,
                     {
                       theme: "outline",
@@ -506,6 +506,7 @@ export default {
             self.SumApproved = filter.SummaryByVolume(self.approved);
             self.MaxApproved = res[0].workVolume;
             self.totalRows = res.length;
+            self.full = res[0];
           }
           self.$store.dispatch("sourceLoaded", false);
         });
