@@ -406,6 +406,9 @@ export default {
             setTimeout(() => {
               self.recentApprove = res;
             }, 1000);
+          } else {
+            self.recentApprove = [];
+            self.recentApproveNum = 0;
           }
         });
     },

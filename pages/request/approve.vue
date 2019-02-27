@@ -488,7 +488,13 @@ export default {
     },
     async fetch() {
       let self = this;
-
+      self.pending = [];
+      self.approved = [];
+      self.canceled = [];
+      self.completed = [];
+      self.SumApproved = 0;
+      self.MaxApproved = 0;
+      self.totalRows = 0;
       await this.$axios
         .$get(`/v2/request/${this.$route.query.wid}/${this.user.entId}`)
         .then(function(res) {
