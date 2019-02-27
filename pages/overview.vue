@@ -27,13 +27,13 @@
                   </small>
                 </p>
                 <div class="text-right border-top">
-                  <b-link class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
+                  <b-link to="/request" class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
                 </div>
               </b-col>
               <b-col cols="6" md="6" lg="3" class="list-statistic">
                 <h6 class="m-0">รายการคำขอ</h6>
                 <p class="m-0 statistics">
-                  3
+                  {{statistics.w_request ? statistics.w_request :0}}
                   <small>
                     :: รวม {{statistics.unit_request ? statistics.unit_request : 0}}
                     <span
@@ -43,21 +43,21 @@
                   </small>
                 </p>
                 <div class="text-right border-top">
-                  <b-link class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
+                  <b-link to="/request" class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
                 </div>
               </b-col>
               <b-col cols="6" md="6" lg="3" class="list-statistic">
                 <h6 class="m-0">อยู่ระหว่างการผลิต*</h6>
                 <p class="m-0 statistics">{{statistics.unit_process ? statistics.unit_process : 0}}</p>
                 <div class="text-right border-top">
-                  <b-link class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
+                  <b-link to="/manufacture" class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
                 </div>
               </b-col>
               <b-col cols="6" md="6" lg="3" class="list-statistic">
                 <h6 class="m-0">รอการตรวจสอบ*</h6>
                 <p class="m-0 statistics">{{statistics.unit_check ? statistics.unit_check : 0}}</p>
                 <div class="text-right border-top">
-                  <b-link class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
+                  <b-link to="/manufacture" class="font-size-10 text-secondary">ดูทั้งหมด &rarr;</b-link>
                 </div>
               </b-col>
             </b-row>
@@ -74,38 +74,58 @@
               <b-card
                 class="no-radius no-bdt"
                 style="height: 100%"
-                bg-variant="dark"
+                bg-variant="secondary"
                 text-variant="light"
               >
                 <h5 class="text-warning">
                   <fa icon="clock" class="mr-2"/>กำหนดส่งในสัปดาห์นี้
                 </h5>
                 <hr>
-                <div v-if="workUrgently.length > 0">
-                  <b-link
-                    class="text-light"
-                    v-for="(item, index) in workUrgently"
-                    :key="index"
-                    :to="`/request/approve?wid=${index}&eid=${index}`"
-                  >
-                    <b-media class="mb-3">
-                      <b-img
-                        slot="aside"
-                        blank
-                        blank-color="#ccc"
-                        width="64"
-                        rounded
-                        :alt="`workUrgently-${index}`"
-                      />
-                      <h6 class="m-0 text-light font-size-14">#400{{index}} - ชื่องาน</h6>
-                      <ul class="m-0 pl-3 font-size-10">
-                        <li>สั่งทำทั้งหมด 100 รายการ - รวม 1111 บาท</li>
-                        <li>ลูกค้า: คุณ</li>
-                        <li>กำหนดส่ง</li>
-                      </ul>
-                    </b-media>
-                  </b-link>
-                  <b-link class="font-size-12 text-light right" to="/work-offer">ดูทั้งหมด &rarr;</b-link>
+                <div v-if="recentEndAtNum > 0">
+                  <div v-if="recentEndAt.length > 0">
+                    <b-link
+                      class="text-light"
+                      v-for="(item, index) in recentEndAt"
+                      :key="index"
+                      :to="`/request/approve?wid=${item.workId}&eid=${item.entId}`"
+                    >
+                      <b-media class="mb-3">
+                        <b-img-lazy
+                          slot="aside"
+                          height="64"
+                          width="64"
+                          blank-color="#ddd"
+                          blank-width="64"
+                          blank-height="64"
+                          rounded
+                          :src="item.workImages ? item.workImages : 'https://i.gifer.com/RVtZ.gif'"
+                          :alt="`recentEndAt-${index}`"
+                        />
+                        <h6 class="m-0 text-light font-size-14">#{{item.workId}} - {{item.workName}}</h6>
+                        <ul class="m-0 pl-3 font-size-10">
+                          <li>สั่งทำทั้งหมด {{item.workVolume}} รายการ - รวม {{item.workEarnType === 1 ? formatPrice(item.workEarn*item.workVolume) : formatPrice(item.workEarn)}} บาท</li>
+                          <li>ลูกค้า: คุณ{{item.customerName}}</li>
+                          <li>กำหนดส่ง: {{$moment(item.workEndAt).format("ddd MMM YYYY")}} - {{new Date(item.workEndAt).getTime() > new Date().getTime() ? $moment(item.workEndAt).fromNow(): 'ล่าช้า'}}</li>
+                        </ul>
+                      </b-media>
+                    </b-link>
+                    <b-link class="font-size-12 text-light right" to="/work-offer">ดูทั้งหมด &rarr;</b-link>
+                  </div>
+                  <div v-else>
+                    <content-loader
+                      v-for="(item, index) in recentEndAtNum"
+                      :key="index"
+                      primaryColor="#6c757d"
+                      secondaryColor="#343a40"
+                      :height="64"
+                      class="pb-3"
+                    >
+                      <rect rx="5" ry="5" width="64" height="64"/>
+                      <rect x="75" y="5" rx="5" ry="5" width="320" height="10"/>
+                      <rect x="75" y="25" rx="3" ry="3" width="260" height="6"/>
+                      <rect x="75" y="40" rx="3" ry="3" width="160" height="6"/>
+                    </content-loader>
+                  </div>
                 </div>
                 <div v-else>
                   <b-card class="text-center" bg-variant="dark">
@@ -120,39 +140,64 @@
                   <fa icon="check-circle" class="mr-2"/>รายการคำขออนุมัติล่าสุด
                 </h5>
                 <hr>
-                <div v-if="recentApprove.length > 0">
-                  <b-link
-                    class="text-dark"
-                    v-for="(item, index) in recentApprove"
-                    :key="index"
-                    :to="`/request/approve?wid=${index}&eid=${index}`"
-                  >
-                    <b-media class="mb-3">
-                      <b-img
-                        slot="aside"
-                        blank
-                        blank-color="#ccc"
-                        width="45"
-                        rounded="circle"
-                        :alt="`recentApprove-${index}`"
+                <div v-if="recentApproveNum > 0">
+                  <div v-if="recentApprove.length > 0">
+                    <b-link
+                      class="text-dark"
+                      v-for="(item, index) in recentApprove"
+                      :key="index"
+                      :to="`/request/approve?wid=${item.workId}&eid=${user.entId}`"
+                    >
+                      <b-media class="mb-3">
+                        <b-img
+                          slot="aside"
+                          :src="item.empPictureUrl ? item.empPictureUrl : 'https://i.gifer.com/RVtZ.gif'"
+                          width="45"
+                          height="45"
+                          rounded="circle"
+                          :alt="`recentApprove-${index}`"
+                        />
+                        <b-img
+                          slot="aside"
+                          :src="item.workImages  ? item.workImages : 'https://i.gifer.com/RVtZ.gif'"
+                          width="45"
+                          height="45"
+                          class="ml-2"
+                          rounded
+                          alt="placeholder"
+                        />
+                        <h6
+                          class="text-dark m-0 font-size-14"
+                        >#{{item.workId}} จำนวน {{item.rwVolume}} รายการ</h6>
+                        <small
+                          class="m-0 font-size-10"
+                        >โดยคุณ {{item.empFullname}} เมื่อ {{$moment(item.rwCreateAt).fromNow()}}</small>
+                      </b-media>
+                    </b-link>
+                    <b-link class="font-size-12 text-dark right" to="/request">ดูทั้งหมด &rarr;</b-link>
+                  </div>
+                  <div v-else>
+                    <content-loader
+                      v-for="(item, index) in recentApproveNum"
+                      :key="index"
+                      primaryColor="#f4f5f6"
+                      secondaryColor="#fff"
+                      :height="64"
+                      :speed=".6"
+                      class="pb-3"
+                    >
+                      <circle
+                        cx="29.700000000000003"
+                        cy="30.700000000000003"
+                        r="23.700000000000003"
                       />
-                      <b-img
-                        slot="aside"
-                        blank
-                        blank-color="#eee"
-                        width="45"
-                        class="ml-2"
-                        rounded
-                        alt="placeholder"
-                      />
-                      <h6 class="text-dark m-0 font-size-14">#400{{index}} จำนวน 10 รายการ</h6>
-                      <small
-                        class="m-0 font-size-10"
-                      >โดยคุณ ณัฐวุฒิ กิติวรรณ เมื่อ {{$moment().fromNow()}}</small>
-                    </b-media>
-                  </b-link>
-                  <b-link class="font-size-12 text-dark right" to="/request">ดูทั้งหมด &rarr;</b-link>
+                      <rect x="60.5" y="8.27" rx="5" ry="5" width="45" height="45"/>
+                      <rect x="120" y="10" rx="5" ry="5" width="260" height="10"/>
+                      <rect x="120" y="28" rx="5" ry="5" width="180" height="8"/>
+                    </content-loader>
+                  </div>
                 </div>
+
                 <div v-else>
                   <b-card class="text-center">
                     <small>ไม่พบรายการ</small>
@@ -188,12 +233,6 @@
             <b-card class="no-radius-bt">
               <h6>กิจกรรมที่เกิดขึ้นล่าสุด</h6>
               <hr>
-              <loading
-                :active.sync="this.isActivity"
-                :can-cancel="false"
-                :is-full-page="false"
-                :height="34"
-              ></loading>
               <div v-if="activities.length > 0">
                 <b-media
                   v-for="(item, index) in activities"
@@ -230,12 +269,14 @@
 
 <script>
 import { activity } from "./../configs/firebase.sdk.js";
+import { ContentLoader } from "vue-content-loader";
 import MenuList from "./../components/AppSidebar/MenuListInDashboard";
 import filter from "./../scripts/Filters.js";
 export default {
   layout: "default",
   components: {
-    MenuList
+    MenuList,
+    ContentLoader
   },
   head() {
     return {
@@ -247,10 +288,18 @@ export default {
       items: [],
       activities: [],
       statistics: [],
-      workUrgently: [],
+      recentEndAt: [],
+      recentEndAtNum: 0,
       recentApprove: [],
-      isActivity: false,
+      recentApproveNum: 0,
       events: [],
+      lazy: {
+        center: true,
+        fluidGrow: true,
+        blank: true,
+        blankColor: "#bbb",
+        class: "img-recent"
+      },
       config: {
         droppable: false,
         editable: false,
@@ -280,10 +329,11 @@ export default {
     };
   },
   created() {
-    this.isActivity = true;
     this.fetchEvent();
     this.fetchStatistic();
     this.activity();
+    this.fetchRecentEnd();
+    this.fetchRequestRecent();
   },
   computed: {
     user() {
@@ -300,6 +350,10 @@ export default {
     }
   },
   methods: {
+    formatPrice(value) {
+      let val = (value / 1).toFixed(2).replace(",", ".");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
     async activity() {
       let self = this;
       let f = 0;
@@ -308,20 +362,17 @@ export default {
         .orderBy("time", "desc")
         .limit(8)
         .onSnapshot(function(querySnapshot) {
-          self.isActivity = true;
-          self.activities, (self.items = []);
-
+          self.activities = [];
+          self.items = [];
+          self.recentApprove = [];
           querySnapshot.forEach(function(doc) {
             self.items.push(doc.data());
           });
           self.activities = filter.sortByActivity(self.items);
-          if (self.f === 0) {
-            self.fetchEvent();
-            self.fetchStatistic();
-          }
-          setTimeout(() => {
-            self.isActivity = false;
-          }, 1000);
+
+          self.fetchRequestRecent();
+          self.fetchEvent();
+          self.fetchStatistic();
         });
     },
     async fetchEvent() {
@@ -344,6 +395,43 @@ export default {
             self.statistics = res[0];
           }
         });
+    },
+    async fetchRequestRecent() {
+      let self = this;
+      await this.$axios
+        .$get(`/v2/request/recent/${this.$store.state.user.entId}`)
+        .then(function(res) {
+          if (res.length > 0) {
+            self.recentApproveNum = res.length;
+            setTimeout(() => {
+              self.recentApprove = res;
+            }, 1000);
+          }
+        });
+    },
+    async fetchRecentEnd() {
+      let self = this;
+      let d = new Date();
+      function endOfWeek(date) {
+        var lastday = date.getDate() - (date.getDay() - 1) + 6;
+        return new Date(date.setDate(lastday));
+      }
+      function startOfWeek(date) {
+        var lastday = date.getDate() - (date.getDay() - 1);
+        return new Date(date.setDate(lastday));
+      }
+      let start = self.$moment(startOfWeek(d)).format("YYYY-MM-DD");
+      let end = self.$moment(endOfWeek(d)).format("YYYY-MM-DD");
+      await this.$axios
+        .$get(`/v2/work/${this.$store.state.user.entId}/${start}/${end}`)
+        .then(function(res) {
+          if (res.length > 0) {
+            self.recentEndAtNum = res.length;
+            setTimeout(() => {
+              self.recentEndAt = res;
+            }, 2000);
+          }
+        });
     }
   }
 };
@@ -352,5 +440,9 @@ export default {
 <style lang="scss" scoped>
 .display-3 {
   font-size: 2rem !important;
+}
+img.img-recent {
+  width: 64px !important;
+  height: 64px !important;
 }
 </style>
