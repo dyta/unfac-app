@@ -31,7 +31,7 @@
           <div v-if="pending.length > 0">
             <draggable
               v-model="pending"
-              :options="{group:{name:'rwStatus', put:false, pull: full.workVolume !== full.success}}"
+              :options="{group:{name:'rwStatus', put:false, pull: full.workVolume !== full.success || full.workVolume === 1}}"
               @add="changeStatus(1)"
               @change="changeElement"
             >

@@ -101,11 +101,16 @@
                           :src="item.workImages ? item.workImages : 'https://i.gifer.com/RVtZ.gif'"
                           :alt="`recentEndAt-${index}`"
                         />
-                        <h6 class="m-0 text-light font-size-14">#{{item.workId}} - {{item.workName}}</h6>
+                        <h6 class="m-0 text-light font-size-14">
+                          <b-badge
+                            :variant="item.workStatus ===1? 'success' : 'warning'"
+                          >{{item.workStatus ===1 ? 'เสร็จสิ้น' : 'ดำเนินการ'}}</b-badge>
+                          #{{item.workId}} - {{item.workName}}
+                        </h6>
                         <ul class="m-0 pl-3 font-size-10">
                           <li>สั่งทำทั้งหมด {{item.workVolume}} รายการ - รวม {{item.workEarnType === 1 ? formatPrice(item.workEarn*item.workVolume) : formatPrice(item.workEarn)}} บาท</li>
                           <li>ลูกค้า: คุณ{{item.customerName}}</li>
-                          <li>กำหนดส่ง: {{$moment(item.workEndAt).format("ddd MMM YYYY")}} - {{new Date(item.workEndAt).getTime() > new Date().getTime() ? $moment(item.workEndAt).fromNow(): 'ล่าช้า'}}</li>
+                          <li>กำหนดส่ง: {{$moment(item.workEndAt).format("ddd MMM YYYY")}} - {{new Date(item.workEndAt).getTime() > new Date().getTime() ? $moment(item.workEndAt).fromNow(): item.workStatus ===1 ? 'เสร็จสิ้น' : 'ล่าช้า'}}</li>
                         </ul>
                       </b-media>
                     </b-link>
@@ -128,7 +133,7 @@
                   </div>
                 </div>
                 <div v-else>
-                  <b-card class="text-center" bg-variant="dark">
+                  <b-card class="text-center" bg-variant="secondary">
                     <small>ไม่พบรายการ</small>
                   </b-card>
                 </div>
