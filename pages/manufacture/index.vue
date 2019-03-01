@@ -27,7 +27,7 @@
                 :src="item.workImages"
                 width="80"
                 height="80"
-                :alt="item.workId"
+                :alt="`w-`+item.workId"
               />
               <b-container class="p-0 text-center">
                 <h6 class="mt-0 text-left">
@@ -47,9 +47,17 @@
               </b-container>
             </b-media>
             <div slot="footer">
-              <b-progress :max="item.workVolume" height="8px" class="mb-3">
-                <b-progress-bar variant="primary" :value="item.mfAllProcess" animated></b-progress-bar>
-                <b-progress-bar variant="success" :value="item.mfAllSuccess" striped></b-progress-bar>
+              <b-progress :max="item.workVolume ? item.workVolume : 0" height="8px" class="mb-3">
+                <b-progress-bar
+                  variant="primary"
+                  :value="item.mfAllProcess ? item.mfAllProcess : 0"
+                  animated
+                ></b-progress-bar>
+                <b-progress-bar
+                  variant="success"
+                  :value="item.mfAllSuccess ? item.mfAllSuccess: 0"
+                  striped
+                ></b-progress-bar>
               </b-progress>
 
               <small class="text-muted">คาดว่าจะเสร็จ {{date(item.workEndAt)}}</small>

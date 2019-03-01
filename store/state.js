@@ -61,7 +61,7 @@ export default () => ({
       name: "สรุปงาน",
       icon: "chart-line",
       color: "brown",
-      path: "#"
+      path: "/report"
     }
   ]
 })

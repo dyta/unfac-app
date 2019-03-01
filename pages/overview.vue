@@ -68,13 +68,22 @@
               <b>{{statistics.w_enabled ? statistics.w_enabled : 0}}</b> งาน
             </small>
           </b-card>
-
+          <b-card
+            class="text-center no-radius no-bdt"
+            style="cursor: pointer;"
+            bg-variant="primary"
+            text-variant="light"
+            @click="()=> $router.push('/report')"
+          >
+            <fa icon="scroll" size="lg"/>
+            ดูสรุปงานประจำเดือน {{$moment().format('MMMM')}} {{$moment().subtract(1, "M").format('YYYY')*1+543}}
+          </b-card>
           <b-row class="no-gutters">
             <b-col class="padded" lg="6" cols="12">
               <b-card
                 class="no-radius no-bdt"
                 style="height: 100%"
-                bg-variant="secondary"
+                bg-variant="dark"
                 text-variant="light"
               >
                 <h5 class="text-warning">
@@ -110,7 +119,7 @@
                         <ul class="m-0 pl-3 font-size-10">
                           <li>สั่งทำทั้งหมด {{item.workVolume}} รายการ - รวม {{item.workEarnType === 1 ? formatPrice(item.workEarn*item.workVolume) : formatPrice(item.workEarn)}} บาท</li>
                           <li>ลูกค้า: คุณ{{item.customerName}}</li>
-                          <li>กำหนดส่ง: {{$moment(item.workEndAt).format("ddd MMM YYYY")}} - {{new Date(item.workEndAt).getTime() > new Date().getTime() ? $moment(item.workEndAt).fromNow(): item.workStatus ===1 ? 'เสร็จสิ้น' : 'ล่าช้า'}}</li>
+                          <li>กำหนดส่ง: {{$moment(item.workEndAt).format("ddd MMM")}} {{$moment(item.workEndAt).format('YYYY')*1+543}} - {{new Date(item.workEndAt).getTime() > new Date().getTime() ? $moment(item.workEndAt).fromNow(): item.workStatus ===1 ? 'เสร็จสิ้น' : 'ล่าช้า'}}</li>
                         </ul>
                       </b-media>
                     </b-link>
@@ -133,7 +142,7 @@
                   </div>
                 </div>
                 <div v-else>
-                  <b-card class="text-center" bg-variant="secondary">
+                  <b-card class="text-center" bg-variant="dark">
                     <small>ไม่พบรายการ</small>
                   </b-card>
                 </div>
@@ -311,7 +320,7 @@ export default {
         eventBorderColor: "rgba(0,0,0,0)",
         eventTextColor: "white",
         themeSystem: "bootstrap4",
-        defaultView: "month",
+        defaultView: "listMonth",
         allDayText: "",
         aspectRatio: 1.5,
         header: {

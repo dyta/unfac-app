@@ -38,5 +38,33 @@ export default {
       }
       return o;
     });
+  },
+  reportSum(objects) {
+    return _.sumBy(objects, function (o) {
+      return o.maxVolume * o.workEarn;
+    });
+  },
+  reportIncome(objects) {
+    return _.sumBy(objects, function (o) {
+      return o.maxVolume * o.workEarn;
+    });
+  },
+  reportIncomeAll(objects, tex) {
+    return _.sumBy(objects, function (o) {
+      return o.workVolume * o.workEarn * (tex / 100);
+    });
+  },
+  reportIncomeReal(objects, tex) {
+    return _.sumBy(objects, function (o) {
+      return o.maxVolume * o.workEarn * (tex / 100);
+    });
+  },
+  reportCountWorks(objects) {
+    return _.chain(objects)
+      .groupBy("workId")
+      .map(function (currentItem, i) {
+        return i
+      })
+      .value().length;
   }
 };

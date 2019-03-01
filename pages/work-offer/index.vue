@@ -505,7 +505,7 @@ export default {
       currentPage: 1,
       perPage: 10,
       totalRows: 0,
-      pageOptions: [10, 20, 50],
+      pageOptions: [10, 20, 50, 100],
       sortBy: "workStatus",
       sortDesc: true,
       sortDirection: "asc",
@@ -624,7 +624,9 @@ export default {
     },
     date(d) {
       let date = {
-        format: this.$moment(d).format("ddd Do MMM"),
+        format:
+          this.$moment(d).format("ddd Do MMM ") +
+          (this.$moment(d).format("YYYY") * 1 + 543),
         full: this.$moment(d)
           .utc()
           .format("ddd Do MMM, HH:mm:ss"),

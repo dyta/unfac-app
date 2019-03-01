@@ -138,7 +138,7 @@ export default {
       currentPage: 1,
       perPage: 10,
       totalRows: 0,
-      pageOptions: [10, 20, 50],
+      pageOptions: [10, 20, 50, 100],
       sortBy: null,
       sortDesc: false,
       sortDirection: "asc",

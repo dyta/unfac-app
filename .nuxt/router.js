@@ -6,6 +6,7 @@ const _69b72088 = () => interopDefault(import('..\\pages\\account.vue' /* webpac
 const _f607f142 = () => interopDefault(import('..\\pages\\join.vue' /* webpackChunkName: "pages_join" */))
 const _45cff534 = () => interopDefault(import('..\\pages\\manufacture\\index.vue' /* webpackChunkName: "pages_manufacture_index" */))
 const _34eac1ae = () => interopDefault(import('..\\pages\\overview.vue' /* webpackChunkName: "pages_overview" */))
+const _e4da91ae = () => interopDefault(import('..\\pages\\report.vue' /* webpackChunkName: "pages_report" */))
 const _e6681d50 = () => interopDefault(import('..\\pages\\request\\index.vue' /* webpackChunkName: "pages_request_index" */))
 const _a6276e66 = () => interopDefault(import('..\\pages\\work-offer\\index.vue' /* webpackChunkName: "pages_work-offer_index" */))
 const _30ab9201 = () => interopDefault(import('..\\pages\\manufacture\\manage.vue' /* webpackChunkName: "pages_manufacture_manage" */))
@@ -92,6 +93,10 @@ export function createRouter() {
       path: "/overview",
       component: _34eac1ae,
       name: "overview"
+    }, {
+      path: "/report",
+      component: _e4da91ae,
+      name: "report"
     }, {
       path: "/request",
       component: _e6681d50,
