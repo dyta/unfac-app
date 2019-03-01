@@ -164,6 +164,17 @@
           <span v-else>{{formatPrice(row.item.workEarn)}}</span>
         </template>
       </b-table>
+      <b-row>
+        <b-col>
+          <b-pagination
+            align="center"
+            size="lg"
+            :total-rows="totalRows"
+            :per-page="perPage"
+            v-model="currentPage"
+          />
+        </b-col>
+      </b-row>
     </b-container>
 
     <b-container v-else-if="items.length === 0 && !asyncSource">
@@ -255,9 +266,9 @@ export default {
         }
       ],
       currentPage: 1,
-      perPage: 10,
+      perPage: 30,
       totalRows: 0,
-      pageOptions: [10, 20, 50, 100],
+      pageOptions: [30, 60, 90, 120],
       sortBy: null,
       sortDesc: false,
       sortDirection: "asc",
