@@ -24,6 +24,72 @@
             ></b-form-input>
           </b-form-group>
           <b-form-group
+            id="customerTelLabel"
+            label="การติดต่อ"
+            label-for="customerNameLabel"
+            description="เบอร์โทรผู้สั่งทำ"
+          >
+            <b-form-input id="customerTelLabel" v-model.trim="data.customerTel" autocomplete="off"></b-form-input>
+          </b-form-group>
+          <b-form-group id="customerAddress" label="ที่ตั้ง" label-for="customerAddress">
+            <b-form-input
+              id="customerAddress"
+              v-model.trim="data.customerAddress"
+              autocomplete="off"
+              placeholder="120/784 หมู่ 3 อาคาร S ชั้น 11"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group label="ตำบล">
+            <no-ssr placeholder="กำลังโหลด...">
+              <div class="p-0">
+                <ThailandAutoComplete
+                  v-model="data.cusDistrict"
+                  type="district"
+                  @select="select"
+                  size="medium"
+                />
+              </div>
+            </no-ssr>
+          </b-form-group>
+          <b-form-group label="อำเภอ">
+            <no-ssr placeholder="กำลังโหลด...">
+              <div class="p-0">
+                <ThailandAutoComplete
+                  v-model="data.cusAmphoe"
+                  type="amphoe"
+                  @select="select"
+                  size="medium"
+                />
+              </div>
+            </no-ssr>
+          </b-form-group>
+          <b-form-group label="จังหวัด">
+            <no-ssr placeholder="กำลังโหลด...">
+              <div class="p-0">
+                <ThailandAutoComplete
+                  v-model="data.cusProvince"
+                  type="province"
+                  @select="select"
+                  size="medium"
+                />
+              </div>
+            </no-ssr>
+          </b-form-group>
+          <b-form-group label="รหัสไปรษณีย์">
+            <no-ssr placeholder="กำลังโหลด...">
+              <div class="p-0">
+                <ThailandAutoComplete
+                  v-model="data.cusZipcode"
+                  type="zipcode"
+                  @select="select"
+                  size="medium"
+                />
+              </div>
+            </no-ssr>
+          </b-form-group>
+
+          <hr>
+          <b-form-group
             id="workNameLabel"
             label="ชื่องาน"
             label-for="workNameLabel"
@@ -179,6 +245,12 @@ export default {
       ],
       data: {
         customerName: "",
+        customerTel: "",
+        customerAddress: "",
+        cusDistrict: "",
+        cusAmphoe: "",
+        cusProvince: "",
+        cusZipcode: "",
         workName: "",
         workTAX: 15,
         workDescription: "",
@@ -238,6 +310,7 @@ export default {
         this.stateWorkName &&
         this.stateWorkDescription &&
         this.stateWorkVolume &&
+        this.stateWorkTAX &&
         this.stateWorkEarn &&
         this.stateWorkImages &&
         this.stateTime
@@ -245,6 +318,12 @@ export default {
     }
   },
   methods: {
+    select(address) {
+      this.data.cusDistrict = address.district;
+      this.data.cusAmphoe = address.amphoe;
+      this.data.cusProvince = address.province;
+      this.data.cusZipcode = address.zipcode;
+    },
     AssignFileImage: function(file, e) {
       let self = this;
       this.workImages = e.target.files[0];
