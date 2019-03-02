@@ -96,6 +96,21 @@
               autocomplete="off"
             ></b-form-input>
           </b-form-group>
+          <b-form-group
+            id="workTAXLabel"
+            label="หัก % ค่าจ้าง "
+            label-for="workEarnLabel"
+            description="จำนวนเต็ม เช่น 100 = 100% <b>ไม่สามารถแก้ไขในภายหลัง</b></small>"
+            :state="stateWorkTAX"
+          >
+            <b-form-input
+              id="workTAXLabel"
+              type="number"
+              :state="stateWorkTAX"
+              v-model.trim="data.workTAX"
+              autocomplete="off"
+            ></b-form-input>
+          </b-form-group>
           <b-form-group label="ประเภทค่าจ้าง">
             <b-form-radio-group id="radios2" v-model="data.workEarnType" name="radioSubComponent">
               <b-form-radio :value="1">ต่อชิ้น</b-form-radio>
@@ -165,6 +180,7 @@ export default {
       data: {
         customerName: "",
         workName: "",
+        workTAX: 15,
         workDescription: "",
         workVolume: null,
         workEarn: null,
@@ -198,6 +214,9 @@ export default {
     },
     stateWorkVolume() {
       return this.data.workVolume > 0 && this.data.workVolume <= 100;
+    },
+    stateWorkTAX() {
+      return this.data.workTAX > 0 && this.data.workTAX <= 100;
     },
     stateWorkEarn() {
       return this.data.workEarn >= 20;
