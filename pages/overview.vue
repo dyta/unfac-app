@@ -12,7 +12,7 @@
           <b-card class="p-sicky no-radius top">
             <b-row class="pb-2" v-if="statistics">
               <b-col cols="6" md="6" lg="3" class="list-statistic">
-                <h6 class="m-0">งานที่เปิดรับปัจจุบัน*</h6>
+                <h6 class="m-0">จำนวนผลิต*</h6>
                 <p class="m-0 statistics">
                   {{statistics.unit_enabled ? statistics.unit_enabled : 0}}
                   <small
@@ -71,39 +71,24 @@
           <b-card class="no-bdt no-radius">
             <b-row no-gutters>
               <b-col cols="6" md="6" class="border-right h100 px-3">
-                <h6
-                  class="mb-0"
-                  :class="totalIncome-totalSum < 0 ? 'text-danger' : 'text-success'"
-                >รายได้ ณ ปัจจุบัน**</h6>
-                <small
-                  :class="totalIncome-totalSum < 0 ? 'text-danger' : 'text-success'"
-                >ปริมาณงานสั่งทำต่ออัตราการผลิตที่เสร็จสิ้น</small>
+                <h6 class="mb-0">รายได้รวม**</h6>
+                <small>มูลค่างานที่ส่งมอบภายในเดือนนี้</small>
                 <hr>
-                <h4
-                  class="text-right amount"
-                  :class="totalIncome-totalSum < 0 ? 'text-danger' : 'text-success'"
-                >
-                  ฿{{formatPrice(totalIncome)}}
-                  <small
-                    v-if="totalIncome-totalSum < 0"
-                    class="font-size-10"
-                    style="vertical-align: super;"
-                  >({{formatPrice(totalIncome-totalSum)}})</small>
-                </h4>
+                <h4 class="text-right amount">฿{{formatPrice(totalSum)}}</h4>
               </b-col>
               <b-col cols="6" md="6" class="h100 px-3">
                 <h6
                   class="mb-0"
                   :class="totalIncomeReal > 0 ? 'text-success' : 'text-secondary'"
-                >กำไรสุทธิ ณ ปัจจุบัน**</h6>
+                >กำไรรวม**</h6>
                 <small
                   :class="totalIncomeReal > 0 ? 'text-success' : 'text-secondary'"
-                >% จากงานที่ผลิตเสร็จสิ้นแล้ว</small>
+                >% จากมูลค่างานรวมในเดือนนี้</small>
                 <hr>
                 <h4
                   class="text-right amount"
-                  :class="totalIncomeReal > 0 ? 'text-success' : 'text-secondary'"
-                >฿{{formatPrice(totalIncomeReal)}}</h4>
+                  :class="totalIncomeAll > 0 ? 'text-success' : 'text-secondary'"
+                >฿{{formatPrice(totalIncomeAll)}}</h4>
               </b-col>
               <small
                 class="font-size-10"
@@ -113,12 +98,12 @@
           <b-card
             class="text-center no-radius no-bdt"
             style="cursor: pointer;"
-            bg-variant="light"
+            bg-variant="warning"
             text-variant="dark"
             @click="()=> $router.push('/report')"
           >
             <fa icon="scroll" size="lg"/>
-            ดูรายละเอียดสรุปงานประจำเดือน {{$moment().format('MMMM')}} {{$moment().subtract(1, "M").format('YYYY')*1+543}}
+            ดูความคืบหน้ารายได้ของเดือน {{$moment().format('MMMM')}} {{$moment().subtract(1, "M").format('YYYY')*1+543}}
           </b-card>
           <b-row class="no-gutters">
             <b-col lg="6" cols="12">
@@ -390,7 +375,8 @@ export default {
       },
       totalIncome: 0,
       totalSum: 0,
-      totalIncomeReal: 0
+      totalIncomeReal: 0,
+      totalIncomeAll: 0
     };
   },
   created() {
@@ -507,6 +493,7 @@ export default {
           if (res.length > 0) {
             self.totalIncome = filter.reportIncome(res);
             self.totalIncomeReal = filter.reportIncomeReal(res);
+            self.totalIncomeAll = filter.reportIncomeAll(res);
           }
         });
 

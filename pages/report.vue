@@ -49,7 +49,7 @@
             <h5
               class="mb-0"
               :class="totalIncome-totalSum < 0 ? 'text-danger' : 'text-success'"
-            >รายได้ ณ ปัจจุบัน</h5>
+            >มูลค่า ณ ปัจจุบัน</h5>
             <small
               :class="totalIncome-totalSum < 0 ? 'text-danger' : 'text-success'"
             >ปริมาณงานสั่งทำต่ออัตราการผลิตที่เสร็จสิ้น</small>
@@ -75,7 +75,7 @@
             >กำไรสุทธิ ณ ปัจจุบัน</h5>
             <small
               :class="totalIncomeReal > 0 ? 'text-success' : 'text-secondary'"
-            >% จากงานที่ผลิตเสร็จสิ้นแล้ว</small>
+            >% จากมูลค่างานที่เสร็จสิ้น ณ ปัจจุบัน</small>
             <hr>
             <h4
               class="text-right amount"
@@ -85,7 +85,7 @@
         </b-col>
         <b-col cols="6" md="6" lg="3" class="pt-1 border-right">
           <b-card bg-variant="secondary" text-variant="light" class="no-border no-radius h100">
-            <h5 class="text-warning mb-0">มูลค่ารวม</h5>
+            <h5 class="text-warning mb-0">มูลค่ารวมในเดือนนี้</h5>
             <small>มูลค่ารวมของงานสั่งทำทั้งหมด</small>
             <hr>
             <h4 class="text-right text-light amount">฿{{formatPrice(totalSum)}}</h4>
@@ -93,7 +93,7 @@
         </b-col>
         <b-col cols="6" md="6" lg="3" class="pt-1">
           <b-card bg-variant="secondary" text-variant="light" class="no-border no-radius h100">
-            <h5 class="text-warning mb-0">ผลกำไรที่คาดไว้</h5>
+            <h5 class="text-warning mb-0">ผลกำไรที่คาดไว้ในเดือนนี้</h5>
             <small>หักจากมูลค่ารวม {{enterprise.income_tex}}% - {{100-enterprise.income_tex}}% ค่าจ้างพนง.({{formatPrice(totalSum-totalIncomeAll)}})</small>
             <hr>
             <h4 class="text-right text-light amount">฿{{formatPrice(totalIncomeAll)}}</h4>
