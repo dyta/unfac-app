@@ -7,9 +7,9 @@
       class="jumbotron-special m-0"
     ></b-jumbotron>
     <b-container class="p-0">
-      <b-row>
+      <b-row no-gutters>
         <b-col md="8">
-          <b-card class="p-sicky no-radius-bt top">
+          <b-card class="p-sicky no-radius top">
             <b-row class="pb-2" v-if="statistics">
               <b-col cols="6" md="6" lg="3" class="list-statistic">
                 <h6 class="m-0">งานที่เปิดรับปัจจุบัน*</h6>
@@ -68,18 +68,60 @@
               <b>{{statistics.w_enabled ? statistics.w_enabled : 0}}</b> งาน
             </small>
           </b-card>
+          <b-card class="no-bdt no-radius">
+            <b-row no-gutters>
+              <b-col cols="6" md="6" class="border-right h100 px-3">
+                <h6
+                  class="mb-0"
+                  :class="totalIncome-totalSum < 0 ? 'text-danger' : 'text-success'"
+                >รายได้ ณ ปัจจุบัน**</h6>
+                <small
+                  :class="totalIncome-totalSum < 0 ? 'text-danger' : 'text-success'"
+                >ปริมาณงานสั่งทำต่ออัตราการผลิตที่เสร็จสิ้น</small>
+                <hr>
+                <h4
+                  class="text-right amount"
+                  :class="totalIncome-totalSum < 0 ? 'text-danger' : 'text-success'"
+                >
+                  ฿{{formatPrice(totalIncome)}}
+                  <small
+                    v-if="totalIncome-totalSum < 0"
+                    class="font-size-10"
+                    style="vertical-align: super;"
+                  >({{formatPrice(totalIncome-totalSum)}})</small>
+                </h4>
+              </b-col>
+              <b-col cols="6" md="6" class="h100 px-3">
+                <h6
+                  class="mb-0"
+                  :class="totalIncomeReal > 0 ? 'text-success' : 'text-secondary'"
+                >กำไรสุทธิ ณ ปัจจุบัน**</h6>
+                <small
+                  :class="totalIncomeReal > 0 ? 'text-success' : 'text-secondary'"
+                >% จากงานที่ผลิตเสร็จสิ้นแล้ว</small>
+                <hr>
+                <h4
+                  class="text-right amount"
+                  :class="totalIncomeReal > 0 ? 'text-success' : 'text-secondary'"
+                >฿{{formatPrice(totalIncomeReal)}}</h4>
+              </b-col>
+              <small
+                class="font-size-10"
+              >**{{$moment().format('MMMM')}} {{$moment().subtract(1, "M").format('YYYY')*1+543}}</small>
+            </b-row>
+          </b-card>
           <b-card
             class="text-center no-radius no-bdt"
             style="cursor: pointer;"
-            bg-variant="primary"
-            text-variant="light"
+            bg-variant="light"
+            text-variant="dark"
             @click="()=> $router.push('/report')"
           >
             <fa icon="scroll" size="lg"/>
-            ดูสรุปงานประจำเดือน {{$moment().format('MMMM')}} {{$moment().subtract(1, "M").format('YYYY')*1+543}}
+            ดูรายละเอียดสรุปงานประจำเดือน {{$moment().format('MMMM')}} {{$moment().subtract(1, "M").format('YYYY')*1+543}}
           </b-card>
           <b-row class="no-gutters">
-            <b-col class="padded" lg="6" cols="12">
+            <b-col lg="6" cols="12">
               <b-card
                 class="no-radius no-bdt"
                 style="height: 100%"
@@ -239,12 +281,18 @@
             </no-ssr>
           </b-card>
         </b-col>
-        <b-col md="4">
+        <b-col md="4" class="border-top border-right border-bottom">
           <div class="p-sicky">
-            <b-card class="no-radius-bt no-radius mb-3">
+            <b-button
+              variant="success"
+              block
+              class="no-border no-radius"
+              to="/work-offer/add"
+            >+ เพิ่มงาน</b-button>
+            <b-card class="no-radius no-border pl-2" bg-variant="light">
               <menu-list header="เมนู" :list="[...manufacItems , ...accountList[0]]"/>
             </b-card>
-            <b-card class="no-radius-bt">
+            <b-card class="no-radius no-border pl-2" bg-variant="light">
               <h6>กิจกรรมที่เกิดขึ้นล่าสุด</h6>
               <hr>
               <div v-if="activities.length > 0">
@@ -339,7 +387,10 @@ export default {
         },
         locale: "th",
         titleFormat: "MMMM Y"
-      }
+      },
+      totalIncome: 0,
+      totalSum: 0,
+      totalIncomeReal: 0
     };
   },
   created() {
@@ -374,7 +425,7 @@ export default {
       activity
         .collection(`${this.user.entId}`)
         .orderBy("time", "desc")
-        .limit(8)
+        .limit(10)
         .onSnapshot(function(querySnapshot) {
           self.activities = [];
           self.items = [];
@@ -439,6 +490,26 @@ export default {
       }
       let start = self.$moment(startOfWeek(d)).format("YYYY-MM-DD");
       let end = self.$moment(endOfWeek(d)).format("YYYY-MM-DD");
+      let selected = self
+        .$moment()
+        .subtract(0, "M")
+        .format("YYYY-MM");
+      await this.$axios
+        .$get(`/v2/report/total/${this.$store.state.user.entId}/${selected}`)
+        .then(function(res) {
+          if (res) {
+            self.totalSum = res[0].alls;
+          }
+        });
+      await this.$axios
+        .$get(`/v2/report/${this.$store.state.user.entId}/${selected}`)
+        .then(function(res) {
+          if (res.length > 0) {
+            self.totalIncome = filter.reportIncome(res);
+            self.totalIncomeReal = filter.reportIncomeReal(res);
+          }
+        });
+
       await this.$axios
         .$get(`/v2/work/${this.$store.state.user.entId}/${start}/${end}`)
         .then(function(res) {

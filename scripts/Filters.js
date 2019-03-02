@@ -49,14 +49,14 @@ export default {
       return o.maxVolume * o.workEarn;
     });
   },
-  reportIncomeAll(objects, tex) {
+  reportIncomeAll(objects) {
     return _.sumBy(objects, function (o) {
-      return o.workVolume * o.workEarn * (tex / 100);
+      return o.workVolume * o.workEarn * (o.workTAX / 100);
     });
   },
-  reportIncomeReal(objects, tex) {
+  reportIncomeReal(objects) {
     return _.sumBy(objects, function (o) {
-      return o.maxVolume * o.workEarn * (tex / 100);
+      return o.maxVolume * o.workEarn * (o.workTAX / 100);
     });
   },
   reportCountWorks(objects) {

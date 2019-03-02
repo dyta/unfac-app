@@ -37,10 +37,15 @@
       </b-row>
     </b-jumbotron>
 
-    <b-container v-if="!asyncSource && items.length > 0 && enterprise" fluid class="w-75">
-      <b-row class="pb-3">
+    <b-container
+      v-if="!asyncSource && items.length > 0 && enterprise"
+      fluid
+      class="w-75"
+      no-gutters
+    >
+      <b-row class="pb-3" no-gutters>
         <b-col cols="6" md="6" lg="3" class="pt-1">
-          <b-card :border-variant="totalIncome-totalSum < 0 ? 'danger' : 'success'">
+          <b-card class="no-border no-radius border-right h100">
             <h5
               class="mb-0"
               :class="totalIncome-totalSum < 0 ? 'text-danger' : 'text-success'"
@@ -50,7 +55,7 @@
             >ปริมาณงานสั่งทำต่ออัตราการผลิตที่เสร็จสิ้น</small>
             <hr>
             <h4
-              class="text-right"
+              class="text-right amount"
               :class="totalIncome-totalSum < 0 ? 'text-danger' : 'text-success'"
             >
               ฿{{formatPrice(totalIncome)}}
@@ -63,7 +68,7 @@
           </b-card>
         </b-col>
         <b-col cols="6" md="6" lg="3" class="pt-1">
-          <b-card :border-variant="totalIncomeReal > 0 ? 'success' : 'secondary'">
+          <b-card class="no-border no-radius h100">
             <h5
               class="mb-0"
               :class="totalIncomeReal > 0 ? 'text-success' : 'text-secondary'"
@@ -73,31 +78,25 @@
             >% จากงานที่ผลิตเสร็จสิ้นแล้ว</small>
             <hr>
             <h4
-              class="text-right"
+              class="text-right amount"
               :class="totalIncomeReal > 0 ? 'text-success' : 'text-secondary'"
             >฿{{formatPrice(totalIncomeReal)}}</h4>
           </b-card>
         </b-col>
-        <b-col cols="6" md="6" lg="3" class="pt-1">
-          <b-card bg-variant="secondary" text-variant="light">
+        <b-col cols="6" md="6" lg="3" class="pt-1 border-right">
+          <b-card bg-variant="secondary" text-variant="light" class="no-border no-radius h100">
             <h5 class="text-warning mb-0">มูลค่ารวม</h5>
             <small>มูลค่ารวมของงานสั่งทำทั้งหมด</small>
             <hr>
-            <h4 class="text-right text-light">฿{{formatPrice(totalSum)}}</h4>
+            <h4 class="text-right text-light amount">฿{{formatPrice(totalSum)}}</h4>
           </b-card>
         </b-col>
         <b-col cols="6" md="6" lg="3" class="pt-1">
-          <b-card bg-variant="secondary" text-variant="light">
+          <b-card bg-variant="secondary" text-variant="light" class="no-border no-radius h100">
             <h5 class="text-warning mb-0">ผลกำไรที่คาดไว้</h5>
-            <small>หักจากมูลค่ารวม {{enterprise.income_tex}}% - {{100-enterprise.income_tex}}% คือค่าจ้างพนักงาน</small>
+            <small>หักจากมูลค่ารวม {{enterprise.income_tex}}% - {{100-enterprise.income_tex}}% ค่าจ้างพนง.({{formatPrice(totalSum-totalIncomeAll)}})</small>
             <hr>
-            <h4 class="text-right text-light">
-              ฿{{formatPrice(totalIncomeAll)}}
-              <small
-                class="font-size-10"
-                style="vertical-align: super;"
-              >ค่าจ้างพนง.({{formatPrice(totalSum-totalIncomeAll)}})</small>
-            </h4>
+            <h4 class="text-right text-light amount">฿{{formatPrice(totalIncomeAll)}}</h4>
           </b-card>
         </b-col>
       </b-row>
@@ -362,7 +361,9 @@ export default {
           text:
             self.$moment(last).format("MMMM") +
             " - " +
-            (self.$moment(last).format("YYYY") * 1 + 543)
+            (self.$moment(last).format("YYYY") * 1 + 543).toString() +
+            " - " +
+            (i > 0 ? "ปิดบัญชี" : "ดำเนินการ")
         });
       }
 
@@ -403,14 +404,8 @@ export default {
           self.totalWork = 0;
           if (res.length > 0) {
             self.items = res;
-            self.totalIncomeAll = cals.reportIncomeAll(
-              res,
-              self.enterprise.income_tex
-            );
-            self.totalIncomeReal = cals.reportIncomeReal(
-              res,
-              self.enterprise.income_tex
-            );
+            self.totalIncomeAll = cals.reportIncomeAll(res);
+            self.totalIncomeReal = cals.reportIncomeReal(res);
             self.totalIncome = cals.reportIncome(res);
             self.totalWork = cals.reportCountWorks(res);
             self.totalRows = res.length;

@@ -36,7 +36,7 @@
   .p-sicky {
     position: -webkit-sticky;
     position: sticky;
-    top: 6em !important;
+    top: 4.2em !important;
     z-index: 500;
   }
 
@@ -70,5 +70,12 @@
 
   .logo-nav {
     display: inline-block !important;
+  }
+}
+
+@media (max-width: 420px) {
+
+  .w-75 {
+    width: 100% !important;
   }
 }
