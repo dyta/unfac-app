@@ -23,6 +23,11 @@ export default {
       o.disabled = o.disabled !== 3 ? true : false
       return o;
     });
-
+  },
+  notificationToBooleanForWorks(objects) {
+    return _.map(objects, function (o) {
+      o.workStatus = o.workStatus === 3 || o.workStatus === 3 ? false : true
+      return o;
+    });
   }
 };

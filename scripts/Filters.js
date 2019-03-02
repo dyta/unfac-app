@@ -45,6 +45,12 @@ export default {
       else return null
     });
   },
+  selecteWork(objects) {
+    return _.map(objects, function (o) {
+      if (!o.workStatus) return o;
+      else return null
+    });
+  },
   reportSum(objects) {
     return _.sumBy(objects, function (o) {
       return o.maxVolume * o.workEarn;

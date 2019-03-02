@@ -276,12 +276,12 @@
               to="/work-offer/add"
             >+ สร้างงาน</b-button>
             <b-button
-              variant="dark"
+              variant="secondary"
               block
               size="lg"
               class="no-border no-radius mt-0"
               to="/work-offer/assign"
-            >+ เพิ่มงานให้พนักงานโดยผู้ดูแล</b-button>
+            >ดำเนินการขอรับงานแทนพนักงาน</b-button>
             <b-card class="no-radius no-border pl-2" bg-variant="light">
               <menu-list header="เมนู" :list="[...manufacItems , ...accountList[0]]"/>
             </b-card>
@@ -475,11 +475,11 @@ export default {
       let self = this;
       let d = new Date();
       function endOfWeek(date) {
-        var lastday = date.getDate() - (date.getDay() - 1) + 6;
+        var lastday = date.getDate() - date.getDay() + 8;
         return new Date(date.setDate(lastday));
       }
       function startOfWeek(date) {
-        var lastday = date.getDate() - (date.getDay() - 1);
+        var lastday = date.getDate() - date.getDay() + 1;
         return new Date(date.setDate(lastday));
       }
       let start = self.$moment(startOfWeek(d)).format("YYYY-MM-DD");
