@@ -27,7 +27,7 @@
               </b-form-group>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="เพิ่มงาน">
+              <b-form-group label="สร้างงาน">
                 <b-button
                   block
                   variant="primary"
@@ -433,7 +433,7 @@
           variant="primary"
           class="px-5 mb-3 mt-2"
           @click="()=> this.$router.push('/work-offer/add')"
-        >เพิ่มงาน</b-button>
+        >สร้างงาน</b-button>
       </b-card>
     </b-container>
     <loading :active.sync="asyncSource" :is-full-page="false" :opacity=".3" :height="34"></loading>

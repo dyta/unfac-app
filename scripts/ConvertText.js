@@ -17,5 +17,12 @@ export default {
         break;
     }
     return text
+  },
+  notificationToBoolean(objects) {
+    return _.map(objects, function (o) {
+      o.disabled = o.disabled !== 3 ? true : false
+      return o;
+    });
+
   }
 };

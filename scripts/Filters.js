@@ -39,6 +39,12 @@ export default {
       return o;
     });
   },
+  selecteEmployee(objects) {
+    return _.map(objects, function (o) {
+      if (!o.disabled) return o.key;
+      else return null
+    });
+  },
   reportSum(objects) {
     return _.sumBy(objects, function (o) {
       return o.maxVolume * o.workEarn;

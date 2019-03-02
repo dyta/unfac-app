@@ -271,9 +271,17 @@
             <b-button
               variant="success"
               block
+              size="lg"
               class="no-border no-radius"
               to="/work-offer/add"
-            >+ เพิ่มงาน</b-button>
+            >+ สร้างงาน</b-button>
+            <b-button
+              variant="dark"
+              block
+              size="lg"
+              class="no-border no-radius mt-0"
+              to="/work-offer/assign"
+            >+ เพิ่มงานให้พนักงานโดยผู้ดูแล</b-button>
             <b-card class="no-radius no-border pl-2" bg-variant="light">
               <menu-list header="เมนู" :list="[...manufacItems , ...accountList[0]]"/>
             </b-card>

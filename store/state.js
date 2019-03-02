@@ -47,10 +47,10 @@ export default () => ({
       path: "/request"
     },
     {
-      name: "ประกาศงาน",
+      name: "แจ้งเตือนงาน",
       icon: "bell",
       color: "green",
-      path: "#"
+      path: "/notification"
     },
     {
       name: "การผลิต",

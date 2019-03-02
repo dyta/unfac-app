@@ -4,7 +4,7 @@
       <div class="pt-1">
         <b-breadcrumb class="px-0 mt-4 border-bottom" :items="sub_nav"/>
       </div>
-      <h1 class="display-3 my-3">เพิ่มงาน</h1>
+      <h1 class="display-3 my-3">สร้างงาน</h1>
       <hr>
       <b-row class="justify-content-md-center">
         <b-col col lg="2"></b-col>
@@ -213,7 +213,7 @@
               :variant="btnAddWork ? 'primary':null"
               @click="OnclickAddwork()"
               :disabled="!btnAddWork"
-            >เพิ่มงาน</b-button>
+            >สร้างงาน</b-button>
           </div>
         </b-col>
         <b-col col lg="2"></b-col>
@@ -228,7 +228,7 @@ export default {
   layout: "default",
   head() {
     return {
-      title: "เพิ่มงาน"
+      title: "สร้างงาน"
     };
   },
   data() {
@@ -239,7 +239,7 @@ export default {
           to: { path: "/work-offer" }
         },
         {
-          text: "เพิ่มงาน",
+          text: "สร้างงาน",
           active: true
         }
       ],
@@ -338,7 +338,7 @@ export default {
           input: "checkbox",
           inputValue: null,
           inputPlaceholder: "ฉันเห็นด้วยกับข้อกำหนดและเงื่อนไขกับทาง Unfac.co",
-          confirmButtonText: "ยืนยันการเพิ่มงาน",
+          confirmButtonText: "ยืนยันการสร้างงาน",
           inputValidator: result => {
             return !result && "คุณต้องเห็นด้วยกับข้อกำหนดและเงื่อนไข";
           }
@@ -391,7 +391,7 @@ export default {
                 const insertWork = await self.$axios.post(`/v2/work`, object);
 
                 if (insertWork.data) {
-                  self.$toast.info("เพิ่มงานสำเร็จแล้ว", {
+                  self.$toast.info("สร้างงานสำเร็จแล้ว", {
                     position: "bottom-right",
                     theme: "bubble",
                     duration: 3000

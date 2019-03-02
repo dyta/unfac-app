@@ -5,6 +5,7 @@ import { interopDefault } from './utils'
 const _69b72088 = () => interopDefault(import('..\\pages\\account.vue' /* webpackChunkName: "pages_account" */))
 const _f607f142 = () => interopDefault(import('..\\pages\\join.vue' /* webpackChunkName: "pages_join" */))
 const _45cff534 = () => interopDefault(import('..\\pages\\manufacture\\index.vue' /* webpackChunkName: "pages_manufacture_index" */))
+const _68b2fda0 = () => interopDefault(import('..\\pages\\notification.vue' /* webpackChunkName: "pages_notification" */))
 const _34eac1ae = () => interopDefault(import('..\\pages\\overview.vue' /* webpackChunkName: "pages_overview" */))
 const _e4da91ae = () => interopDefault(import('..\\pages\\report.vue' /* webpackChunkName: "pages_report" */))
 const _e6681d50 = () => interopDefault(import('..\\pages\\request\\index.vue' /* webpackChunkName: "pages_request_index" */))
@@ -15,6 +16,7 @@ const _60d89a96 = () => interopDefault(import('..\\pages\\setting\\application.v
 const _7bf71c46 = () => interopDefault(import('..\\pages\\user\\collaborators.vue' /* webpackChunkName: "pages_user_collaborators" */))
 const _5a317035 = () => interopDefault(import('..\\pages\\user\\employees.vue' /* webpackChunkName: "pages_user_employees" */))
 const _f4375448 = () => interopDefault(import('..\\pages\\work-offer\\add.vue' /* webpackChunkName: "pages_work-offer_add" */))
+const _03d4ca04 = () => interopDefault(import('..\\pages\\work-offer\\assign.vue' /* webpackChunkName: "pages_work-offer_assign" */))
 const _0a76996d = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
 
 Vue.use(Router)
@@ -90,6 +92,10 @@ export function createRouter() {
       component: _45cff534,
       name: "manufacture"
     }, {
+      path: "/notification",
+      component: _68b2fda0,
+      name: "notification"
+    }, {
       path: "/overview",
       component: _34eac1ae,
       name: "overview"
@@ -129,6 +135,10 @@ export function createRouter() {
       path: "/work-offer/add",
       component: _f4375448,
       name: "work-offer-add"
+    }, {
+      path: "/work-offer/assign",
+      component: _03d4ca04,
+      name: "work-offer-assign"
     }, {
       path: "/",
       component: _0a76996d,
