@@ -149,7 +149,7 @@
           variant="success"
           block
           class="no-radius mt-3"
-          :disabled="max"
+          :disabled="max || loading"
           @click="assignWork"
         >ยืนยัน</b-button>
       </b-modal>
@@ -175,6 +175,7 @@ export default {
     return {
       employee: [],
       works: [],
+      loading: false,
 
       employeeNum: 0,
       worksNum: 0,
@@ -239,6 +240,7 @@ export default {
       let selectedWork = self.selectedWork;
       let selectedEmp = self.selectedEmp;
       let assignNum = self.assignNum * 1;
+      this.loading = true;
       await self.$axios
         .$post(`/v2/request/${self.$store.state.user.entId}`, {
           ...selectedWork,
@@ -256,6 +258,7 @@ export default {
             position: "bottom-center",
             duration: 3000
           });
+          self.loading = false;
         });
     }
   }
