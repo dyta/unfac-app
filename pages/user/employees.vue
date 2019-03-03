@@ -308,6 +308,7 @@ export default {
     },
     async clickCapacity(item) {
       let self = this;
+      self.disabled = true;
       await this.$axios
         .$put(`/v2/employee/${item.empId}/capacity`, item)
         .then(function(res) {
@@ -319,6 +320,7 @@ export default {
               duration: 4000
             }
           );
+          self.disabled = false;
         })
         .catch(e => {
           self.$toast.error(e, {

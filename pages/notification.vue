@@ -20,7 +20,7 @@
             @change="toggleAllEmp"
           >{{ allSelectedEmp ? 'เอาออกทั้งหมด' : 'เลือกทั้งหมด' }}</b-form-checkbox>
           <hr>
-          <b-row no-gutters>
+          <b-row no-gutters v-if="employee.length > 0">
             <b-col lg="6" v-for="option in employee" :key="option.name">
               <b-form-checkbox
                 v-model="selectedEmp"
@@ -45,6 +45,21 @@
               </b-form-checkbox>
             </b-col>
           </b-row>
+          <b-row no-gutters v-else>
+            <b-col lg="6" v-for="(option, index) in employeeNum" :key="index">
+              <content-loader
+                primaryColor="#ccc"
+                secondaryColor="#fff"
+                :height="70"
+                :speed="1.5"
+                class="pb-3"
+              >
+                <rect x="0" y="6.27" rx="4" ry="4" width="64" height="64"/>
+                <rect x="80" y="8" rx="5" ry="5" width="260" height="10"/>
+                <rect x="80" y="29" rx="5" ry="5" width="180" height="8"/>
+              </content-loader>
+            </b-col>
+          </b-row>
         </b-col>
         <b-col md="6">
           <h5>
@@ -62,7 +77,7 @@
             @change="toggleAllWork"
           >{{ allSelectedWork ? 'เอาออกทั้งหมด' : 'เลือกทั้งหมด' }}</b-form-checkbox>
           <hr>
-          <b-row no-gutters>
+          <b-row no-gutters v-if="works.length > 0">
             <b-col lg="6" v-for="option in works" :key="option.workName">
               <b-form-checkbox
                 v-model="selectedWork"
@@ -95,6 +110,21 @@
               :disabled="selectedEmp.length === 0 || selectedWork.length === 0 || !state"
             >ส่งข้อความ</b-button>
           </b-row>
+          <b-row no-gutters v-else>
+            <b-col lg="6" v-for="(option, index) in worksNum" :key="index">
+              <content-loader
+                primaryColor="#ccc"
+                secondaryColor="#fff"
+                :height="70"
+                :speed="1"
+                class="pb-3"
+              >
+                <rect x="0" y="6.27" rx="4" ry="4" width="64" height="64"/>
+                <rect x="80" y="8" rx="5" ry="5" width="260" height="10"/>
+                <rect x="80" y="29" rx="5" ry="5" width="180" height="8"/>
+              </content-loader>
+            </b-col>
+          </b-row>
         </b-col>
       </b-row>
     </b-container>
@@ -104,6 +134,7 @@
 <script>
 import filter from "./../scripts/Filters";
 import convert from "./../scripts/ConvertText";
+import { ContentLoader } from "vue-content-loader";
 export default {
   layout: "default",
   head() {
@@ -111,8 +142,13 @@ export default {
       title: "แจ้งเตือนงาน"
     };
   },
+  components: {
+    ContentLoader
+  },
   data() {
     return {
+      employeeNum: null,
+      worksNum: null,
       employee: [],
       selectedEmp: [],
       allSelectedEmp: false,
@@ -145,16 +181,22 @@ export default {
       await this.$axios
         .$get(`/v2/employee/notification/${this.$store.state.user.entId}`)
         .then(function(res) {
+          self.employeeNum = res.length;
           if (res.length > 0) {
-            self.employee = convert.notificationToBoolean(res);
+            setTimeout(() => {
+              self.employee = convert.notificationToBoolean(res);
+            }, 3000);
           }
         });
 
       await this.$axios
         .$get(`/v2/work/notification/${this.$store.state.user.entId}`)
         .then(function(res) {
+          self.worksNum = res.length;
           if (res.length > 0) {
-            self.works = convert.notificationToBooleanForWorks(res);
+            setTimeout(() => {
+              self.works = convert.notificationToBooleanForWorks(res);
+            }, 3000);
           }
         });
     },
