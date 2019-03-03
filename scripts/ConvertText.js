@@ -26,7 +26,7 @@ export default {
   },
   notificationToBooleanForWorks(objects) {
     return _.map(objects, function (o) {
-      o.workStatus = o.workStatus === 3 || o.workStatus === 3 ? false : true
+      o.workStatus = o.workStatus === 3 || o.workStatus === 4 ? false : true
       return o;
     });
   }

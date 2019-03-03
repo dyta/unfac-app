@@ -37,12 +37,7 @@
       </b-row>
     </b-jumbotron>
 
-    <b-container
-      v-if="!asyncSource && items.length > 0 && enterprise"
-      fluid
-      class="w-75"
-      no-gutters
-    >
+    <b-container v-if="!asyncSource && items.length > 0 " fluid class="w-75" no-gutters>
       <b-row class="pb-3" no-gutters>
         <b-col cols="6" md="6" lg="3" class="pt-1">
           <b-card class="no-border no-radius border-right h100">
@@ -94,7 +89,7 @@
         <b-col cols="6" md="6" lg="3" class="pt-1">
           <b-card bg-variant="secondary" text-variant="light" class="no-border no-radius h100">
             <h5 class="text-warning mb-0">ผลกำไรที่คาดไว้ในเดือนนี้</h5>
-            <small>หักจากมูลค่ารวม {{enterprise.income_tex}}% - {{100-enterprise.income_tex}}% ค่าจ้างพนง.({{formatPrice(totalSum-totalIncomeAll)}})</small>
+            <small>หักจากมูลค่ารวม {{items[0].workTAX}}% - {{100-items[0].workTAX}}% ค่าจ้างพนง.({{formatPrice(totalSum-totalIncomeAll)}})</small>
             <hr>
             <h4 class="text-right text-light amount">฿{{formatPrice(totalIncomeAll)}}</h4>
           </b-card>
@@ -146,13 +141,13 @@
         <template
           slot="workEndAt"
           slot-scope="row"
-        >{{$moment(row.value).format('DD')}}/{{$moment(row.value).format('MM')}}/{{$moment(row.value).format('YYYY')*1+543}}</template>
+        >{{$moment(row.value).format('DD')}}/{{$moment(row.value).format('MMM')}}/{{$moment(row.value).format('YYYY')*1+543}}</template>
 
         <template slot="workEarnUnit" slot-scope="row">
           <div
             v-if="row.item.workEarnType === 1"
             class="text-right"
-          >{{formatPrice((row.item.workEarn*row.item.maxVolume)-(row.item.workEarn*row.item.maxVolume*(enterprise.income_tex/100)))}}</div>
+          >{{formatPrice((row.item.workEarn*row.item.maxVolume)-(row.item.workEarn*row.item.maxVolume*(row.item.workTAX/100)))}}</div>
           <span v-else>{{formatPrice(row.item.workEarn)}}</span>
         </template>
         <template slot="all" slot-scope="row">
@@ -199,7 +194,6 @@ export default {
   data() {
     return {
       items: [],
-      enterprise: [],
       fields: [
         {
           key: "workId",
@@ -271,7 +265,7 @@ export default {
       sortBy: null,
       sortDesc: false,
       sortDirection: "asc",
-      filter: null,
+      filter: this.$route.query.id ? this.$route.query.id : null,
       selected: null,
       options: [],
 
@@ -380,14 +374,6 @@ export default {
     async fetch() {
       let self = this;
       this.$store.dispatch("sourceLoaded", true);
-      await this.$axios
-        .$get(`/v2/etp-setting/${this.$store.state.user.entId}`)
-        .then(function(res) {
-          self.enterprise = [];
-          if (res.length > 0) {
-            self.enterprise = res[0];
-          }
-        });
       await this.$axios
         .$get(
           `/v2/report/total/${this.$store.state.user.entId}/${this.selected}`

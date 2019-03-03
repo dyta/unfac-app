@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-jumbotron fluid header="งานทั้งหมด" class="jumbotron-special-lg mb-0" :lead="textHeader">
-      <b-row>
+      <b-row no-gutters>
         <b-col md="6">
           <b-form-group class="mb-0" label="ค้นหา">
             <b-input-group>
@@ -40,6 +40,11 @@
           </b-row>
         </b-col>
       </b-row>
+      <b-button
+        variant="outline-primary"
+        size="sm"
+        to="/work-offer/assign"
+      >ดำเนินการขอรับงานแทนพนักงาน</b-button>
     </b-jumbotron>
     <b-container fluid v-if="!asyncSource && items.length > 0" class="w-75 p-0">
       <!-- Main table element -->
@@ -192,7 +197,7 @@
                       variant="outline-dark"
                     >เปลี่ยนรูปที่ใช้แสดง</b-button>
                     <b-button
-                      v-if="row.item.workStatus > 2 && row.item.workPickVolume !==0"
+                      v-if="row.item.workStatus > 2"
                       class="btn-option mt-2"
                       variant="primary"
                       @click="()=> $router.push(`/request/approve?wid=${row.item.workId}&eid=${$store.state.user.entId}`)"
@@ -205,7 +210,11 @@
                 <p class="card-text m-0">งานถูกผลิตเรียบร้อยแล้ว</p>
                 <small>อัพเดทล่าสุด: {{date(row.item.workUpdateAt).format}}</small>
                 <div>
-                  <b-button class="btn-option" variant="success">ดูรายละเอียด</b-button>
+                  <b-button
+                    class="btn-option"
+                    variant="success"
+                    :to="`/report?id=${row.item.workId}`"
+                  >ดูรายละเอียด</b-button>
                 </div>
               </div>
             </b-media>
@@ -400,7 +409,12 @@
               <b-form-radio :value="4" class="pt-2">Urgently</b-form-radio>
               <b-form-radio :value="3">Enabled</b-form-radio>
               <b-form-radio v-if="WorkInfoItem.workPickVolume === 0" :value="2">Disabled</b-form-radio>
-              <b-form-radio v-else :value="5">Paused</b-form-radio>
+              <b-form-radio v-if="WorkInfoItem.workPickVolume !== 0" :value="5">Paused</b-form-radio>
+              <b-form-radio
+                v-if="WorkInfoItem.workStatus === 5"
+                :value="2"
+                class="pt-2 text-danger"
+              >Disabled</b-form-radio>
             </span>
             <span v-else-if="WorkInfoItem.workStatus === 2">
               <b-form-radio :value="2">Disabled</b-form-radio>
@@ -417,9 +431,13 @@
             </span>
           </b-form-radio-group>
         </b-form-group>
+        <small
+          v-if="workValue.workStatus === 2 && WorkInfoItem.workStatus === 5"
+          class="text-danger"
+        >มีรายการผลิตในงานนี้อยู่ ต้องการดำเนินการต่อหรือไม่</small>
         <b-button
           block
-          variant="primary"
+          :variant="workValue.workStatus === 2 && WorkInfoItem.workStatus === 5 ? 'danger':'primary'"
           :disabled="statusValidate || statusDateValidate"
           @click="updateStatus"
         >ยืนยัน</b-button>

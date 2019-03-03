@@ -92,6 +92,7 @@
                       <button
                         class="btn btn-outline-secondary"
                         type="button"
+                        :disabled="disabled"
                         @click="clickCapacity(row.item)"
                       >อัพเดท</button>
                     </div>
@@ -127,9 +128,15 @@
             <b-button
               variant="success"
               v-if="!row.item.userAuth"
+              :disabled="disabled"
               @click="clickConfirm(row.item, 1)"
             >ยืนยันการเป็นพนักงานของโครงการนี้</b-button>
-            <b-button variant="danger" @click="clickConfirm(row.item, 0)" v-else>ปลดพนักงานคนนี้</b-button>
+            <b-button
+              v-else
+              variant="danger"
+              @click="clickConfirm(row.item, 0)"
+              :disabled="disabled"
+            >ปลดพนักงานคนนี้</b-button>
           </b-card>
         </template>
       </b-table>
@@ -169,6 +176,7 @@ export default {
   },
   data() {
     return {
+      disabled: false,
       items: [],
       fields: [
         {
@@ -275,9 +283,11 @@ export default {
     },
     async clickConfirm(item, key) {
       let self = this;
+      self.disabled = true;
       await this.$axios
         .$put(`/v2/employee/${key}`, item)
         .then(function(res) {
+          self.disabled = false;
           self.$toast.success(
             `พนักงาน ${item.empFullname} ได้รับการเปลี่ยนแปลงเรียบร้อยแล้ว`,
             {

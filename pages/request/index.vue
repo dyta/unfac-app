@@ -7,7 +7,11 @@
       class="jumbotron-special-lg mb-0 pb-3"
     >
       <small>เลือกงานข้างล่างนี้เพื่อจัดการรายการคำขออนุมัติ</small>
-
+      <b-button
+        variant="outline-primary"
+        size="sm"
+        to="/work-offer/assign"
+      >ดำเนินการขอรับงานแทนพนักงาน</b-button>
       <b-button variant="outline-primary" size="sm" @click="()=> this.fetch()">
         <fa icon="redo-alt" class="mr-1"/>
         <small>Refresh</small>
